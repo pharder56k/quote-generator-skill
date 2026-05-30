@@ -4,6 +4,7 @@
  *
  * 用法：
  *   node scripts/render.js --input data.json --template default --output ./output/报价单.pdf
+ *   node scripts/render.js --input data.json --vat-rate 0.06  # 指定增值税税率 6%
  *   node scripts/render.js --test  # 使用测试数据渲染
  */
 
@@ -33,7 +34,7 @@ function parseArgs() {
 }
 
 // --- 按工程分类分组，生成总价表和分页数据 ---
-function buildTemplateData(raw) {
+function buildTemplateData(raw, vatRate = 0.03) {
   const items = raw.items || [];
 
   // 按分类分组
@@ -56,7 +57,7 @@ function buildTemplateData(raw) {
     return { 序号: String(idx + 1), 名称: cat, 金额: Math.round(catTotal * 100) / 100 };
   });
 
-  const 增值税 = Math.round(合计 * 0.03 * 100) / 100;
+  const 增值税 = Math.round(合计 * vatRate * 100) / 100;
   const 总计 = Math.round((合计 + 增值税) * 100) / 100;
 
   // 明细分页（每页约 8-10 行数据，含分类标题和小计）
@@ -111,6 +112,7 @@ function buildTemplateData(raw) {
     编制日期: raw.编制日期,
     编制人员: raw.编制人员,
     联系邮箱: raw.联系邮箱,
+    logo_url: raw.logo_url || "",
     summary,
     合计,
     增值税,
@@ -128,6 +130,7 @@ function getTestData() {
     编制日期: "2026年5月22日",
     编制人员: "RM DESIGN",
     联系邮箱: "87580967@qq.com",
+    logo_url: "",
     items: [
       { 序号: "1.1", 工程分类: "措施项目", 项目名称: "脚手架", 项目特征: "室内脚手架", 单位: "项", 数量: 1, 综合单价: 3200, 合价: 3200 },
       { 序号: "1.2", 工程分类: "措施项目", 项目名称: "文明施工", 项目特征: "现场临时便溺设施；现场生活卫生设施；现场工人的防暑降温设备及用电；其他", 单位: "项", 数量: 1, 综合单价: 500, 合价: 500 },
@@ -173,7 +176,8 @@ async function main() {
     process.exit(1);
   }
 
-  const data = buildTemplateData(raw);
+  const vatRate = params["vat-rate"] ? parseFloat(params["vat-rate"]) : 0.03;
+  const data = buildTemplateData(raw, vatRate);
 
   const templateName = params.template || "default";
   const templatePath = resolve(TEMPLATES_DIR, `${templateName}.html`);

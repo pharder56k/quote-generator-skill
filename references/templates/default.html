@@ -38,6 +38,18 @@
     .cover-logo {
       width: 56px;
       height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cover-logo img {
+      max-width: 56px;
+      max-height: 56px;
+      object-fit: contain;
+    }
+    .cover-logo-text {
+      width: 56px;
+      height: 56px;
       border: 2px solid #1a1a1a;
       display: flex;
       align-items: center;
@@ -89,6 +101,18 @@
       letter-spacing: 3px;
     }
     .page-logo {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .page-logo img {
+      max-width: 48px;
+      max-height: 48px;
+      object-fit: contain;
+    }
+    .page-logo-text {
       width: 48px;
       height: 48px;
       border: 2px solid #1a1a1a;
@@ -241,7 +265,9 @@
   <div class="cover">
     <div class="cover-header">
       <div class="cover-title">工程量清单报价表</div>
-      <div class="cover-logo">R<br>M</div>
+      <div class="cover-logo">
+        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="cover-logo-text">R<br>M</div>{{/if}}
+      </div>
     </div>
     <div class="cover-bottom">
       <div class="cover-info-row">
@@ -272,7 +298,9 @@
   <div class="summary-page">
     <div class="page-header">
       <div class="page-title">工程量清单报价表</div>
-      <div class="page-logo">R<br>M</div>
+      <div class="page-logo">
+        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
+      </div>
     </div>
     <div class="summary-subtitle">工程量清单总价表</div>
     <table class="summary-table">
@@ -318,7 +346,9 @@
   <div class="detail-page">
     <div class="page-header">
       <div class="page-title">工程量清单报价表</div>
-      <div class="page-logo">R<br>M</div>
+      <div class="page-logo">
+        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
+      </div>
     </div>
     <div class="detail-subheader">
       <span>工程名称：{{../项目名称}}</span>
