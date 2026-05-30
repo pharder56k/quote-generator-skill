@@ -1,0 +1,7 @@
+node_modules/
+output/
+dist/
+*.pdf
+.DS_Store
+.env
+.env.local

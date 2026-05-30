@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>报价单 — {{project_name}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+      font-size: 13px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    @page {
+      size: A4;
+      margin: 20mm 15mm;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #2c3e50;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    .meta {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .quote-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+    }
+    .quote-table th {
+      background: #2c3e50;
+      color: white;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 12px;
+    }
+    .quote-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .quote-table tbody tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+    .quote-table tbody tr:hover {
+      background: #eef2f7;
+    }
+    .quote-table .text-right {
+      text-align: right;
+    }
+    .quote-table .text-center {
+      text-align: center;
+    }
+
+    .total-row td {
+      font-weight: 700;
+      font-size: 14px;
+      border-top: 2px solid #2c3e50;
+      background: #f0f4f8 !important;
+    }
+
+    .notes {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: #f8f9fa;
+      border-left: 3px solid #2c3e50;
+      border-radius: 0 4px 4px 0;
+    }
+    .notes h3 {
+      font-size: 13px;
+      color: #2c3e50;
+      margin-bottom: 6px;
+    }
+    .notes p {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.8;
+    }
+
+    .footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #999;
+    }
+
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>{{company_name}} — 设计报价单</h1>
+    <div class="meta">
+      <span>客户：{{client_name}}</span>
+      <span>项目：{{project_name}}</span>
+      <span>日期：{{quote_date}}</span>
+    </div>
+  </div>
+
+  <table class="quote-table">
+    <thead>
+      <tr>
+        <th class="text-center" style="width:40px">序号</th>
+        <th style="width:70px">类别</th>
+        <th>项目名称</th>
+        <th>规格说明</th>
+        <th class="text-center" style="width:50px">数量</th>
+        <th class="text-center" style="width:50px">单位</th>
+        <th class="text-right" style="width:90px">单价</th>
+        <th class="text-right" style="width:100px">小计</th>
+        <th style="width:80px">备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each items}}
+      <tr>
+        <td class="text-center">{{this.seq}}</td>
+        <td>{{this.category}}</td>
+        <td>{{this.name}}</td>
+        <td>{{this.spec}}</td>
+        <td class="text-center">{{this.qty}}</td>
+        <td class="text-center">{{this.unit}}</td>
+        <td class="text-right">{{formatCurrency this.price}}</td>
+        <td class="text-right">{{formatCurrency this.subtotal}}</td>
+        <td>{{this.note}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td colspan="7" style="text-align:right">合计</td>
+        <td class="text-right">{{formatCurrency total_price}}</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  {{#if notes}}
+  <div class="notes">
+    <h3>备注</h3>
+    <p>{{nl2br notes}}</p>
+  </div>
+  {{/if}}
+
+  <div class="footer">
+    <span>{{company_name}}</span>
+    <span>本报价单由 AI 自动生成，仅供参考</span>
+  </div>
+
+</body>
+</html>
