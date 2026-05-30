@@ -57,6 +57,7 @@ function buildTemplateData(raw, vatRate = 0.03) {
     return { 序号: String(idx + 1), 名称: cat, 金额: Math.round(catTotal * 100) / 100 };
   });
 
+  合计 = Math.round(合计 * 100) / 100;
   const 增值税 = Math.round(合计 * vatRate * 100) / 100;
   const 总计 = Math.round((合计 + 增值税) * 100) / 100;
 
@@ -113,6 +114,7 @@ function buildTemplateData(raw, vatRate = 0.03) {
     编制人员: raw.编制人员,
     联系邮箱: raw.联系邮箱,
     logo_url: raw.logo_url || "",
+    hasItems: items.length > 0,
     summary,
     合计,
     增值税,

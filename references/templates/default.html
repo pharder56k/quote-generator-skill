@@ -294,6 +294,7 @@
     </div>
   </div>
 
+  {{#if hasItems}}
   <!-- === 总价表 === -->
   <div class="summary-page">
     <div class="page-header">
@@ -396,6 +397,7 @@
     <div class="page-number">{{../项目名称}}　{{../工程编号}}　{{this.pageNum}}/{{../totalPages}}</div>
   </div>
   {{/each}}
+  {{/if}}
 
 </body>
 </html>
