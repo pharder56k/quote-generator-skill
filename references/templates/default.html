@@ -2,101 +2,232 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>报价单 — {{项目名称}}</title>
+  <title>工程量清单报价表 — {{项目名称}}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-      font-size: 13px;
-      color: #333;
-      line-height: 1.6;
+      font-size: 12px;
+      color: #1a1a1a;
+      line-height: 1.5;
     }
 
     @page {
       size: A4;
-      margin: 20mm 15mm;
+      margin: 15mm 18mm 20mm 18mm;
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid #2c3e50;
-    }
-    .header h1 {
-      font-size: 22px;
-      font-weight: 600;
-      color: #2c3e50;
-      margin-bottom: 8px;
-    }
-    .meta {
+    /* === 封面 === */
+    .cover {
+      page-break-after: always;
       display: flex;
-      justify-content: center;
-      gap: 24px;
-      font-size: 12px;
-      color: #666;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-top: 40px;
     }
-
-    .quote-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 24px;
-    }
-    .quote-table th {
-      background: #2c3e50;
-      color: white;
-      padding: 8px 10px;
-      text-align: left;
-      font-weight: 500;
-      font-size: 12px;
-    }
-    .quote-table td {
-      padding: 7px 10px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    .quote-table tbody tr:nth-child(even) {
-      background: #f8f9fa;
-    }
-    .quote-table .text-right {
-      text-align: right;
-    }
-    .quote-table .text-center {
-      text-align: center;
-    }
-
-    .total-row td {
-      font-weight: 700;
-      font-size: 14px;
-      border-top: 2px solid #2c3e50;
-      background: #f0f4f8 !important;
-    }
-
-    .notes {
-      margin-top: 20px;
-      padding: 12px 16px;
-      background: #f8f9fa;
-      border-left: 3px solid #2c3e50;
-      border-radius: 0 4px 4px 0;
-    }
-    .notes h3 {
-      font-size: 13px;
-      color: #2c3e50;
-      margin-bottom: 6px;
-    }
-    .notes p {
-      font-size: 12px;
-      color: #555;
-      line-height: 1.8;
-    }
-
-    .footer {
-      margin-top: 40px;
-      padding-top: 16px;
-      border-top: 1px solid #ddd;
+    .cover-header {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
+    }
+    .cover-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 4px;
+    }
+    .cover-logo {
+      width: 56px;
+      height: 56px;
+      border: 2px solid #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 11px;
-      color: #999;
+      font-weight: 700;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .cover-bottom {
+      margin-top: auto;
+      padding-bottom: 60px;
+    }
+    .cover-info-row {
+      font-size: 14px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: baseline;
+    }
+    .cover-info-label {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .cover-info-value {
+      flex: 1;
+      border-bottom: 1px solid #1a1a1a;
+      margin-left: 8px;
+      padding-bottom: 2px;
+    }
+    .cover-email {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #3366cc;
+    }
+
+    /* === 总价表 === */
+    .summary-page {
+      page-break-after: always;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 3px;
+    }
+    .page-logo {
+      width: 48px;
+      height: 48px;
+      border: 2px solid #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .summary-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      padding: 6px 0;
+      border-top: 1.5px solid #1a1a1a;
+      border-bottom: 1px solid #ccc;
+    }
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .summary-table th {
+      text-align: left;
+      padding: 6px 0;
+      font-weight: 500;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .summary-table th:last-child {
+      text-align: right;
+    }
+    .summary-table td {
+      padding: 5px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .summary-table td:last-child {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .summary-totals {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .summary-totals-inner {
+      width: 200px;
+    }
+    .summary-total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 13px;
+    }
+    .summary-total-row.grand {
+      font-weight: 700;
+      font-size: 14px;
+      border-top: 1.5px solid #1a1a1a;
+      padding-top: 6px;
+    }
+    .summary-total-value {
+      font-variant-numeric: tabular-nums;
+    }
+    .summary-footer {
+      margin-top: 40px;
+      font-size: 12px;
+      line-height: 2;
+    }
+
+    /* === 明细页 === */
+    .detail-page {
+      page-break-after: always;
+    }
+    .detail-page:last-child {
+      page-break-after: auto;
+    }
+    .detail-subheader {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 10px;
+      padding: 6px 0;
+      border-top: 1.5px solid #1a1a1a;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /* === 明细表格 === */
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+    }
+    .detail-table th {
+      text-align: left;
+      padding: 5px 6px;
+      font-weight: 500;
+      font-size: 11px;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .detail-table th.num {
+      text-align: right;
+    }
+    .detail-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #e8e8e8;
+      vertical-align: top;
+    }
+    .detail-table td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .detail-table .cat-row td {
+      font-weight: 700;
+      font-size: 13px;
+      padding-top: 10px;
+      border-bottom: none;
+    }
+    .detail-table .item-name {
+      font-weight: 500;
+    }
+    .detail-table .item-spec {
+      font-size: 11px;
+      color: #555;
+      margin-top: 1px;
+    }
+    .detail-table .subtotal-row td {
+      font-weight: 600;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: none;
+      padding-top: 6px;
+    }
+
+    /* === 页码 === */
+    .page-number {
+      text-align: left;
+      font-size: 11px;
+      color: #888;
+      margin-top: 12px;
     }
 
     @media print {
@@ -106,64 +237,135 @@
 </head>
 <body>
 
-  <div class="header">
-    <h1>{{项目名称}} — 工程量清单报价单</h1>
-    <div class="meta">
-      <span>工程编号：{{工程编号}}</span>
-      <span>编制日期：{{编制日期}}</span>
-      <span>编制人员：{{编制人员}}</span>
+  <!-- === 封面 === -->
+  <div class="cover">
+    <div class="cover-header">
+      <div class="cover-title">工程量清单报价表</div>
+      <div class="cover-logo">R<br>M</div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-info-row">
+        <span class="cover-info-label">工程名称：</span>
+        <span class="cover-info-value">{{项目名称}}</span>
+      </div>
+      <div class="cover-info-row">
+        <span class="cover-info-label">工程编号：</span>
+        <span class="cover-info-value">{{工程编号}}</span>
+      </div>
+      <div class="cover-info-row">
+        <span class="cover-info-label">编制日期：</span>
+        <span class="cover-info-value">{{编制日期}}</span>
+      </div>
+      {{#if 编制人员}}
+      <div class="cover-info-row">
+        <span class="cover-info-label">编制人员：</span>
+        <span class="cover-info-value">{{编制人员}}</span>
+      </div>
+      {{/if}}
+      {{#if 联系邮箱}}
+      <div class="cover-email">{{联系邮箱}}</div>
+      {{/if}}
     </div>
   </div>
 
-  <table class="quote-table">
-    <thead>
-      <tr>
-        <th class="text-center" style="width:50px">序号</th>
-        <th style="width:90px">工程分类</th>
-        <th>项目名称</th>
-        <th>项目特征</th>
-        <th class="text-center" style="width:50px">单位</th>
-        <th class="text-right" style="width:60px">数量</th>
-        <th class="text-right" style="width:90px">综合单价</th>
-        <th class="text-right" style="width:100px">合价</th>
-        <th style="width:70px">备注</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each items}}
-      <tr>
-        <td class="text-center">{{this.序号}}</td>
-        <td>{{this.工程分类}}</td>
-        <td>{{this.项目名称}}</td>
-        <td>{{this.项目特征}}</td>
-        <td class="text-center">{{this.单位}}</td>
-        <td class="text-right">{{this.数量}}</td>
-        <td class="text-right">{{formatCurrency this.综合单价}}</td>
-        <td class="text-right">{{formatCurrency this.合价}}</td>
-        <td>{{this.备注}}</td>
-      </tr>
-      {{/each}}
-    </tbody>
-    <tfoot>
-      <tr class="total-row">
-        <td colspan="7" style="text-align:right">合计</td>
-        <td class="text-right">{{formatCurrency total_price}}</td>
-        <td></td>
-      </tr>
-    </tfoot>
-  </table>
-
-  {{#if notes}}
-  <div class="notes">
-    <h3>备注</h3>
-    <p>{{nl2br notes}}</p>
+  <!-- === 总价表 === -->
+  <div class="summary-page">
+    <div class="page-header">
+      <div class="page-title">工程量清单报价表</div>
+      <div class="page-logo">R<br>M</div>
+    </div>
+    <div class="summary-subtitle">工程量清单总价表</div>
+    <table class="summary-table">
+      <thead>
+        <tr><th style="width:50px">序号</th><th>名称</th><th style="width:120px">金额</th></tr>
+      </thead>
+      <tbody>
+        {{#each summary}}
+        <tr>
+          <td>{{this.序号}}</td>
+          <td>{{this.名称}}</td>
+          <td class="num">{{formatCurrency this.金额}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <div class="summary-totals">
+      <div class="summary-totals-inner">
+        <div class="summary-total-row">
+          <span>合计</span>
+          <span class="summary-total-value">{{formatCurrency 合计}}</span>
+        </div>
+        <div class="summary-total-row">
+          <span>增值税</span>
+          <span class="summary-total-value">{{formatCurrency 增值税}}</span>
+        </div>
+        <div class="summary-total-row grand">
+          <span>总计</span>
+          <span class="summary-total-value">{{formatCurrency 总计}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="summary-footer">
+      <div>工程名称：{{项目名称}}</div>
+      <div>工程编号：{{工程编号}}</div>
+      <div>编制日期：{{编制日期}}</div>
+      {{#if 编制人员}}<div>编制人员：{{编制人员}}</div>{{/if}}
+    </div>
   </div>
-  {{/if}}
 
-  <div class="footer">
-    <span>{{项目名称}}</span>
-    <span>本报价单由 AI 自动生成，仅供参考</span>
+  <!-- === 明细页 === -->
+  {{#each pages}}
+  <div class="detail-page">
+    <div class="page-header">
+      <div class="page-title">工程量清单报价表</div>
+      <div class="page-logo">R<br>M</div>
+    </div>
+    <div class="detail-subheader">
+      <span>工程名称：{{../项目名称}}</span>
+      <span>工程编号：{{../工程编号}}</span>
+    </div>
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th style="width:50px">序号</th>
+          <th>项目名称及项目特征</th>
+          <th style="width:50px">单位</th>
+          <th class="num" style="width:65px">数量</th>
+          <th class="num" style="width:85px">综合单价</th>
+          <th class="num" style="width:90px">合价</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each this.rows}}
+        {{#if this.isCategory}}
+        <tr class="cat-row">
+          <td>{{this.序号}}</td>
+          <td colspan="5">{{this.项目名称}}</td>
+        </tr>
+        {{else if this.isSubtotal}}
+        <tr class="subtotal-row">
+          <td colspan="5" style="text-align:right">小计</td>
+          <td class="num">{{formatCurrency this.合价}}</td>
+        </tr>
+        {{else}}
+        <tr>
+          <td>{{this.序号}}</td>
+          <td>
+            <div class="item-name">{{this.项目名称}}</div>
+            {{#if this.项目特征}}<div class="item-spec">{{this.项目特征}}</div>{{/if}}
+          </td>
+          <td>{{this.单位}}</td>
+          <td class="num">{{this.数量}}</td>
+          <td class="num">{{formatCurrency this.综合单价}}</td>
+          <td class="num">{{formatCurrency this.合价}}</td>
+        </tr>
+        {{/if}}
+        {{/each}}
+      </tbody>
+    </table>
+    <div class="page-number">{{../项目名称}}　{{../工程编号}}　{{this.pageNum}}/{{../totalPages}}</div>
   </div>
+  {{/each}}
 
 </body>
 </html>
