@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>报价单 — {{project_name}}</title>
+  <title>报价单 — {{项目名称}}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -57,9 +57,6 @@
     .quote-table tbody tr:nth-child(even) {
       background: #f8f9fa;
     }
-    .quote-table tbody tr:hover {
-      background: #eef2f7;
-    }
     .quote-table .text-right {
       text-align: right;
     }
@@ -104,47 +101,46 @@
 
     @media print {
       body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .no-print { display: none; }
     }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <h1>{{company_name}} — 设计报价单</h1>
+    <h1>{{项目名称}} — 工程量清单报价单</h1>
     <div class="meta">
-      <span>客户：{{client_name}}</span>
-      <span>项目：{{project_name}}</span>
-      <span>日期：{{quote_date}}</span>
+      <span>工程编号：{{工程编号}}</span>
+      <span>编制日期：{{编制日期}}</span>
+      <span>编制人员：{{编制人员}}</span>
     </div>
   </div>
 
   <table class="quote-table">
     <thead>
       <tr>
-        <th class="text-center" style="width:40px">序号</th>
-        <th style="width:70px">类别</th>
+        <th class="text-center" style="width:50px">序号</th>
+        <th style="width:90px">工程分类</th>
         <th>项目名称</th>
-        <th>规格说明</th>
-        <th class="text-center" style="width:50px">数量</th>
+        <th>项目特征</th>
         <th class="text-center" style="width:50px">单位</th>
-        <th class="text-right" style="width:90px">单价</th>
-        <th class="text-right" style="width:100px">小计</th>
-        <th style="width:80px">备注</th>
+        <th class="text-right" style="width:60px">数量</th>
+        <th class="text-right" style="width:90px">综合单价</th>
+        <th class="text-right" style="width:100px">合价</th>
+        <th style="width:70px">备注</th>
       </tr>
     </thead>
     <tbody>
       {{#each items}}
       <tr>
-        <td class="text-center">{{this.seq}}</td>
-        <td>{{this.category}}</td>
-        <td>{{this.name}}</td>
-        <td>{{this.spec}}</td>
-        <td class="text-center">{{this.qty}}</td>
-        <td class="text-center">{{this.unit}}</td>
-        <td class="text-right">{{formatCurrency this.price}}</td>
-        <td class="text-right">{{formatCurrency this.subtotal}}</td>
-        <td>{{this.note}}</td>
+        <td class="text-center">{{this.序号}}</td>
+        <td>{{this.工程分类}}</td>
+        <td>{{this.项目名称}}</td>
+        <td>{{this.项目特征}}</td>
+        <td class="text-center">{{this.单位}}</td>
+        <td class="text-right">{{this.数量}}</td>
+        <td class="text-right">{{formatCurrency this.综合单价}}</td>
+        <td class="text-right">{{formatCurrency this.合价}}</td>
+        <td>{{this.备注}}</td>
       </tr>
       {{/each}}
     </tbody>
@@ -165,7 +161,7 @@
   {{/if}}
 
   <div class="footer">
-    <span>{{company_name}}</span>
+    <span>{{项目名称}}</span>
     <span>本报价单由 AI 自动生成，仅供参考</span>
   </div>
 

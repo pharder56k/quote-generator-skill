@@ -1,0 +1,31 @@
+{
+  "base_token": "ZARYb5n6gawooesP8qZclTxGnuy",
+  "base_url": "https://li1fn1sw90.feishu.cn/base/ZARYb5n6gawooesP8qZclTxGnuy",
+  "tables": {
+    "项目信息": {
+      "table_id": "tbl1EZVmjQdR2P8f",
+      "fields": {
+        "项目名称": "fld4nhYuAn",
+        "工程编号": "fldIbgMiMO",
+        "编制日期": "fldjW5WTeO",
+        "编制人员": "fldP5v7cqC",
+        "联系邮箱": "fldn3LR1PB",
+        "备注": "fldjc49CPR"
+      }
+    },
+    "报价明细": {
+      "table_id": "tblRHcHf4zsjR4yV",
+      "fields": {
+        "序号": "fldjm1jQek",
+        "工程分类": "fldheW3kNz",
+        "项目名称": "fldLt4A87d",
+        "项目特征": "fldnMFqKAq",
+        "单位": "fldTVUaMqr",
+        "数量": "fld5qlDYqd",
+        "综合单价": "fldmcxGmox",
+        "合价": "fldarSRkX5",
+        "备注": "fldLyJoLtw"
+      }
+    }
+  }
+}
