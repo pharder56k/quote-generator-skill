@@ -294,6 +294,12 @@
       color: #555;
       margin-top: 1px;
     }
+    .detail-table .item-remark {
+      font-size: 11px;
+      font-weight: 700;
+      color: #cc0000;
+      margin-top: 2px;
+    }
     .detail-table .subtotal-row td {
       font-weight: 600;
       border-top: 1px solid #1a1a1a;
@@ -447,6 +453,7 @@
           <td>
             <div class="item-name">{{this.项目名称}}</div>
             {{#if this.项目特征}}<div class="item-spec">{{nl2br this.项目特征}}</div>{{/if}}
+            {{#if this.备注}}<div class="item-remark">{{nl2br this.备注}}</div>{{/if}}
           </td>
           <td>{{this.单位}}</td>
           <td class="num">{{this.数量}}</td>

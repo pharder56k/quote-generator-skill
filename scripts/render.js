@@ -85,6 +85,7 @@ function buildTemplateData(raw, vatRate = 0.03) {
       detailRows.push({
         isCategory: false, isSubtotal: false,
         序号: item.序号, 项目名称: item.项目名称, 项目特征: item.项目特征,
+        备注: item.备注 || "",
         单位: item.单位, 数量: item.数量, 综合单价: item.综合单价, 合价: item.合价,
       });
     }
