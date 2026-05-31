@@ -71,46 +71,42 @@ function buildTemplateData(raw, vatRate = 0.03) {
   const 增值税 = Math.round(合计 * vatRate * 100) / 100;
   const 总计 = Math.round((合计 + 增值税) * 100) / 100;
 
-  // 明细分页（每页约 8-10 行数据，含分类标题和小计）
+  // 明细分页（每页约 8 行数据，含分类标题和小计）
   const MAX_ROWS_PER_PAGE = 8;
   const pages = [];
   let currentRows = [];
   let pageNum = 3; // 封面=1, 总价表=2, 明细从3开始
 
+  function pushPage(rows) {
+    pages.push({ rows, pageNum });
+    pageNum++;
+  }
+
   for (const cat of sortedCats) {
     const catItems = grouped[cat];
     const catNum = catItems[0]?.序号?.split(".")[0] || "";
-    const catRows = [];
+    const catTotal = catItems.reduce((sum, i) => sum + (i.合价 || 0), 0);
 
-    // 分类标题行
-    catRows.push({ isCategory: true, 序号: catNum, 项目名称: cat });
-
-    // 明细行
+    // 构建该分类的所有行
+    const allRows = [];
+    allRows.push({ isCategory: true, 序号: catNum, 项目名称: cat });
     for (const item of catItems) {
-      catRows.push({
-        isCategory: false,
-        isSubtotal: false,
-        序号: item.序号,
-        项目名称: item.项目名称,
-        项目特征: item.项目特征,
-        单位: item.单位,
-        数量: item.数量,
-        综合单价: item.综合单价,
-        合价: item.合价,
+      allRows.push({
+        isCategory: false, isSubtotal: false,
+        序号: item.序号, 项目名称: item.项目名称, 项目特征: item.项目特征,
+        单位: item.单位, 数量: item.数量, 综合单价: item.综合单价, 合价: item.合价,
       });
     }
+    allRows.push({ isSubtotal: true, 合价: Math.round(catTotal * 100) / 100 });
 
-    // 小计行
-    const catTotal = catItems.reduce((sum, i) => sum + (i.合价 || 0), 0);
-    catRows.push({ isSubtotal: true, 合价: Math.round(catTotal * 100) / 100 });
-
-    // 分页逻辑
-    if (currentRows.length + catRows.length > MAX_ROWS_PER_PAGE && currentRows.length > 0) {
-      pages.push({ rows: currentRows, pageNum });
-      pageNum++;
-      currentRows = [];
+    // 分页：逐行分配到页面
+    for (const row of allRows) {
+      if (currentRows.length >= MAX_ROWS_PER_PAGE) {
+        pushPage(currentRows);
+        currentRows = [];
+      }
+      currentRows.push(row);
     }
-    currentRows.push(...catRows);
   }
 
   if (currentRows.length > 0) {
