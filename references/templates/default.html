@@ -23,66 +23,88 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      padding-top: 40px;
-    }
-    .cover-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-    .cover-title {
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: 4px;
+      padding: 60px 40px 60px 40px;
+      border: 1.5px solid #1a1a1a;
+      position: relative;
     }
     .cover-logo {
-      width: 56px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute;
+      top: 40px;
+      right: 40px;
     }
     .cover-logo img {
-      max-width: 56px;
-      max-height: 56px;
+      max-width: 60px;
+      max-height: 60px;
       object-fit: contain;
     }
     .cover-logo-text {
-      width: 56px;
-      height: 56px;
+      width: 60px;
+      height: 60px;
       border: 2px solid #1a1a1a;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       line-height: 1.2;
       text-align: center;
     }
+    .cover-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 80px;
+    }
+    .cover-title {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      margin-bottom: 16px;
+    }
+    .cover-divider {
+      width: 80px;
+      height: 2px;
+      background: #1a1a1a;
+      margin-bottom: 20px;
+    }
+    .cover-subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: #444;
+    }
     .cover-bottom {
-      margin-top: auto;
-      padding-bottom: 60px;
+      border-top: 1px solid #ccc;
+      padding-top: 24px;
+    }
+    .cover-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 40px;
     }
     .cover-info-row {
-      font-size: 14px;
-      margin-bottom: 18px;
+      font-size: 13px;
       display: flex;
       align-items: baseline;
     }
     .cover-info-label {
       font-weight: 500;
       white-space: nowrap;
+      min-width: 70px;
     }
     .cover-info-value {
       flex: 1;
-      border-bottom: 1px solid #1a1a1a;
-      margin-left: 8px;
+      border-bottom: 1px solid #999;
       padding-bottom: 2px;
+      margin-left: 6px;
     }
     .cover-email {
-      margin-top: 30px;
-      font-size: 13px;
-      color: #3366cc;
+      grid-column: 1 / -1;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #555;
     }
 
     /* === 总价表 === */
@@ -248,10 +270,12 @@
 
     /* === 页码 === */
     .page-number {
-      text-align: left;
+      text-align: center;
       font-size: 11px;
       color: #888;
-      margin-top: 12px;
+      margin-top: 16px;
+      padding-top: 8px;
+      border-top: 1px solid #e0e0e0;
     }
 
     @media print {
@@ -263,34 +287,38 @@
 
   <!-- === 封面 === -->
   <div class="cover">
-    <div class="cover-header">
+    <div class="cover-logo">
+      {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="cover-logo-text">R<br>M</div>{{/if}}
+    </div>
+    <div class="cover-center">
       <div class="cover-title">工程量清单报价表</div>
-      <div class="cover-logo">
-        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="cover-logo-text">R<br>M</div>{{/if}}
-      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-subtitle">Bill of Quantities</div>
     </div>
     <div class="cover-bottom">
-      <div class="cover-info-row">
-        <span class="cover-info-label">工程名称：</span>
-        <span class="cover-info-value">{{项目名称}}</span>
+      <div class="cover-info-grid">
+        <div class="cover-info-row">
+          <span class="cover-info-label">工程名称</span>
+          <span class="cover-info-value">{{项目名称}}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">工程编号</span>
+          <span class="cover-info-value">{{工程编号}}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">编制日期</span>
+          <span class="cover-info-value">{{编制日期}}</span>
+        </div>
+        {{#if 编制人员}}
+        <div class="cover-info-row">
+          <span class="cover-info-label">编制人员</span>
+          <span class="cover-info-value">{{编制人员}}</span>
+        </div>
+        {{/if}}
+        {{#if 联系邮箱}}
+        <div class="cover-email">{{联系邮箱}}</div>
+        {{/if}}
       </div>
-      <div class="cover-info-row">
-        <span class="cover-info-label">工程编号：</span>
-        <span class="cover-info-value">{{工程编号}}</span>
-      </div>
-      <div class="cover-info-row">
-        <span class="cover-info-label">编制日期：</span>
-        <span class="cover-info-value">{{编制日期}}</span>
-      </div>
-      {{#if 编制人员}}
-      <div class="cover-info-row">
-        <span class="cover-info-label">编制人员：</span>
-        <span class="cover-info-value">{{编制人员}}</span>
-      </div>
-      {{/if}}
-      {{#if 联系邮箱}}
-      <div class="cover-email">{{联系邮箱}}</div>
-      {{/if}}
     </div>
   </div>
 
@@ -340,6 +368,7 @@
       <div>编制日期：{{编制日期}}</div>
       {{#if 编制人员}}<div>编制人员：{{编制人员}}</div>{{/if}}
     </div>
+    <div class="page-number">{{项目名称}}　{{工程编号}}　2/{{totalPages}}</div>
   </div>
 
   <!-- === 明细页 === -->
