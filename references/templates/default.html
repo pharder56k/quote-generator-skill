@@ -267,7 +267,10 @@
       border-bottom: none;
     }
     .detail-table .cat-row {
-      page-break-after: avoid;
+      page-break-before: always;
+    }
+    .detail-table .cat-row:first-child {
+      page-break-before: auto;
     }
     .detail-table .item-name {
       font-weight: 500;
