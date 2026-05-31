@@ -14,7 +14,16 @@
 
     @page {
       size: A4;
-      margin: 15mm 18mm 20mm 18mm;
+      margin: 15mm 18mm 25mm 18mm;
+      @bottom-center {
+        content: counter(page);
+        font-size: 11px;
+        color: #888;
+      }
+    }
+
+    body {
+      counter-reset: page;
     }
 
     /* === 封面 === */
@@ -288,14 +297,6 @@
     }
 
     /* === 页码 === */
-    .page-number {
-      text-align: center;
-      font-size: 11px;
-      color: #888;
-      margin-top: auto;
-      padding-top: 8px;
-      border-top: 1px solid #e0e0e0;
-    }
 
     @media print {
       body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -392,7 +393,6 @@
         {{#if 编制人员}}<div>编制人员：{{编制人员}}</div>{{/if}}
       </div>
     </div>
-    <div class="page-number">{{项目名称}}　{{工程编号}}　2</div>
   </div>
   {{/if}}
 
