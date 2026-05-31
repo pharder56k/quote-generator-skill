@@ -64,7 +64,8 @@
       margin-bottom: 16px;
     }
     .cover-divider {
-      width: 80px;
+      width: 100%;
+      max-width: 320px;
       height: 2px;
       background: #1a1a1a;
       margin-bottom: 20px;
@@ -110,6 +111,9 @@
     /* === 总价表 === */
     .summary-page {
       page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     .page-header {
       display: flex;
@@ -123,20 +127,20 @@
       letter-spacing: 3px;
     }
     .page-logo {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .page-logo img {
-      max-width: 48px;
-      max-height: 48px;
+      max-width: 56px;
+      max-height: 56px;
       object-fit: contain;
     }
     .page-logo-text {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
       border: 2px solid #1a1a1a;
       display: flex;
       align-items: center;
@@ -207,6 +211,9 @@
     /* === 明细页 === */
     .detail-page {
       page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     .detail-page:last-child {
       page-break-after: auto;
@@ -226,6 +233,7 @@
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 16px;
+      flex: 1;
     }
     .detail-table th {
       text-align: left;
@@ -293,7 +301,7 @@
     <div class="cover-center">
       <div class="cover-title">工程量清单报价表</div>
       <div class="cover-divider"></div>
-      <div class="cover-subtitle">Bill of Quantities</div>
+      <div class="cover-subtitle">Price List - RM DESIGN</div>
     </div>
     <div class="cover-bottom">
       <div class="cover-info-grid">
@@ -316,7 +324,10 @@
         </div>
         {{/if}}
         {{#if 联系邮箱}}
-        <div class="cover-email">{{联系邮箱}}</div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">联系邮箱</span>
+          <span class="cover-info-value">{{联系邮箱}}</span>
+        </div>
         {{/if}}
       </div>
     </div>
@@ -328,7 +339,7 @@
     <div class="page-header">
       <div class="page-title">工程量清单报价表</div>
       <div class="page-logo">
-        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
+        {{#if ../logo_url}}<img src="{{../logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
       </div>
     </div>
     <div class="summary-subtitle">工程量清单总价表</div>
@@ -377,7 +388,7 @@
     <div class="page-header">
       <div class="page-title">工程量清单报价表</div>
       <div class="page-logo">
-        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
+        {{#if ../logo_url}}<img src="{{../logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
       </div>
     </div>
     <div class="detail-subheader">
