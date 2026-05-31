@@ -214,14 +214,11 @@
     }
 
     /* === 明细页 === */
-    .detail-page {
-      page-break-after: always;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+    .detail-section {
+      page-break-before: always;
     }
-    .detail-page:last-child {
-      page-break-after: auto;
+    .detail-table thead {
+      display: table-header-group;
     }
     .detail-subheader {
       display: flex;
@@ -268,6 +265,9 @@
       font-size: 13px;
       padding-top: 10px;
       border-bottom: none;
+    }
+    .detail-table .cat-row {
+      page-break-after: avoid;
     }
     .detail-table .item-name {
       font-weight: 500;
@@ -389,21 +389,22 @@
         {{#if 编制人员}}<div>编制人员：{{编制人员}}</div>{{/if}}
       </div>
     </div>
-    <div class="page-number">{{项目名称}}　{{工程编号}}　2/{{totalPages}}</div>
+    <div class="page-number">{{项目名称}}　{{工程编号}}　2</div>
   </div>
+  {{/if}}
 
-  <!-- === 明细页 === -->
-  {{#each pages}}
-  <div class="detail-page">
+  <!-- === 明细页（CSS 自动分页） === -->
+  {{#if hasItems}}
+  <div class="detail-section">
     <div class="page-header">
       <div class="page-title">工程量清单报价表</div>
       <div class="page-logo">
-        {{#if ../logo_url}}<img src="{{../logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
+        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
       </div>
     </div>
     <div class="detail-subheader">
-      <span>工程名称：{{../项目名称}}</span>
-      <span>工程编号：{{../工程编号}}</span>
+      <span>工程名称：{{项目名称}}</span>
+      <span>工程编号：{{工程编号}}</span>
     </div>
     <table class="detail-table">
       <thead>
@@ -417,7 +418,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each this.rows}}
+        {{#each detailRows}}
         {{#if this.isCategory}}
         <tr class="cat-row">
           <td>{{this.序号}}</td>
@@ -444,9 +445,7 @@
         {{/each}}
       </tbody>
     </table>
-    <div class="page-number">{{../项目名称}}　{{../工程编号}}　{{this.pageNum}}/{{../totalPages}}</div>
   </div>
-  {{/each}}
   {{/if}}
 
 </body>
