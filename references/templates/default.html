@@ -229,6 +229,10 @@
     .detail-table thead {
       display: table-header-group;
     }
+    .page-header-row th {
+      border: none;
+      padding: 0;
+    }
     .detail-subheader {
       display: flex;
       justify-content: space-between;
@@ -399,18 +403,22 @@
   <!-- === 明细页（CSS 自动分页） === -->
   {{#if hasItems}}
   <div class="detail-section">
-    <div class="page-header">
-      <div class="page-title">工程量清单报价表</div>
-      <div class="page-logo">
-        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
-      </div>
-    </div>
-    <div class="detail-subheader">
-      <span>工程名称：{{项目名称}}</span>
-      <span>工程编号：{{工程编号}}</span>
-    </div>
     <table class="detail-table">
       <thead>
+        <tr class="page-header-row">
+          <th colspan="6" style="padding:0;border:none;">
+            <div class="page-header">
+              <div class="page-title">工程量清单报价表</div>
+              <div class="page-logo">
+                {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
+              </div>
+            </div>
+            <div class="detail-subheader">
+              <span>工程名称：{{项目名称}}</span>
+              <span>工程编号：{{工程编号}}</span>
+            </div>
+          </th>
+        </tr>
         <tr>
           <th style="width:50px">序号</th>
           <th>项目名称及项目特征</th>
