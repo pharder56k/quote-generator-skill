@@ -206,6 +206,11 @@
       margin-top: 40px;
       font-size: 12px;
       line-height: 2;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .summary-footer-inner {
+      width: 200px;
     }
 
     /* === 明细页 === */
@@ -373,10 +378,12 @@
       </div>
     </div>
     <div class="summary-footer">
-      <div>工程名称：{{项目名称}}</div>
-      <div>工程编号：{{工程编号}}</div>
-      <div>编制日期：{{编制日期}}</div>
-      {{#if 编制人员}}<div>编制人员：{{编制人员}}</div>{{/if}}
+      <div class="summary-footer-inner">
+        <div>工程名称：{{项目名称}}</div>
+        <div>工程编号：{{工程编号}}</div>
+        <div>编制日期：{{编制日期}}</div>
+        {{#if 编制人员}}<div>编制人员：{{编制人员}}</div>{{/if}}
+      </div>
     </div>
     <div class="page-number">{{项目名称}}　{{工程编号}}　2/{{totalPages}}</div>
   </div>
