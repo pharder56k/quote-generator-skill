@@ -45,6 +45,16 @@ function buildTemplateData(raw, vatRate = 0.03) {
     grouped[cat].push(item);
   }
 
+  // 每个分类内按序号排序（1.1, 1.2, 2.1...）
+  const sortSeq = (a, b) => {
+    const pa = (a.序号 || "").split(".").map(Number);
+    const pb = (b.序号 || "").split(".").map(Number);
+    return (pa[0] - pb[0]) || (pa[1] - pb[1]);
+  };
+  for (const cat in grouped) {
+    grouped[cat].sort(sortSeq);
+  }
+
   // 保持分类顺序（按序号前缀排序）
   const catOrder = [...new Set(items.map((i) => i.工程分类))];
   const sortedCats = catOrder.filter(Boolean);
