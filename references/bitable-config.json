@@ -1,32 +1,13 @@
 {
-  "base_token": "ZARYb5n6gawooesP8qZclTxGnuy",
-  "base_url": "https://li1fn1sw90.feishu.cn/base/ZARYb5n6gawooesP8qZclTxGnuy",
+  "template_base_token": "ZARYb5n6gawooesP8qZclTxGnuy",
+  "template_base_url": "https://li1fn1sw90.feishu.cn/base/ZARYb5n6gawooesP8qZclTxGnuy",
+  "note": "以上为模板多维表，实际使用时用户会从模板创建新多维表，table_id 和 field_id 会不同。通过 lark-cli base +table-list 和 +field-list 动态获取。",
   "tables": {
     "项目信息": {
-      "table_id": "tbl1EZVmjQdR2P8f",
-      "fields": {
-        "项目名称": "fld4nhYuAn",
-        "工程编号": "fldIbgMiMO",
-        "编制日期": "fldjW5WTeO",
-        "编制人员": "fldP5v7cqC",
-        "联系邮箱": "fldn3LR1PB",
-        "公司Logo": "fld0ve6hoi",
-        "备注": "fldjc49CPR"
-      }
+      "fields": ["项目名称", "工程编号", "编制日期", "编制人员", "联系邮箱", "公司Logo", "备注", "税率"]
     },
     "报价明细": {
-      "table_id": "tblRHcHf4zsjR4yV",
-      "fields": {
-        "序号": "fldjm1jQek",
-        "工程分类": "fldheW3kNz",
-        "项目名称": "fldLt4A87d",
-        "项目特征": "fldnMFqKAq",
-        "单位": "fldTVUaMqr",
-        "数量": "fld5qlDYqd",
-        "综合单价": "fldmcxGmox",
-        "合价": "fldarSRkX5",
-        "备注": "fldLyJoLtw"
-      }
+      "fields": ["序号", "工程分类", "项目名称", "项目特征", "单位", "数量", "综合单价", "合价", "备注"]
     }
   }
 }
