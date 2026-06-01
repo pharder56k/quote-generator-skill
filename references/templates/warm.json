@@ -1,0 +1,18 @@
+{
+  "name": "暖色",
+  "description": "深棕酒红色调，米白底，斑马纹奇偶行交替，适合高端客户",
+  "css": {
+    "--primary": "#5c2a1a",
+    "--text-sub": "#6b3a2a",
+    "--text-light": "#8b5e3c",
+    "--text-muted": "#a08070",
+    "--border-light": "#c4a882",
+    "--border-medium": "#d4c4a8",
+    "--border-table": "#e8dcc8",
+    "--border-detail": "#f0e8d8",
+    "--cat-row-bg": "#f5ede0",
+    "--remark-color": "#b91c1c",
+    "--table-style": "zebra",
+    "--page-bg": "#faf8f5"
+  }
+}

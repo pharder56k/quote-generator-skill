@@ -4,12 +4,27 @@
   <meta charset="UTF-8">
   <title>工程量清单报价表 — {{项目名称}}</title>
   <style>
+    :root {
+      --primary: #1a1a1a;
+      --text-sub: #444;
+      --text-light: #555;
+      --text-muted: #888;
+      --border-light: #999;
+      --border-medium: #ccc;
+      --border-table: #e0e0e0;
+      --border-detail: #e8e8e8;
+      --cat-row-bg: #ebebeb;
+      --remark-color: #cc0000;
+      --table-style: border;
+      --page-bg: #ffffff;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
       font-size: 12px;
-      color: #1a1a1a;
+      color: var(--primary);
       line-height: 1.5;
+      background: var(--page-bg);
     }
 
     @page {
@@ -18,7 +33,7 @@
       @bottom-center {
         content: counter(page);
         font-size: 11px;
-        color: #888;
+        color: var(--text-muted);
       }
     }
     @page :first {
@@ -38,7 +53,7 @@
       flex-direction: column;
       min-height: 100vh;
       padding: 60px 40px 60px 40px;
-      border: 1.5px solid #1a1a1a;
+      border: 1.5px solid var(--primary);
       position: relative;
     }
     .cover-logo {
@@ -54,7 +69,7 @@
     .cover-logo-text {
       width: 60px;
       height: 60px;
-      border: 2px solid #1a1a1a;
+      border: 2px solid var(--primary);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -81,17 +96,17 @@
       width: 100%;
       max-width: 320px;
       height: 2px;
-      background: #1a1a1a;
+      background: var(--primary);
       margin-bottom: 20px;
     }
     .cover-subtitle {
       font-size: 16px;
       font-weight: 400;
       letter-spacing: 2px;
-      color: #444;
+      color: var(--text-sub);
     }
     .cover-bottom {
-      border-top: 1px solid #ccc;
+      border-top: 1px solid var(--border-medium);
       padding-top: 24px;
     }
     .cover-info-grid {
@@ -111,7 +126,7 @@
     }
     .cover-info-value {
       flex: 1;
-      border-bottom: 1px solid #999;
+      border-bottom: 1px solid var(--border-light);
       padding-bottom: 2px;
       margin-left: 6px;
     }
@@ -119,7 +134,7 @@
       grid-column: 1 / -1;
       margin-top: 8px;
       font-size: 12px;
-      color: #555;
+      color: var(--text-light);
     }
 
     /* === 总价表 === */
@@ -155,7 +170,7 @@
     .page-logo-text {
       width: 56px;
       height: 56px;
-      border: 2px solid #1a1a1a;
+      border: 2px solid var(--primary);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -180,14 +195,14 @@
       text-align: left;
       padding: 6px 0;
       font-weight: 500;
-      border-bottom: 1px solid #1a1a1a;
+      border-bottom: 1px solid var(--primary);
     }
     .summary-table th:last-child {
       text-align: right;
     }
     .summary-table td {
       padding: 5px 0;
-      border-bottom: 1px solid #e0e0e0;
+      border-bottom: 1px solid var(--border-table);
     }
     .summary-table td:last-child {
       text-align: right;
@@ -259,14 +274,14 @@
       padding: 5px 6px;
       font-weight: 700;
       font-size: 13px;
-      border-bottom: 1px solid #1a1a1a;
+      border-bottom: 1px solid var(--primary);
     }
     .detail-table th.num {
       text-align: right;
     }
     .detail-table td {
       padding: 4px 6px;
-      border-bottom: 1px solid #e8e8e8;
+      border-bottom: 1px solid var(--border-detail);
       vertical-align: top;
     }
     .detail-table td:first-child {
@@ -283,7 +298,7 @@
       font-size: 13px;
       padding-top: 10px;
       border-bottom: none;
-      background-color: #ebebeb;
+      background-color: var(--cat-row-bg);
     }
     .detail-table .cat-row {
       page-break-before: always;
@@ -296,20 +311,33 @@
     }
     .detail-table .item-spec {
       font-size: 11px;
-      color: #555;
+      color: var(--text-light);
       margin-top: 1px;
     }
     .detail-table .item-remark {
       font-size: 11px;
       font-weight: 700;
-      color: #cc0000;
+      color: var(--remark-color);
       margin-top: 2px;
     }
     .detail-table .subtotal-row td {
       font-weight: 600;
-      border-top: 1px solid #1a1a1a;
+      border-top: 1px solid var(--primary);
       border-bottom: none;
       padding-top: 6px;
+    }
+
+    /* === 表格样式变体 === */
+    /* 斑马纹：奇偶行交替背景 */
+    [data-table-style="zebra"] .detail-table tbody tr:not(.cat-row):not(.subtotal-row):nth-child(even) {
+      background-color: #f8f6f2;
+    }
+    /* 无边框：移除数据行边框 */
+    [data-table-style="borderless"] .detail-table td {
+      border-bottom: none;
+    }
+    [data-table-style="borderless"] .detail-table th {
+      border-bottom: 1.5px solid var(--primary);
     }
 
     /* === 页码 === */
@@ -319,7 +347,7 @@
     }
   </style>
 </head>
-<body>
+<body data-table-style="{{tableStyle}}">
 
   <!-- === 封面 === -->
   <div class="cover">

@@ -165,15 +165,37 @@ async function main() {
   const vatRate = params["vat-rate"] ? parseFloat(params["vat-rate"]) : 0.03;
   const data = buildTemplateData(raw, vatRate);
 
+  // 加载模板样式配置
   const templateName = params.template || "default";
-  const templatePath = resolve(TEMPLATES_DIR, `${templateName}.html`);
+  const configPath = resolve(TEMPLATES_DIR, `${templateName}.json`);
+  let cssVars = "";
+  let tableStyle = "border";
+  if (existsSync(configPath)) {
+    const config = JSON.parse(readFileSync(configPath, "utf-8"));
+    tableStyle = config.css["--table-style"] || "border";
+    cssVars = Object.entries(config.css)
+      .map(([key, val]) => `${key}: ${val};`)
+      .join("\n      ");
+    console.log(`使用模板: ${config.name}`);
+  } else {
+    console.log("使用默认模板");
+  }
+
+  const templatePath = resolve(TEMPLATES_DIR, "default.html");
   if (!existsSync(templatePath)) {
     console.error(`模板文件不存在: ${templatePath}`);
     process.exit(1);
   }
   const templateSrc = readFileSync(templatePath, "utf-8");
   const template = Handlebars.compile(templateSrc);
-  const html = template(data);
+
+  // 注入 CSS 变量到 :root
+  const htmlWithVars = templateSrc.replace(
+    /:root\s*\{[^}]+\}/,
+    `:root {\n      ${cssVars}\n    }`
+  );
+  const compiledTemplate = Handlebars.compile(htmlWithVars);
+  const html = compiledTemplate({ ...data, tableStyle });
 
   console.log("渲染 PDF...");
   const browser = await chromium.launch();
