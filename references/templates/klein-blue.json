@@ -1,0 +1,19 @@
+{
+  "name": "克莱因蓝",
+  "description": "黑白灰基底+克莱因蓝强调色，现代瑞士风格，无边框",
+  "css": {
+    "--primary": "#0a0a0a",
+    "--text-sub": "#333333",
+    "--text-light": "#555555",
+    "--text-muted": "#737373",
+    "--border-light": "#d4d4d2",
+    "--border-medium": "#e0e0de",
+    "--border-table": "transparent",
+    "--border-detail": "transparent",
+    "--cat-row-bg": "#002FA7",
+    "--cat-row-text": "#ffffff",
+    "--remark-color": "#b91c1c",
+    "--table-style": "borderless",
+    "--page-bg": "#fafaf8"
+  }
+}
