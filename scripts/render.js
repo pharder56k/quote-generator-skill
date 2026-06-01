@@ -170,9 +170,13 @@ async function main() {
   const configPath = resolve(TEMPLATES_DIR, `${templateName}.json`);
   let cssVars = "";
   let tableStyle = "border";
+  let pageCSS = "";
+  let pdfMargin = { top: "15mm", bottom: "20mm", left: "18mm", right: "18mm" };
   if (existsSync(configPath)) {
     const config = JSON.parse(readFileSync(configPath, "utf-8"));
     tableStyle = config.css["--table-style"] || "border";
+    pageCSS = config.pageCSS || "";
+    if (config.pdfMargin) pdfMargin = config.pdfMargin;
     cssVars = Object.entries(config.css)
       .map(([key, val]) => `${key}: ${val};`)
       .join("\n      ");
@@ -189,11 +193,14 @@ async function main() {
   const templateSrc = readFileSync(templatePath, "utf-8");
   const template = Handlebars.compile(templateSrc);
 
-  // 注入 CSS 变量到 :root
-  const htmlWithVars = templateSrc.replace(
+  // 注入 CSS 变量到 :root，以及页面级 CSS 覆盖
+  let htmlWithVars = templateSrc.replace(
     /:root\s*\{[^}]+\}/,
     `:root {\n      ${cssVars}\n    }`
   );
+  if (pageCSS) {
+    htmlWithVars = htmlWithVars.replace("</style>", `${pageCSS}\n  </style>`);
+  }
   const compiledTemplate = Handlebars.compile(htmlWithVars);
   const html = compiledTemplate({ ...data, tableStyle });
 
@@ -209,7 +216,7 @@ async function main() {
   await page.pdf({
     path: resolve(process.cwd(), outputFile),
     format: "A4",
-    margin: { top: "15mm", bottom: "20mm", left: "18mm", right: "18mm" },
+    margin: pdfMargin,
     printBackground: true,
   });
 

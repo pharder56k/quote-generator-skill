@@ -1,6 +1,7 @@
 {
   "name": "暖色",
   "description": "深棕酒红色调，米白底，斑马纹奇偶行交替，适合高端客户",
+  "pdfMargin": { "top": "5mm", "bottom": "10mm", "left": "5mm", "right": "5mm" },
   "css": {
     "--primary": "#5c2a1a",
     "--text-sub": "#6b3a2a",
@@ -14,5 +15,6 @@
     "--remark-color": "#b91c1c",
     "--table-style": "zebra",
     "--page-bg": "#faf8f5"
-  }
+  },
+  "pageCSS": ".cover { padding: 60px 40px 60px 40px; } .summary-page, .detail-section { padding: 10px 15px; }"
 }

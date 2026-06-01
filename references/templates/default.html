@@ -329,15 +329,23 @@
 
     /* === 表格样式变体 === */
     /* 斑马纹：奇偶行交替背景 */
-    [data-table-style="zebra"] .detail-table tbody tr:not(.cat-row):not(.subtotal-row):nth-child(even) {
-      background-color: #f8f6f2;
+    body[data-table-style="zebra"] .detail-table td {
+      background-color: transparent;
+    }
+    body[data-table-style="zebra"] .detail-table tbody tr:not(.cat-row):not(.subtotal-row):nth-child(odd) td {
+      background-color: #f5efe6;
     }
     /* 无边框：移除数据行边框 */
-    [data-table-style="borderless"] .detail-table td {
+    body[data-table-style="borderless"] .detail-table td {
       border-bottom: none;
     }
-    [data-table-style="borderless"] .detail-table th {
+    body[data-table-style="borderless"] .detail-table th {
       border-bottom: 1.5px solid var(--primary);
+    }
+
+    /* === 全页背景 === */
+    html {
+      background: var(--page-bg);
     }
 
     /* === 页码 === */
