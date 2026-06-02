@@ -75,12 +75,21 @@ function buildTemplateData(raw, vatRate = 0.03) {
   const detailRows = [];
   let totalPages = 2; // 封面=1, 总价表=2
 
+  const catEnNames = {
+    "措施项目": "Measures", "拆除工程": "Demolition", "砌筑工程": "Masonry",
+    "混凝土及钢筋混凝土工程": "Concrete", "金属结构工程": "Steel Structure",
+    "防水工程": "Waterproofing", "保温隔热工程": "Insulation",
+    "楼地面装饰工程": "Floor Finishing", "墙柱面装饰与隔断工程": "Wall Finishing",
+    "天棚工程": "Ceiling", "油漆涂料工程": "Painting", "其他装饰工程": "Other Finishing",
+    "安装工程": "MEP Installation",
+  };
+
   for (const cat of sortedCats) {
     const catItems = grouped[cat];
     const catNum = (catItems[0]?.序号?.split(".")[0] || "").padStart(2, "0");
     const catTotal = catItems.reduce((sum, i) => sum + (i.合价 || 0), 0);
 
-    detailRows.push({ isCategory: true, 序号: catNum, 项目名称: cat });
+    detailRows.push({ isCategory: true, 序号: catNum, 项目名称: cat, 英文名称: catEnNames[cat] || "" });
     for (const item of catItems) {
       detailRows.push({
         isCategory: false, isSubtotal: false,
@@ -172,11 +181,14 @@ async function main() {
   let tableStyle = "border";
   let pageCSS = "";
   let pdfMargin = { top: "15mm", bottom: "20mm", left: "18mm", right: "18mm" };
+  let isScreen = false;
+  let pageMode = "print";
   if (existsSync(configPath)) {
     const config = JSON.parse(readFileSync(configPath, "utf-8"));
     tableStyle = config.css["--table-style"] || "border";
     pageCSS = config.pageCSS || "";
     if (config.pdfMargin) pdfMargin = config.pdfMargin;
+    if (config.screen) { isScreen = true; pageMode = "screen"; }
     cssVars = Object.entries(config.css)
       .map(([key, val]) => `${key}: ${val};`)
       .join("\n      ");
@@ -202,7 +214,7 @@ async function main() {
     htmlWithVars = htmlWithVars.replace("</style>", `${pageCSS}\n  </style>`);
   }
   const compiledTemplate = Handlebars.compile(htmlWithVars);
-  const html = compiledTemplate({ ...data, tableStyle });
+  const html = compiledTemplate({ ...data, tableStyle, isScreen, pageMode });
 
   console.log("渲染 PDF...");
   const browser = await chromium.launch();

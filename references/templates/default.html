@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>工程量清单报价表 — {{项目名称}}</title>
+  {{#if isScreen}}<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">{{/if}}
   <style>
     :root {
       --primary: #1a1a1a;
@@ -355,11 +356,275 @@
     @media print {
       body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
+
+    /* === Swiss IKB 屏幕阅读版 === */
+    body[data-page-mode="screen"] {
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    body[data-page-mode="screen"] .cover {
+      width: 100vw;
+      background: #002FA7;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      page-break-after: always;
+    }
+    body[data-page-mode="screen"] .cover-title {
+      font-size: 38px;
+      font-weight: 200;
+      letter-spacing: -0.025em;
+      line-height: 0.94;
+      color: inherit;
+    }
+    body[data-page-mode="screen"] .cover-logo-box {
+      width: 64px;
+      height: 64px;
+      border: 2px solid rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    body[data-page-mode="screen"] .cover-logo-box svg { width: 32px; height: 32px; }
+    body[data-page-mode="screen"] .cover-subtitle {
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: -0.005em;
+    }
+    body[data-page-mode="screen"] .cover-top {
+      position: absolute;
+      top: 40px;
+      left: 60px;
+      right: 60px;
+      display: flex;
+      justify-content: flex-start;
+    }
+    body[data-page-mode="screen"] .cover-brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.65;
+    }
+    body[data-page-mode="screen"] .cover-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 60px 60px;
+    }
+    body[data-page-mode="screen"] .cover-bottom {
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding: 24px 60px 40px;
+      color: #fff;
+    }
+    body[data-page-mode="screen"] .cover-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 50px;
+    }
+    body[data-page-mode="screen"] .cover-info-row {
+      font-size: 13px;
+      display: flex;
+      align-items: baseline;
+    }
+    body[data-page-mode="screen"] .cover-info-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      min-width: 72px;
+    }
+    body[data-page-mode="screen"] .cover-info-value {
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      padding-bottom: 2px;
+      margin-left: 8px;
+      flex: 1;
+    }
+
+    /* Swiss 内页 */
+    body[data-page-mode="screen"] .summary-page,
+    body[data-page-mode="screen"] .detail-section {
+      padding: 50px 60px 70px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #fafaf8;
+    }
+    body[data-page-mode="screen"] .page-title {
+      font-size: 26px;
+      font-weight: 200;
+      letter-spacing: -0.02em;
+      color: #002FA7;
+    }
+    body[data-page-mode="screen"] .page-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #737373;
+    }
+    body[data-page-mode="screen"] .detail-subheader {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #737373;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    /* Swiss 表格 */
+    body[data-page-mode="screen"] .detail-table td {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    body[data-page-mode="screen"] .detail-table th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #737373;
+      border-bottom: 2px solid #002FA7;
+      white-space: nowrap;
+      padding: 12px 0;
+    }
+    body[data-page-mode="screen"] .detail-table .item-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+    }
+    body[data-page-mode="screen"] .detail-table .item-spec {
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 11px;
+      color: #737373;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* Swiss 分类标题行 */
+    body[data-page-mode="screen"] .cat-row td {
+      font-weight: 600;
+      font-size: 13px;
+      color: #002FA7;
+      background: #E8EEF8;
+      padding: 8px 0;
+      border-bottom: none;
+      vertical-align: middle;
+    }
+    body[data-page-mode="screen"] .cat-row td[colspan="6"] {
+      padding-left: 0;
+    }
+    body[data-page-mode="screen"] .cat-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    body[data-page-mode="screen"] .cat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 44px;
+      font-weight: 500;
+      color: #002FA7;
+      line-height: 0.85;
+    }
+    body[data-page-mode="screen"] .cat-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    body[data-page-mode="screen"] .cat-en {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #737373;
+    }
+    body[data-page-mode="screen"] .cat-zh {
+      font-size: 15px;
+      font-weight: 600;
+      color: #002FA7;
+      letter-spacing: -0.005em;
+    }
+
+    /* Swiss 小计行 */
+    body[data-page-mode="screen"] .subtotal-row td {
+      font-weight: 600;
+      border-top: 2px solid #002FA7;
+      border-bottom: none;
+      padding-top: 12px;
+      color: #002FA7;
+    }
+
+    /* Swiss 页码 */
+    body[data-page-mode="screen"] .page-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #737373;
+      text-align: center;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid rgba(127,127,127,0.2);
+    }
   </style>
 </head>
-<body data-table-style="{{tableStyle}}">
+<body data-table-style="{{tableStyle}}" data-page-mode="{{pageMode}}">
 
   <!-- === 封面 === -->
+  {{#if isScreen}}
+  <div class="cover">
+    <div class="cover-top">
+      <div class="cover-brand">RM DESIGN</div>
+    </div>
+    <div class="cover-main">
+      <div class="cover-logo-box">
+        <svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><g fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5c0-0.83 0.67-1.5 1.5-1.5h8c0.83 0 1.5 0.67 1.5 1.5s-0.67 1.5-1.5 1.5h-8c-0.83 0-1.5-0.67-1.5-1.5z"/><path d="M9.5 12c0-0.83 0.67-1.5 1.5-1.5h8c0.83 0 1.5 0.67 1.5 1.5s-0.67 1.5-1.5 1.5h-8c-0.83 0-1.5-0.67-1.5-1.5z"/><path d="M9.5 19c0-0.83 0.67-1.5 1.5-1.5h8c0.83 0 1.5 0.67 1.5 1.5s-0.67 1.5-1.5 1.5h-8c-0.83 0-1.5-0.67-1.5-1.5z"/><circle cx="3.5" cy="5" r="1.5"/><circle cx="3.5" cy="12" r="1.5"/><circle cx="3.5" cy="19" r="1.5"/></g></svg>
+      </div>
+      <div class="cover-title">工程量清单报价表</div>
+      <div class="cover-subtitle">Price List — RM Design</div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-info-grid">
+        <div class="cover-info-row">
+          <span class="cover-info-label">工程名称</span>
+          <span class="cover-info-value">{{项目名称}}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">工程编号</span>
+          <span class="cover-info-value">{{工程编号}}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">编制日期</span>
+          <span class="cover-info-value">{{编制日期}}</span>
+        </div>
+        {{#if 编制人员}}
+        <div class="cover-info-row">
+          <span class="cover-info-label">编制人员</span>
+          <span class="cover-info-value">{{编制人员}}</span>
+        </div>
+        {{/if}}
+        {{#if 联系邮箱}}
+        <div class="cover-info-row">
+          <span class="cover-info-label">联系邮箱</span>
+          <span class="cover-info-value">{{联系邮箱}}</span>
+        </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  {{else}}
   <div class="cover">
     <div class="cover-logo">
       {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="cover-logo-text">R<br>M</div>{{/if}}
@@ -398,6 +663,7 @@
       </div>
     </div>
   </div>
+  {{/if}}
 
   {{#if hasItems}}
   <!-- === 总价表 === -->
@@ -482,8 +748,20 @@
         {{#each detailRows}}
         {{#if this.isCategory}}
         <tr class="cat-row">
+          {{#if ../isScreen}}
+          <td colspan="6" style="padding-left:0;">
+            <div class="cat-label">
+              <span class="cat-num">{{this.序号}}</span>
+              <div class="cat-text">
+                <span class="cat-en">{{this.英文名称}}</span>
+                <span class="cat-zh">{{this.项目名称}}</span>
+              </div>
+            </div>
+          </td>
+          {{else}}
           <td>{{this.序号}}</td>
           <td colspan="5">{{this.项目名称}}</td>
+          {{/if}}
         </tr>
         {{else if this.isSubtotal}}
         <tr class="subtotal-row">
