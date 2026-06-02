@@ -37,10 +37,55 @@ metadata:
 - `xlsx` skill — 解析 Excel 文件（当用户提供 Excel 时）
 - Node.js 运行环境 + Playwright（已安装于项目目录）
 
+### Step 0: 初次使用检查
+
+> 当用户第一次使用 Skill，或执行命令时遇到依赖相关错误，Agent 应执行以下检查流程。
+
+**1. 检查 Node.js 环境**
+
+尝试执行 `node --version`，要求 >= 18。如果失败或版本过低：
+- 提示用户安装 Node.js (>= 18): https://nodejs.org
+- 建议使用 nvm 管理版本
+
+**2. 检查 Playwright 浏览器**
+
+检查项目目录下 `npx playwright install chromium` 是否已完成。如果 `render.js` 执行时报 `Executable doesn't exist` 错误：
+- 在项目目录下执行: `npx playwright install chromium`
+- 重试渲染
+
+**3. 检查 lark-cli**
+
+尝试执行 `lark-cli --version`。如果失败（command not found）：
+- 提示用户安装 lark-cli（飞书命令行工具）
+- 安装后执行: `lark-cli auth login`
+
+**4. 检查飞书登录状态**
+
+尝试执行 `lark-cli base +table-list --base-token ZARYb5n6gawooesP8qZclTxGnuy` 测试登录状态。如果返回认证错误：
+- 提示用户执行: `lark-cli auth login`
+- 完成后重试
+
+**5. 提供飞书模板**
+
+用户需要复制报价模板到自己的飞书空间：
+- 模板链接: https://li1fn1sw90.feishu.cn/base/ZARYb5n6gawooesP8qZclTxGnuy?from=from_copylink
+- 引导用户点击链接 → 点击"复制此多维表" → 在自己的空间中填入项目数据和报价明细
+- 完成后将新多维表链接发给 Agent
+
+### Excel 数据源处理
+
+用户提供 Excel 文件时，不直接解析渲染。引导流程：
+
+1. 提示："推荐使用飞书多维表以获得完整的自动填充和价格库功能"
+2. 引导用户将 Excel 导入飞书：
+   - 打开飞书 → 新建多维表 → 导入 → 选择 Excel 文件
+   - 或者直接复制模板多维表，将 Excel 数据粘贴进去
+3. 用户提供多维表链接后，继续 `/报价` 流程
+
 ## 2. 工作流程
 
 ```
-用户触发 → 确认数据源 → 读取数据 → 确认 Logo → 确认税率 → 确认模板 → 渲染 PDF → 询问入库
+用户触发 → 环境检查 → 确认数据源 → 读取数据 → 确认 Logo → 确认税率 → 确认模板 → 渲染 PDF → 询问入库
 ```
 
 ### Step 1: 确认数据源
@@ -307,3 +352,16 @@ PDF 生成后，**必须询问用户**是否入库：
 - Logo 支持图片（推荐）和文字两种形式
 - 增值税税率每次由用户指定，不固定
 - 输出 PDF 为 A4 尺寸，适合打印
+
+## 7. 常见问题处理
+
+| 错误现象 | 原因 | Agent 处理方式 |
+|----------|------|---------------|
+| `command not found: lark-cli` | lark-cli 未安装 | 提示安装 lark-cli，参考 Step 0.3 |
+| `lark-cli` 返回认证错误 | 未登录或 token 过期 | 提示执行 `lark-cli auth login` |
+| `Executable doesn't exist` | Playwright Chromium 未安装 | 执行 `npx playwright install chromium` |
+| 渲染 PDF 为空或格式混乱 | 数据 JSON 格式不正确 | 检查 `项目名称`、`工程编号` 非空，`items` 至少 1 条 |
+| 字号/字体异常 | Google Fonts 加载失败 | 检查网络，确保能访问 fonts.googleapis.com |
+| `/填充` 匹配结果为空 | 价格库无数据 | 引导用户先积累价格库（完成一次 /报价 后入库） |
+| Logo 下载失败 | 多维表附件 API 权限问题 | 确认用户已授权，或选择"不使用 Logo" |
+| `base-token` 无法从 URL 提取 | 用户提供的不是多维表链接 | 提示用户提供飞书多维表链接（URL 中应包含 `/base/`） |
