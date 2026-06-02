@@ -4,40 +4,67 @@
 
 ## 功能特性
 
-- **多数据源**：飞书多维表（链接直接读取）/ Excel 文件
+- **飞书多维表驱动**：复制模板 → 填入数据 → 对 AI 说 `/报价` → 出 PDF
 - **4 种模板风格**：Swiss IKB / Swiss IKB Zebra / B&W / B&W Zebra
-- **智能填充**：输入分类+名称+数量，AI 自动补全项目特征、单价、备注
-- **价格库**：报价自动积累，下次复用，越用越聪明
-- **专业 PDF 输出**：封面 + 总价表 + 分类明细页
-- **自动分页**：CSS paged media，每页自动重复标题栏和表头
-- **Logo 支持**：从多维表附件读取或本地图片
+- **智能价格库**：`/填充` 自动匹配历史价格，越用越聪明
+- **专业 PDF 输出**：封面 + 总价表 + 分类明细页，自动分页
+- **Logo 支持**：自动从飞书多维表附件读取
+
+## 安装
+
+```bash
+git clone <repo-url> quote-generator-skill
+cd quote-generator-skill
+bash setup.sh
+```
+
+`setup.sh` 自动完成：
+- Node.js 版本检查（>= 18）
+- `npm install` 依赖安装
+- Playwright Chromium 浏览器安装
+- lark-cli 安装检测与登录引导
+- SKILL.md 路径自动配置
 
 ## 快速开始
 
+**三步上手：**
+
+1. **复制飞书模板** — 打开 [报价模板多维表](https://li1fn1sw90.feishu.cn/base/ZARYb5n6gawooesP8qZclTxGnuy?from=from_copylink)，点击"复制此多维表"到你的飞书空间
+2. **填入数据** — 在「项目信息」表填工程概况，在「报价明细」表填清单条目
+3. **对 AI 说** — `/报价 <你的多维表链接>`
+
+**离线体验（无需飞书）：**
+
 ```bash
-# 安装依赖
-npm install
-
-# 安装 Playwright 浏览器
-npx playwright install chromium
-
-# 测试渲染（默认模板）
-npm test
-
-# 指定模板渲染
-node scripts/render.js --input data.json --template business-blue --vat-rate 0.08
-
-# 测试填充（预览模式，不回写）
-node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-id <id> --dry-run
+npm run demo         # 用内置示例数据渲染全部 4 个模板
+npm test             # 渲染单个模板（默认 Swiss IKB）
 ```
 
 ## 命令列表
 
 | 命令 | 功能 |
 |------|------|
-| `/报价 [链接]` | 读取数据 → 渲染 PDF → 可选入库 |
-| `/填充 [链接]` | 查询价格库 → 自动填充项目特征/单价/备注 |
-| "导入历史报价" + 文件 | 批量导入历史数据到价格库 |
+| `/报价 [飞书多维表链接]` | 读取数据 → 下载 Logo → 确认模板 → 渲染 PDF |
+| `/填充 [飞书多维表链接]` | 查询价格库 → 自动匹配填充项目特征/单价/备注 |
+| `导入历史报价` + 文件 | 批量导入历史数据到价格库 |
+
+## 使用示例
+
+```
+用户：/报价 https://xxx.feishu.cn/base/ABC123
+
+AI：读取多维表数据... 共 104 条，13 个分类
+    使用模板：Swiss IKB
+    税率：3%
+    渲染 PDF...
+    PDF 已生成：测试报价模板_TEST002_swiss-ikb.pdf
+
+    是否将本次 104 条数据入库价格库？
+
+用户：是
+
+AI：入库完成，104 条已写入价格库
+```
 
 ## 模板风格
 
@@ -55,158 +82,6 @@ node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-i
 |:---:|:---:|:---:|:---:|
 | <img src="docs/previews/swiss-ikb-content-03.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-content-03.png" width="180"> | <img src="docs/previews/bw-content-03.png" width="180"> | <img src="docs/previews/bw-zebra-content-03.png" width="180"> |
 | 纯色明细行 | 白/浅蓝交替明细行 | 纯色明细行 | 白/浅灰交替明细行 |
-
-## 命令行参数
-
-```
---input <json>      数据文件路径
---template <name>   模板名称（默认 default）
---vat-rate <rate>   增值税税率（默认 0.03）
---output <path>     输出路径（默认 output/<项目名称>_<工程编号>.pdf）
---test              使用内置测试数据
-```
-
-## 使用案例
-
-### 案例 1：首次报价（无历史数据）
-
-```
-用户：/报价 https://li1fn1sw90.feishu.cn/base/XXX
-
-AI：读取多维表数据... 共 104 条，13 个分类
-    检查 Logo ✓（入目-07.png）
-    税率：8%（从多维表读取）
-    渲染 PDF...
-    PDF 已生成：工程量报价模版项目_RMD20260531.pdf
-
-    是否将本次 104 条数据入库价格库？
-
-用户：是
-
-AI：入库完成 ✓ 104 条已写入价格库
-```
-
-### 案例 2：新报价使用价格库自动填充
-
-```
-用户：在多维表中填好 3 条数据
-    - 措施项目 | 脚手架 | 数量:1
-    - 措施项目 | 文明施工 | 数量:1
-    - 砌筑工程 | 实心砖墙(60mm) | 数量:27.4
-
-用户：/填充 https://li1fn1sw90.feishu.cn/base/XXX
-
-AI：读取 3 条数据，查询价格库...
-    ✓ 脚手架 → 精确匹配，已填充（项目特征+单价¥3,200）
-    ✓ 文明施工 → 精确匹配，已填充（项目特征+单价¥500）
-    ✓ 实心砖墙(60mm) → 精确匹配，已填充（项目特征+单价¥130/㎡）
-
-    已自动填充 3/3 条，数据已回写到多维表。
-```
-
-### 案例 3：指定模板生成报价
-
-```
-用户：/报价 https://li1fn1sw90.feishu.cn/base/XXX 用暖色模板
-
-AI：读取数据... 104 条
-    使用模板：暖色（棕色+米白底+斑马纹）
-    渲染 PDF...
-    PDF 已生成
-
-    是否入库？
-
-用户：否
-
-AI：好的，跳过入库。
-```
-
-### 案例 4：导入历史报价到价格库
-
-```
-用户：导入历史报价 [附带 Excel 文件]
-
-AI：解析 Excel... 提取 45 条
-    标准化处理中...
-    智能去重：与价格库比对
-    - 新增：38 条
-    - 合并更新：5 条（价格变化）
-    - 完全重复：2 条（跳过）
-
-    价格变化的条目：
-    - 脚手架：¥3,200 → ¥3,500（建议更新）
-    - 二次搬运：¥15 → ¥12（新价更低）
-
-    确认导入？
-
-用户：确认
-
-AI：导入完成 ✓ 38 条新增，5 条更新
-```
-
-## 数据格式
-
-```json
-{
-  "项目名称": "项目名称",
-  "工程编号": "RMD20260531",
-  "编制日期": "2026年5月31日",
-  "编制人员": "RM DESIGN",
-  "联系邮箱": "email@example.com",
-  "logo_url": "data:image/png;base64,...",
-  "items": [
-    {
-      "序号": "1.1",
-      "工程分类": "措施项目",
-      "项目名称": "脚手架",
-      "项目特征": "室内脚手架",
-      "备注": "",
-      "单位": "项",
-      "数量": 1,
-      "综合单价": 3200,
-      "合价": 3200
-    }
-  ]
-}
-```
-
-## 价格库
-
-价格库存储在飞书多维表中，字段包括：
-
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| 工程分类 | 单选 | 13 类标准分类 |
-| 项目名称 | 文本 | 用于匹配 |
-| 项目特征 | 文本 | 默认特征描述 |
-| 单位 | 单选 | ㎡/项/m/套 等 |
-| 综合单价 | 货币 | 历史价格 |
-| 备注 | 文本 | 默认备注 |
-| 最后使用日期 | 日期 | 最近引用时间 |
-| 使用次数 | 数字 | 累计引用次数 |
-| 来源 | 单选 | 历史导入/手动添加/报价自动入库 |
-
-### 自动填充流程
-
-```
-用户填：分类 + 名称 + 数量
-    ↓ /填充
-AI 查询价格库
-    ↓
-精确匹配 → 自动填充
-模糊匹配 → 列出候选让用户选择
-无匹配 → 跳过，需手动填写
-    ↓
-回写多维表（项目特征 + 综合单价 + 备注 + 合价）
-```
-
-### 入库流程
-
-```
-/报价 → 渲染 PDF → 询问用户"是否入库？"
-    ↓ 用户确认
-批量写入价格库（数据来自读取阶段，不从 PDF 解析）
-```
 
 ## 项目结构
 
@@ -233,43 +108,6 @@ quote-generator-skill/
 ├── output/                    # PDF 输出目录
 ├── package.json
 └── README.md
-```
-
-## 技术栈
-
-- **Node.js (ESM)** + **Handlebars** 模板引擎
-- **Playwright** + Chromium 无头浏览器渲染 PDF
-- **pdf-lib** 封面/内容分离渲染后合并
-- CSS paged media（自动分页、页眉重复、页码）
-
-## 飞书集成
-
-### 多维表读取
-
-```bash
-# 列出表
-lark-cli base +table-list --base-token <token>
-
-# 读取数据
-lark-cli base +record-list --base-token <token> --table-id <table_id> --format json --limit 200
-```
-
-### Logo 下载（多维表附件）
-
-```bash
-# drive +download 不支持多维表附件，需用 media API
-lark-cli api GET /open-apis/drive/v1/medias/{file_token}/download --output ./logo.png
-```
-
-### 价格库批量写入
-
-```bash
-lark-cli base +record-batch-create --base-token <token> --table-id <table_id> --json '{
-  "fields": ["工程分类", "项目名称", "项目特征", "单位", "综合单价", "使用次数", "来源"],
-  "rows": [
-    [["措施项目"], "脚手架", "室内脚手架", ["项"], 3200, 1, ["报价自动入库"]]
-  ]
-}'
 ```
 
 ## 工程分类
