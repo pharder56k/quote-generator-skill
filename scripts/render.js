@@ -211,7 +211,13 @@ async function main() {
     `:root {\n      ${cssVars}\n    }`
   );
   if (pageCSS) {
-    htmlWithVars = htmlWithVars.replace("</style>", `${pageCSS}\n  </style>`);
+    // 替换整个 @page 块（包括嵌套的 @bottom-center）
+    htmlWithVars = htmlWithVars.replace(
+      /@page[^;{}]*\{[^}]*(?:\{[^}]*\}[^}]*)*\}/s,
+      pageCSS
+    );
+    // 移除 @page :first 块（已经包含在 pageCSS 中或不需要）
+    htmlWithVars = htmlWithVars.replace(/@page\s+:first[^;{}]*\{[^}]*(?:\{[^}]*\}[^}]*)*\}/s, '');
   }
   const compiledTemplate = Handlebars.compile(htmlWithVars);
   const html = compiledTemplate({ ...data, tableStyle, isScreen, pageMode });
