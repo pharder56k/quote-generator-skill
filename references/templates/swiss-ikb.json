@@ -8,7 +8,7 @@
     "--text-primary": "#0a0a0a",
     "--text-secondary": "#525252",
     "--text-muted": "#737373",
-    "--bg-page": "#fafaf8",
+    "--bg-page": "#ffffff",
     "--bg-accent-light": "#E8EEF8",
     "--border-light": "#e0e0e0",
     "--border-accent": "#002FA7",
