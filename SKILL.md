@@ -139,12 +139,6 @@ metadata:
 - `bw` — B&W 黑白打印版
 - `bw-zebra` — B&W Zebra 黑白打印斑马纹版
 
-> 以下模板已搁置，代码保留在 `references/templates/` 中，后续需要时可重新启用：
-> - `default` — 默认（黑白灰 + 带边框线）
-> - `business-blue` — 商务蓝（深蓝主色 + 带边框线）
-> - `warm` — 暖色（棕色+米白底 + 斑马纹）
-> - `klein-blue` — 克莱因蓝（黑白+亮蓝强调 + 无边框）
-
 ### Step 6: 渲染 PDF
 
 在项目目录下执行：
@@ -201,13 +195,11 @@ node scripts/render.js --input <data.json> --template <模板名> --vat-rate <�
 │   ├── templates/
 │   │   ├── default.html        # Handlebars PDF 模板（内容页）
 │   │   ├── cover-screen.html   # Swiss IKB 封面独立模板
-│   │   ├── cover-bw.html       # B&W 黑白打印封面模板（新增）
-│   │   ├── default.json        # 默认风格配置
-│   │   ├── business-blue.json  # 商务蓝配置
-│   │   ├── warm.json           # 暖色配置
-│   │   ├── klein-blue.json     # 克莱因蓝配置
+│   │   ├── cover-bw.html       # B&W 黑白打印封面模板
 │   │   ├── swiss-ikb.json      # Swiss IKB 配置
-│   │   └── bw.json             # B&W 黑白打印配置（新增）
+│   │   ├── swiss-ikb-zebra.json # Swiss IKB Zebra 配置
+│   │   ├── bw.json             # B&W 黑白打印配置
+│   │   └── bw-zebra.json       # B&W Zebra 配置
 │   ├── helpers.js              # Handlebars 自定义 helper
 │   ├── price-library.js        # 匹配引擎 + lark-cli 封装（新增）
 │   └── bitable-config.json     # 多维表字段 ID 配置
