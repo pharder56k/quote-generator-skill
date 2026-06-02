@@ -233,7 +233,6 @@
 
     /* === 明细页 === */
     .detail-section {
-      page-break-before: always;
     }
     .detail-table thead {
       display: table-header-group;
@@ -367,7 +366,7 @@
     body[data-page-mode="screen"] { min-height: 100vh; }
     body[data-page-mode="screen"] .cover {
       width: 100%;
-      margin: -40px 0 -40px 0;
+      margin: 0;
       min-height: 100vh;
       background: #002FA7;
       color: #fff;
@@ -387,7 +386,6 @@
     body[data-page-mode="screen"] .cover-logo-box {
       width: 64px;
       height: 64px;
-      border: 2px solid rgba(255,255,255,0.5);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -458,9 +456,7 @@
     body[data-page-mode="screen"] .summary-page,
     body[data-page-mode="screen"] .detail-section {
       padding: 0 60px 70px;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      min-height: auto;
       background: #ffffff;
     }
     body[data-page-mode="screen"] .page-title {
@@ -663,7 +659,7 @@
     </div>
     <div class="cover-main">
       <div class="cover-logo-box">
-        <svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><g fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5c0-0.83 0.67-1.5 1.5-1.5h8c0.83 0 1.5 0.67 1.5 1.5s-0.67 1.5-1.5 1.5h-8c-0.83 0-1.5-0.67-1.5-1.5z"/><path d="M9.5 12c0-0.83 0.67-1.5 1.5-1.5h8c0.83 0 1.5 0.67 1.5 1.5s-0.67 1.5-1.5 1.5h-8c-0.83 0-1.5-0.67-1.5-1.5z"/><path d="M9.5 19c0-0.83 0.67-1.5 1.5-1.5h8c0.83 0 1.5 0.67 1.5 1.5s-0.67 1.5-1.5 1.5h-8c-0.83 0-1.5-0.67-1.5-1.5z"/><circle cx="3.5" cy="5" r="1.5"/><circle cx="3.5" cy="12" r="1.5"/><circle cx="3.5" cy="19" r="1.5"/></g></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"><g stroke-dasharray="28"><path d="M9.5 5c0 -0.83 0.67 -1.5 1.5 -1.5h8c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5h-8c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="28;0"/></path><path stroke-dashoffset="28" d="M9.5 12c0 -0.83 0.67 -1.5 1.5 -1.5h8c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5h-8c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.5s" dur="0.4s" to="0"/></path><path stroke-dashoffset="28" d="M9.5 19c0 -0.83 0.67 -1.5 1.5 -1.5h8c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5h-8c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="1s" dur="0.4s" to="0"/></path></g><g stroke-dasharray="12" stroke-dashoffset="12"><path d="M3.5 5c0 -0.83 0.67 -1.5 1.5 -1.5c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.3s" dur="0.2s" to="0"/></path><path d="M3.5 12c0 -0.83 0.67 -1.5 1.5 -1.5c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.8s" dur="0.2s" to="0"/></path><path d="M3.5 19c0 -0.83 0.67 -1.5 1.5 -1.5c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="1.3s" dur="0.2s" to="0"/></path></g></g></svg>
       </div>
       <div class="cover-title">工程量清单报价表</div>
       <div class="cover-subtitle">Price List — RM Design</div>
