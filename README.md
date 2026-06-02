@@ -29,7 +29,7 @@ bash setup.sh
 
 **三步上手：**
 
-1. **复制飞书模板** — 打开 [报价模板多维表](https://li1fn1sw90.feishu.cn/base/ZARYb5n6gawooesP8qZclTxGnuy?from=from_copylink)，点击"复制此多维表"到你的飞书空间
+1. **复制飞书模板** — 打开 [报价模板多维表](https://li1fn1sw90.feishu.cn/base/LfjJbLrTHacijesHmIjcDtSpnJf?from=from_copylink)，点击"复制此多维表"到你的飞书空间
 2. **填入数据** — 在「项目信息」表填工程概况，在「报价明细」表填清单条目
 3. **对 AI 说** — `/报价 <你的多维表链接>`
 

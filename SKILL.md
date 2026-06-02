@@ -61,14 +61,14 @@ metadata:
 
 **4. 检查飞书登录状态**
 
-尝试执行 `lark-cli base +table-list --base-token ZARYb5n6gawooesP8qZclTxGnuy` 测试登录状态。如果返回认证错误：
+尝试执行 `lark-cli base +table-list --base-token LfjJbLrTHacijesHmIjcDtSpnJf` 测试登录状态。如果返回认证错误：
 - 提示用户执行: `lark-cli auth login`
 - 完成后重试
 
 **5. 提供飞书模板**
 
 用户需要复制报价模板到自己的飞书空间：
-- 模板链接: https://li1fn1sw90.feishu.cn/base/ZARYb5n6gawooesP8qZclTxGnuy?from=from_copylink
+- 模板链接: https://li1fn1sw90.feishu.cn/base/LfjJbLrTHacijesHmIjcDtSpnJf?from=from_copylink
 - 引导用户点击链接 → 点击"复制此多维表" → 在自己的空间中填入项目数据和报价明细
 - 完成后将新多维表链接发给 Agent
 

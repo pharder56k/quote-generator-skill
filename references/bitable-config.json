@@ -1,6 +1,6 @@
 {
-  "template_base_token": "ZARYb5n6gawooesP8qZclTxGnuy",
-  "template_base_url": "https://li1fn1sw90.feishu.cn/base/ZARYb5n6gawooesP8qZclTxGnuy",
+  "template_base_token": "LfjJbLrTHacijesHmIjcDtSpnJf",
+  "template_base_url": "https://li1fn1sw90.feishu.cn/base/LfjJbLrTHacijesHmIjcDtSpnJf",
   "note": "以上为模板多维表，实际使用时用户会从模板创建新多维表，table_id 和 field_id 会不同。通过 lark-cli base +table-list 和 +field-list 动态获取。",
   "tables": {
     "项目信息": {
