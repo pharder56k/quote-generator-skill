@@ -3,25 +3,455 @@
 <head>
   <meta charset="UTF-8">
   <title>工程量清单报价表 — {{项目名称}}</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  {{#if isScreen}}<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">{{/if}}
   <style>
+    :root {
+      --primary: #1a1a1a;
+      --text-sub: #444;
+      --text-light: #555;
+      --text-muted: #888;
+      --border-light: #999;
+      --border-medium: #ccc;
+      --border-table: #e0e0e0;
+      --border-detail: #e8e8e8;
+      --cat-row-bg: #ebebeb;
+      --remark-color: #cc0000;
+      --cat-row-text: inherit;
+      --table-style: border;
+      --page-bg: #ffffff;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+      font-size: 12px;
+      color: var(--primary);
+      line-height: 1.5;
+      background: var(--page-bg);
+    }
 
     __PAGE_RULES__
 
-    html { background: var(--page-bg); }
-    body[data-page-mode="screen"] {
-      min-height: 100vh;
-      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    body {
+      counter-reset: page;
     }
 
-    /* 斑马纹 */
-    body[data-table-style="zebra"] .detail-table td { background-color: transparent; }
-    body[data-table-style="zebra"] .detail-table tbody tr.stripe td { background-color: var(--bg-accent-light); }
+    /* === 封面 === */
+    .cover {
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 60px 40px 60px 40px;
+      border: 1.5px solid var(--primary);
+      position: relative;
+    }
+    .cover-logo {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+    }
+    .cover-logo img {
+      max-width: 60px;
+      max-height: 60px;
+      object-fit: contain;
+    }
+    .cover-logo-text {
+      width: 60px;
+      height: 60px;
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .cover-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 80px;
+    }
+    .cover-title {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      margin-bottom: 16px;
+    }
+    .cover-divider {
+      width: 100%;
+      max-width: 320px;
+      height: 2px;
+      background: var(--primary);
+      margin-bottom: 20px;
+    }
+    .cover-subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: var(--text-sub);
+    }
+    .cover-bottom {
+      border-top: 1px solid var(--border-medium);
+      padding-top: 24px;
+    }
+    .cover-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 40px;
+    }
+    .cover-info-row {
+      font-size: 13px;
+      display: flex;
+      align-items: baseline;
+    }
+    .cover-info-label {
+      font-weight: 500;
+      white-space: nowrap;
+      min-width: 70px;
+    }
+    .cover-info-value {
+      flex: 1;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 2px;
+      margin-left: 6px;
+    }
+    .cover-email {
+      grid-column: 1 / -1;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
 
-    /* === Swiss 封面（default.html 内嵌版，screen 模式下不使用，保留占位） === */
+    /* === 总价表 === */
+    .summary-page {
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 3px;
+    }
+    .page-logo {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .page-logo img {
+      max-width: 56px;
+      max-height: 56px;
+      object-fit: contain;
+    }
+    .page-logo-text {
+      width: 56px;
+      height: 56px;
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .summary-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      padding: 6px 0;
+      border-top: 1.5px solid #1a1a1a;
+      border-bottom: 1px solid #ccc;
+    }
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .summary-table th {
+      text-align: left;
+      padding: 6px 0;
+      font-weight: 500;
+      border-bottom: 1px solid var(--primary);
+    }
+    .summary-table th:last-child {
+      text-align: right;
+    }
+    .summary-table td {
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border-table);
+    }
+    .summary-table td:last-child {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .summary-totals {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .summary-totals-inner {
+      width: 200px;
+    }
+    .summary-total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 13px;
+    }
+    .summary-total-row.grand {
+      font-weight: 700;
+      font-size: 14px;
+      border-top: 1.5px solid #1a1a1a;
+      padding-top: 6px;
+    }
+    .summary-total-value {
+      font-variant-numeric: tabular-nums;
+    }
+    .summary-footer {
+      margin-top: 40px;
+      font-size: 12px;
+      line-height: 2;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .summary-footer-inner {
+      width: 200px;
+    }
 
-    /* === Swiss 内页 === */
+    /* === 明细页 === */
+    .detail-section {
+    }
+    .detail-table thead {
+      display: table-header-group;
+    }
+    .page-header-row th {
+      border: none;
+      padding: 0;
+    }
+    .detail-subheader {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 10px;
+      padding: 6px 0;
+      border-top: 1.5px solid #1a1a1a;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /* === 明细表格 === */
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+    }
+    .detail-table th {
+      text-align: left;
+      padding: 5px 6px;
+      font-weight: 700;
+      font-size: 13px;
+      border-bottom: 1px solid var(--primary);
+    }
+    .detail-table th.num {
+      text-align: right;
+    }
+    .detail-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid var(--border-detail);
+      vertical-align: top;
+    }
+    .detail-table td:first-child {
+      white-space: nowrap;
+      width: 50px;
+    }
+    .detail-table td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .detail-table .cat-row td {
+      font-weight: 700;
+      font-size: 13px;
+      padding-top: 10px;
+      border-bottom: none;
+      background-color: var(--cat-row-bg);
+      color: var(--cat-row-text, inherit);
+    }
+    .detail-table .cat-row {
+      page-break-before: always;
+    }
+    .detail-table .cat-row:first-child {
+      page-break-before: auto;
+    }
+    .detail-table .item-name {
+      font-weight: 500;
+    }
+    .detail-table .item-spec {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-top: 1px;
+    }
+    .detail-table .item-remark {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--remark-color);
+      margin-top: 2px;
+    }
+    .detail-table .subtotal-row td {
+      font-weight: 600;
+      border-top: 1px solid var(--primary);
+      border-bottom: none;
+      padding-top: 6px;
+    }
+
+    /* 表头分隔行：默认隐藏，Swiss 模式下显示 */
+    .header-separator td {
+      height: 0;
+      padding: 0;
+      border: none;
+      font-size: 0;
+      line-height: 0;
+    }
+    .sep-line {
+      display: none;
+    }
+
+    /* === 表格样式变体 === */
+    /* 斑马纹：class 驱动，每分类内交替，不受分类行/小计行干扰 */
+    body[data-table-style="zebra"] .detail-table td {
+      background-color: transparent;
+    }
+    body[data-table-style="zebra"] .detail-table tbody tr.stripe td {
+      background-color: var(--bg-accent-light);
+    }
+    /* 无边框：移除数据行边框 */
+    body[data-table-style="borderless"] .detail-table td {
+      border-bottom: none;
+    }
+    body[data-table-style="borderless"] .detail-table th {
+      border-bottom: 1.5px solid var(--primary);
+    }
+
+    /* === 全页背景 === */
+    html {
+      background: var(--page-bg);
+    }
+    body[data-page-mode="screen"] {
+      min-height: 100vh;
+    }
+    body[data-page-mode="screen"] body { margin: 0; }
+
+    /* === 页码 === */
+
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* === Swiss IKB 屏幕阅读版 === */
+    body[data-page-mode="screen"] {
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    body[data-page-mode="screen"] .cover {
+      width: 100%;
+      margin: 0;
+      min-height: 100vh;
+      background: var(--cover-bg);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      page-break-after: always;
+    }
+    body[data-page-mode="screen"] .cover-title {
+      font-size: 38px;
+      font-weight: 200;
+      letter-spacing: -0.025em;
+      line-height: 0.94;
+      color: inherit;
+    }
+    body[data-page-mode="screen"] .cover-logo-box {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    body[data-page-mode="screen"] .cover-logo-box svg { width: 32px; height: 32px; }
+    body[data-page-mode="screen"] .cover-subtitle {
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: -0.005em;
+    }
+    body[data-page-mode="screen"] .cover-top {
+      position: absolute;
+      top: 40px;
+      left: 60px;
+      right: 60px;
+      display: flex;
+      justify-content: flex-start;
+    }
+    body[data-page-mode="screen"] .cover-brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.65;
+    }
+    body[data-page-mode="screen"] .cover-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 60px 60px;
+    }
+    body[data-page-mode="screen"] .cover-bottom {
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding: 24px 60px 40px;
+      color: #fff;
+    }
+    body[data-page-mode="screen"] .cover-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 50px;
+    }
+    body[data-page-mode="screen"] .cover-info-row {
+      font-size: 13px;
+      display: flex;
+      align-items: baseline;
+    }
+    body[data-page-mode="screen"] .cover-info-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      min-width: 72px;
+    }
+    body[data-page-mode="screen"] .cover-info-value {
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      padding-bottom: 2px;
+      margin-left: 8px;
+      flex: 1;
+    }
+
+    /* Swiss 内页 */
     body[data-page-mode="screen"] .summary-page,
     body[data-page-mode="screen"] .detail-section {
       padding: 0 60px 0;
@@ -54,6 +484,8 @@
       border-top: 2px solid var(--border-accent);
       border-bottom: 1px solid #e0e0e0;
     }
+
+    /* Swedish summary page styling */
     body[data-page-mode="screen"] .summary-subtitle {
       font-size: 14px;
       font-weight: 500;
@@ -74,7 +506,9 @@
       justify-content: flex-end;
       margin-top: 12px;
     }
-    body[data-page-mode="screen"] .summary-totals-inner { width: 200px; }
+    body[data-page-mode="screen"] .summary-totals-inner {
+      width: 200px;
+    }
     body[data-page-mode="screen"] .summary-total-row {
       display: flex;
       justify-content: space-between;
@@ -95,7 +529,9 @@
       display: flex;
       justify-content: flex-end;
     }
-    body[data-page-mode="screen"] .summary-footer-inner { width: 200px; }
+    body[data-page-mode="screen"] .summary-footer-inner {
+      width: 200px;
+    }
 
     /* Swiss 表格 */
     body[data-page-mode="screen"] .summary-table td,
@@ -119,6 +555,7 @@
     body[data-page-mode="screen"] .summary-table th {
       border-bottom: 2px solid var(--border-accent);
     }
+    /* Swiss 表头分隔线：用实体 div 代替 border-bottom，解决 Chromium PDF thead 重复渲染时 border 不一致的问题 */
     body[data-page-mode="screen"] .header-separator td {
       height: auto;
       padding: 0;
@@ -142,12 +579,6 @@
       margin-top: 2px;
       line-height: 1.4;
     }
-    body[data-page-mode="screen"] .detail-table .item-remark {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--remark-color);
-      margin-top: 2px;
-    }
 
     /* Swiss 分类标题行 */
     body[data-page-mode="screen"] .cat-row td {
@@ -159,7 +590,9 @@
       border-bottom: none;
       vertical-align: middle;
     }
-    body[data-page-mode="screen"] .cat-row td[colspan="6"] { padding-left: 0; }
+    body[data-page-mode="screen"] .cat-row td[colspan="6"] {
+      padding-left: 0;
+    }
     body[data-page-mode="screen"] .cat-label {
       display: flex;
       align-items: center;
@@ -213,11 +646,51 @@
       padding-top: 16px;
       border-top: 1px solid rgba(127,127,127,0.2);
     }
-
-    .num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
   </style>
 </head>
 <body data-table-style="{{tableStyle}}" data-page-mode="{{pageMode}}">
+
+  <!-- === 封面 === -->
+  {{#unless isScreen}}
+  <div class="cover">
+    <div class="cover-logo">
+      {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="cover-logo-text">R<br>M</div>{{/if}}
+    </div>
+    <div class="cover-center">
+      <div class="cover-title">工程量清单报价表</div>
+      <div class="cover-divider"></div>
+      <div class="cover-subtitle">Price List - RM DESIGN</div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-info-grid">
+        <div class="cover-info-row">
+          <span class="cover-info-label">工程名称</span>
+          <span class="cover-info-value">{{项目名称}}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">工程编号</span>
+          <span class="cover-info-value">{{工程编号}}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">编制日期</span>
+          <span class="cover-info-value">{{编制日期}}</span>
+        </div>
+        {{#if 编制人员}}
+        <div class="cover-info-row">
+          <span class="cover-info-label">编制人员</span>
+          <span class="cover-info-value">{{编制人员}}</span>
+        </div>
+        {{/if}}
+        {{#if 联系邮箱}}
+        <div class="cover-info-row">
+          <span class="cover-info-label">联系邮箱</span>
+          <span class="cover-info-value">{{联系邮箱}}</span>
+        </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  {{/unless}}
 
   {{#if hasItems}}
   <!-- === 总价表 === -->
@@ -225,7 +698,7 @@
     <div class="page-header">
       <div class="page-title">工程量清单报价表</div>
       <div class="page-logo">
-        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo" style="max-width:56px;max-height:56px;object-fit:contain;">{{else}}<div style="width:56px;height:56px;border:2px solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;text-align:center;">R<br>M</div>{{/if}}
+        {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
       </div>
     </div>
     <div class="summary-subtitle">工程量清单总价表</div>
@@ -262,7 +735,7 @@
   </div>
   {{/if}}
 
-  <!-- === 明细页 === -->
+  <!-- === 明细页（CSS 自动分页） === -->
   {{#if hasItems}}
   <div class="detail-section">
     <table class="detail-table">
@@ -272,7 +745,7 @@
             <div class="page-header">
               <div class="page-title">工程量清单报价表</div>
               <div class="page-logo">
-                {{#if logo_url}}<img src="{{logo_url}}" alt="Logo" style="max-width:56px;max-height:56px;object-fit:contain;">{{else}}<div style="width:56px;height:56px;border:2px solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;text-align:center;">R<br>M</div>{{/if}}
+                {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="page-logo-text">R<br>M</div>{{/if}}
               </div>
             </div>
             <div class="detail-subheader">
@@ -295,6 +768,7 @@
         {{#each detailRows}}
         {{#if this.isCategory}}
         <tr class="cat-row">
+          {{#if ../isScreen}}
           <td colspan="6" style="padding-left:0;">
             <div class="cat-label">
               <span class="cat-num">{{this.序号}}</span>
@@ -304,6 +778,10 @@
               </div>
             </div>
           </td>
+          {{else}}
+          <td>{{this.序号}}</td>
+          <td colspan="5">{{this.项目名称}}</td>
+          {{/if}}
         </tr>
         {{else if this.isSubtotal}}
         <tr class="subtotal-row">
