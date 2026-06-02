@@ -5,7 +5,7 @@ description: "工程量清单报价表生成：从飞书多维表或 Excel 文�
 metadata:
   requires:
     bins: ["node"]
-  projectPath: "/Volumes/NVME_2TB/quote-generator-skill"  <!-- 用户安装后需改为实际 clone 路径 -->
+  projectPath: "/Volumes/NVME_2TB/quote-generator-skill"
 ---
 
 # 全案设计报价系统
