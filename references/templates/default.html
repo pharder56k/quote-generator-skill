@@ -29,20 +29,7 @@
       background: var(--page-bg);
     }
 
-    @page {
-      size: A4;
-      margin: 15mm 18mm 25mm 18mm;
-      @bottom-center {
-        content: counter(page);
-        font-size: 11px;
-        color: var(--text-muted);
-      }
-    }
-    @page :first {
-      @bottom-center {
-        content: none;
-      }
-    }
+    __PAGE_RULES__
 
     body {
       counter-reset: page;
@@ -489,13 +476,63 @@
       border-bottom: 1px solid #e0e0e0;
     }
 
+    /* Swedish summary page styling */
+    body[data-page-mode="screen"] .summary-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      border-top: 1.5px solid #002FA7;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 6px 0;
+    }
+    body[data-page-mode="screen"] .summary-table td {
+      padding: 5px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    body[data-page-mode="screen"] .summary-table td:last-child {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    body[data-page-mode="screen"] .summary-totals {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+    body[data-page-mode="screen"] .summary-totals-inner {
+      width: 200px;
+    }
+    body[data-page-mode="screen"] .summary-total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 13px;
+    }
+    body[data-page-mode="screen"] .summary-total-row.grand {
+      font-weight: 700;
+      font-size: 15px;
+      color: #002FA7;
+      border-top: 2px solid #002FA7;
+      padding-top: 6px;
+    }
+    body[data-page-mode="screen"] .summary-footer {
+      margin-top: 40px;
+      font-size: 12px;
+      line-height: 2;
+      display: flex;
+      justify-content: flex-end;
+    }
+    body[data-page-mode="screen"] .summary-footer-inner {
+      width: 200px;
+    }
+
     /* Swiss 表格 */
+    body[data-page-mode="screen"] .summary-table td,
     body[data-page-mode="screen"] .detail-table td {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       padding: 10px 0;
       border-bottom: 1px solid #e0e0e0;
     }
+    body[data-page-mode="screen"] .summary-table th,
     body[data-page-mode="screen"] .detail-table th {
       font-family: 'JetBrains Mono', monospace;
       font-size: 10px;

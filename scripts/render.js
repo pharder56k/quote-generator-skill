@@ -210,15 +210,21 @@ async function main() {
     /:root\s*\{[^}]+\}/,
     `:root {\n      ${cssVars}\n    }`
   );
-  if (pageCSS) {
-    // 替换整个 @page 块（包括嵌套的 @bottom-center）
-    htmlWithVars = htmlWithVars.replace(
-      /@page[^;{}]*\{[^}]*(?:\{[^}]*\}[^}]*)*\}/s,
-      pageCSS
-    );
-    // 移除 @page :first 块（已经包含在 pageCSS 中或不需要）
-    htmlWithVars = htmlWithVars.replace(/@page\s+:first[^;{}]*\{[^}]*(?:\{[^}]*\}[^}]*)*\}/s, '');
-  }
+  const defaultPage = `@page {
+      size: A4;
+      margin: 15mm 18mm 25mm 18mm;
+      @bottom-center {
+        content: counter(page);
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+    }
+    @page :first {
+      @bottom-center {
+        content: none;
+      }
+    }`;
+  htmlWithVars = htmlWithVars.replace('__PAGE_RULES__', pageCSS || defaultPage);
   const compiledTemplate = Handlebars.compile(htmlWithVars);
   const html = compiledTemplate({ ...data, tableStyle, isScreen, pageMode });
 
