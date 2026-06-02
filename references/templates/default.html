@@ -363,7 +363,6 @@
     body[data-page-mode="screen"] {
       font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     }
-    body[data-page-mode="screen"] { min-height: 100vh; }
     body[data-page-mode="screen"] .cover {
       width: 100%;
       margin: 0;
@@ -455,7 +454,7 @@
     /* Swiss 内页 */
     body[data-page-mode="screen"] .summary-page,
     body[data-page-mode="screen"] .detail-section {
-      padding: 0 60px 70px;
+      padding: 0 60px 0;
       min-height: auto;
       background: #ffffff;
     }
@@ -652,48 +651,7 @@
 <body data-table-style="{{tableStyle}}" data-page-mode="{{pageMode}}">
 
   <!-- === 封面 === -->
-  {{#if isScreen}}
-  <div class="cover">
-    <div class="cover-top">
-      <div class="cover-brand">RM DESIGN</div>
-    </div>
-    <div class="cover-main">
-      <div class="cover-logo-box">
-        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"><g stroke-dasharray="28"><path d="M9.5 5c0 -0.83 0.67 -1.5 1.5 -1.5h8c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5h-8c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="28;0"/></path><path stroke-dashoffset="28" d="M9.5 12c0 -0.83 0.67 -1.5 1.5 -1.5h8c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5h-8c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.5s" dur="0.4s" to="0"/></path><path stroke-dashoffset="28" d="M9.5 19c0 -0.83 0.67 -1.5 1.5 -1.5h8c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5h-8c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="1s" dur="0.4s" to="0"/></path></g><g stroke-dasharray="12" stroke-dashoffset="12"><path d="M3.5 5c0 -0.83 0.67 -1.5 1.5 -1.5c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.3s" dur="0.2s" to="0"/></path><path d="M3.5 12c0 -0.83 0.67 -1.5 1.5 -1.5c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.8s" dur="0.2s" to="0"/></path><path d="M3.5 19c0 -0.83 0.67 -1.5 1.5 -1.5c0.83 0 1.5 0.67 1.5 1.5c0 0.83 -0.67 1.5 -1.5 1.5c-0.83 0 -1.5 -0.67 -1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="1.3s" dur="0.2s" to="0"/></path></g></g></svg>
-      </div>
-      <div class="cover-title">工程量清单报价表</div>
-      <div class="cover-subtitle">Price List — RM Design</div>
-    </div>
-    <div class="cover-bottom">
-      <div class="cover-info-grid">
-        <div class="cover-info-row">
-          <span class="cover-info-label">工程名称</span>
-          <span class="cover-info-value">{{项目名称}}</span>
-        </div>
-        <div class="cover-info-row">
-          <span class="cover-info-label">工程编号</span>
-          <span class="cover-info-value">{{工程编号}}</span>
-        </div>
-        <div class="cover-info-row">
-          <span class="cover-info-label">编制日期</span>
-          <span class="cover-info-value">{{编制日期}}</span>
-        </div>
-        {{#if 编制人员}}
-        <div class="cover-info-row">
-          <span class="cover-info-label">编制人员</span>
-          <span class="cover-info-value">{{编制人员}}</span>
-        </div>
-        {{/if}}
-        {{#if 联系邮箱}}
-        <div class="cover-info-row">
-          <span class="cover-info-label">联系邮箱</span>
-          <span class="cover-info-value">{{联系邮箱}}</span>
-        </div>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-  {{else}}
+  {{#unless isScreen}}
   <div class="cover">
     <div class="cover-logo">
       {{#if logo_url}}<img src="{{logo_url}}" alt="Logo">{{else}}<div class="cover-logo-text">R<br>M</div>{{/if}}
@@ -732,7 +690,7 @@
       </div>
     </div>
   </div>
-  {{/if}}
+  {{/unless}}
 
   {{#if hasItems}}
   <!-- === 总价表 === -->

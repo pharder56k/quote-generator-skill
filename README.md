@@ -5,7 +5,7 @@
 ## 功能特性
 
 - **多数据源**：飞书多维表（链接直接读取）/ Excel 文件
-- **4 种视觉模板**：默认、商务蓝、暖色、克莱因蓝
+- **5 种视觉模板**：默认、商务蓝、暖色、克莱因蓝、Swiss IKB
 - **智能填充**：输入分类+名称+数量，AI 自动补全项目特征、单价、备注
 - **价格库**：报价自动积累，下次复用，越用越聪明
 - **专业 PDF 输出**：封面 + 总价表 + 分类明细页
@@ -44,6 +44,7 @@ node scripts/render.js --input data.json --template business-blue --vat-rate 0.0
 | 商务蓝 | `business-blue` | 深蓝 | 带边框线 |
 | 暖色 | `warm` | 棕色+米白 | 斑马纹 |
 | 克莱因蓝 | `klein-blue` | 黑白+亮蓝强调 | 无边框 |
+| Swiss IKB | `swiss-ikb` | 蓝底满版封面 + 双语分类标题 | 无边框，屏幕阅读版 |
 
 ## 命令行参数
 
@@ -205,11 +206,13 @@ quote-generator-skill/
 │   └── render.js              # 核心渲染脚本
 ├── references/
 │   ├── templates/
-│   │   ├── default.html       # Handlebars PDF 模板
+│   │   ├── default.html       # Handlebars PDF 模板（内容页）
+│   │   ├── cover-screen.html  # Swiss IKB 封面独立模板
 │   │   ├── default.json       # 默认风格配置
 │   │   ├── business-blue.json # 商务蓝配置
 │   │   ├── warm.json          # 暖色配置
-│   │   └── klein-blue.json    # 克莱因蓝配置
+│   │   ├── klein-blue.json    # 克莱因蓝配置
+│   │   └── swiss-ikb.json     # Swiss IKB 配置
 │   ├── helpers.js             # formatCurrency 等 Helper
 │   └── bitable-config.json    # 飞书多维表配置
 ├── docs/plans/                # 设计文档
@@ -222,6 +225,7 @@ quote-generator-skill/
 
 - **Node.js (ESM)** + **Handlebars** 模板引擎
 - **Playwright** + Chromium 无头浏览器渲染 PDF
+- **pdf-lib** 封面/内容分离渲染后合并
 - CSS paged media（自动分页、页眉重复、页码）
 
 ## 飞书集成

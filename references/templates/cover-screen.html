@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>封面 — {{项目名称}}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #002FA7; }
+    body {
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 12px;
+      background: #002FA7;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    @page { size: A4; margin: 0; }
+
+    .cover {
+      width: 100%;
+      min-height: 100vh;
+      background: #002FA7;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .cover-title {
+      font-size: 38px;
+      font-weight: 200;
+      letter-spacing: -0.025em;
+      line-height: 0.94;
+      color: inherit;
+    }
+    .cover-logo-box {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .cover-logo-box svg { width: 64px; height: 64px; }
+    .cover-subtitle {
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: -0.005em;
+    }
+    .cover-top {
+      position: absolute;
+      top: 40px;
+      left: 60px;
+      right: 60px;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .cover-brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.65;
+    }
+    .cover-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 60px 60px;
+    }
+    .cover-bottom {
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding: 24px 60px 40px;
+      color: #fff;
+    }
+    .cover-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 50px;
+    }
+    .cover-info-row {
+      font-size: 13px;
+      display: flex;
+      align-items: baseline;
+    }
+    .cover-info-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      min-width: 72px;
+    }
+    .cover-info-value {
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      padding-bottom: 2px;
+      margin-left: 8px;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <div class="cover-top">
+      <div class="cover-brand">RM DESIGN</div>
+    </div>
+    <div class="cover-main">
+      <div class="cover-logo-box">
+        <svg t="1780390000833" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="16866" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M860.042971 96.065829c32.021943 0 59.757714 27.9552 59.757715 60.269714 0 32.299886-24.137143 56.992914-56.173715 56.992914H423.687314c-32.021943 0-57.973029-26.2144-57.973028-58.514286 0-32.314514 25.936457-58.514286 57.973028-58.514285h433.298286m6.641371-58.514286H423.687314c-64.234057 0-116.487314 52.501943-116.487314 117.028571s52.253257 117.028571 116.487314 117.028572h439.939657c64.234057 0 116.487314-52.501943 116.487315-117.028572s-52.253257-117.028571-116.487315-117.028571zM157.871543 96.3584c32.021943 0 59.757714 27.677257 59.757714 59.991771 0 32.299886-24.137143 56.992914-56.173714 56.992915h-1.082514c-32.021943 0-57.973029-26.2144-57.973029-58.514286 0-32.314514 25.936457-58.514286 57.973029-58.514286h-5.558858m6.641372-58.528914h-1.082514c-64.234057 0-116.487314 52.501943-116.487315 117.028571s52.253257 117.028571 116.487315 117.028572h1.082514c64.234057 0 116.487314-52.501943 116.487314-117.028572s-52.253257-117.028571-116.487314-117.028571z" fill="#ffffff" p-id="16867"></path><path d="M469.182171 154.814171h-43.885714a14.628571 14.628571 0 1 1 0-29.257142h43.885714a14.628571 14.628571 0 1 1 0 29.257142zM688.610743 154.814171h-146.285714a14.628571 14.628571 0 1 1 0-29.257142h146.285714a14.628571 14.628571 0 1 1 0 29.257142z" fill="#ffffff" p-id="16868"></path><path d="M860.042971 447.619657c32.021943 0 59.757714 27.501714 59.757715 59.816229 0 32.299886-24.137143 56.992914-56.173715 56.992914H423.687314c-32.021943 0-57.973029-26.2144-57.973028-58.514286 0-32.314514 25.936457-58.514286 57.973028-58.514285h433.298286m6.641371-58.528915H423.687314c-64.234057 0-116.487314 52.501943-116.487314 117.028572s52.253257 117.028571 116.487314 117.028571h439.939657c64.234057 0 116.487314-52.501943 116.487315-117.028571s-52.253257-117.028571-116.487315-117.028572zM157.871543 447.444114c32.021943 0 59.757714 27.677257 59.757714 59.991772 0 32.299886-24.137143 56.992914-56.173714 56.992914h-1.082514c-32.021943 0-57.973029-26.2144-57.973029-58.514286 0-32.314514 25.936457-58.514286 57.973029-58.514285h-5.558858m6.641372-58.528915h-1.082514c-64.234057 0-116.487314 52.501943-116.487315 117.028572s52.253257 117.028571 116.487315 117.028571h1.082514c64.234057 0 116.487314-52.501943 116.487314-117.028571s-52.253257-117.028571-116.487314-117.028572z" fill="#ffffff" p-id="16869"></path><path d="M860.042971 798.778514c32.021943 0 59.757714 27.428571 59.757715 59.743086 0 32.299886-24.137143 56.992914-56.173715 56.992914H423.687314c-32.021943 0-57.973029-26.2144-57.973028-58.514285 0-32.314514 25.936457-58.514286 57.973028-58.514286h433.298286m6.641371-58.528914H423.687314c-64.234057 0-116.487314 52.501943-116.487314 117.028571s52.253257 117.028571 116.487314 117.028571h439.939657c64.234057 0 116.487314-52.501943 116.487315-117.028571s-52.253257-117.028571-116.487315-117.028571zM157.871543 798.471314c32.021943 0 59.757714 27.735771 59.757714 60.035657s-24.137143 56.992914-56.173714 56.992915h-1.082514c-32.021943 0-57.973029-26.2144-57.973029-58.514286 0-32.314514 25.936457-58.514286 57.973029-58.514286h-5.558858m6.641372-58.514285h-1.082514c-64.234057 0-116.487314 52.501943-116.487315 117.028571s52.253257 117.028571 116.487315 117.028571h1.082514c64.234057 0 116.487314-52.501943 116.487314-117.028571s-52.253257-117.028571-116.487314-117.028571z" fill="#ffffff" p-id="16870"></path></svg>
+      </div>
+      <div class="cover-title">工程量清单报价表</div>
+      <div class="cover-subtitle">Price List — RM Design</div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-info-grid">
+        <div class="cover-info-row">
+          <span class="cover-info-label">工程名称</span>
+          <span class="cover-info-value">{{项目名称}}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">工程编号</span>
+          <span class="cover-info-value">{{工程编号}}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">编制日期</span>
+          <span class="cover-info-value">{{编制日期}}</span>
+        </div>
+        {{#if 编制人员}}
+        <div class="cover-info-row">
+          <span class="cover-info-label">编制人员</span>
+          <span class="cover-info-value">{{编制人员}}</span>
+        </div>
+        {{/if}}
+        {{#if 联系邮箱}}
+        <div class="cover-info-row">
+          <span class="cover-info-label">联系邮箱</span>
+          <span class="cover-info-value">{{联系邮箱}}</span>
+        </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

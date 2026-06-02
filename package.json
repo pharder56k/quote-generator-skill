@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "handlebars": "^4.7.8",
+    "pdf-lib": "^1.17.1",
     "playwright": "^1.45.0"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=18"
   }

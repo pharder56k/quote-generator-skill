@@ -9,9 +9,10 @@
  */
 
 import { chromium } from "playwright";
-import { readFileSync, mkdirSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, unlinkSync } from "fs";
 import { resolve, dirname } from "path";
 import Handlebars from "handlebars";
+import { PDFDocument } from "pdf-lib";
 import { registerHelpers } from "../references/helpers.js";
 
 const __dirname = dirname(new URL(import.meta.url).pathname);
@@ -197,52 +198,64 @@ async function main() {
     console.log("使用默认模板");
   }
 
-  const templatePath = resolve(TEMPLATES_DIR, "default.html");
-  if (!existsSync(templatePath)) {
-    console.error(`模板文件不存在: ${templatePath}`);
-    process.exit(1);
-  }
-  const templateSrc = readFileSync(templatePath, "utf-8");
-  const template = Handlebars.compile(templateSrc);
+  const outputDir = resolve(process.cwd(), params.output ? dirname(params.output) : "output");
+  if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
+  const outputFile = params.output || `output/${data.项目名称}_${data.工程编号}.pdf`;
+  const outputPath = resolve(process.cwd(), outputFile);
 
-  // 注入 CSS 变量到 :root，以及页面级 CSS 覆盖
-  let htmlWithVars = templateSrc.replace(
-    /:root\s*\{[^}]+\}/,
-    `:root {\n      ${cssVars}\n    }`
-  );
-  const defaultPage = `@page {
-      size: A4;
-      margin: 15mm 18mm 25mm 18mm;
-      @bottom-center {
-        content: counter(page);
-        font-size: 11px;
-        color: var(--text-muted);
-      }
-    }
-    @page :first {
-      @bottom-center {
-        content: none;
-      }
-    }`;
-  htmlWithVars = htmlWithVars.replace('__PAGE_RULES__', pageCSS || defaultPage);
-  const compiledTemplate = Handlebars.compile(htmlWithVars);
-  const html = compiledTemplate({ ...data, tableStyle, isScreen, pageMode });
+  // 注入 CSS 变量 + @page 规则的辅助函数
+  function buildHtml(templatePath, extraVars = {}) {
+    const src = readFileSync(templatePath, "utf-8");
+    let html = src.replace(/:root\s*\{[^}]+\}/, `:root {\n      ${cssVars}\n    }`);
+    const defaultPage = `@page { size: A4; margin: 15mm 18mm 25mm 18mm; @bottom-center { content: counter(page); font-size: 11px; color: var(--text-muted); } } @page :first { @bottom-center { content: none; } }`;
+    html = html.replace('__PAGE_RULES__', pageCSS || defaultPage);
+    const tpl = Handlebars.compile(html);
+    return tpl({ ...data, tableStyle, isScreen, pageMode, ...extraVars });
+  }
 
   console.log("渲染 PDF...");
   const browser = await chromium.launch();
-  const page = await browser.newPage();
-  await page.setContent(html, { waitUntil: "networkidle" });
 
-  const outputDir = resolve(process.cwd(), params.output ? dirname(params.output) : "output");
-  if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
+  if (isScreen) {
+    // --- 屏幕模式：封面 + 内容分两次渲染，再合并 ---
+    const coverPath = resolve(outputDir, "_cover.pdf");
+    const contentPath = resolve(outputDir, "_content.pdf");
 
-  const outputFile = params.output || `output/${data.项目名称}_${data.工程编号}.pdf`;
-  await page.pdf({
-    path: resolve(process.cwd(), outputFile),
-    format: "A4",
-    margin: pdfMargin,
-    printBackground: true,
-  });
+    // 1) 渲染封面（独立模板，全出血，无页边距）
+    const coverHtml = buildHtml(resolve(TEMPLATES_DIR, "cover-screen.html"));
+    const coverPage = await browser.newPage();
+    await coverPage.setContent(coverHtml, { waitUntil: "networkidle" });
+    await coverPage.pdf({ path: coverPath, format: "A4", margin: { top: "0", bottom: "0", left: "0", right: "0" }, printBackground: true });
+    await coverPage.close();
+
+    // 2) 渲染内容页（含总价表 + 明细，固定 40px 上下边距）
+    const contentHtml = buildHtml(resolve(TEMPLATES_DIR, "default.html"));
+    const contentPage = await browser.newPage();
+    await contentPage.setContent(contentHtml, { waitUntil: "networkidle" });
+    await contentPage.pdf({ path: contentPath, format: "A4", margin: pdfMargin, printBackground: true });
+    await contentPage.close();
+
+    // 3) 合并 PDF
+    const coverPdf = await PDFDocument.load(readFileSync(coverPath));
+    const contentPdf = await PDFDocument.load(readFileSync(contentPath));
+    const merged = await PDFDocument.create();
+    const coverPages = await merged.copyPages(coverPdf, coverPdf.getPageIndices());
+    const contentPages = await merged.copyPages(contentPdf, contentPdf.getPageIndices());
+    coverPages.forEach(p => merged.addPage(p));
+    contentPages.forEach(p => merged.addPage(p));
+    writeFileSync(outputPath, await merged.save());
+
+    // 清理临时文件
+    unlinkSync(coverPath);
+    unlinkSync(contentPath);
+  } else {
+    // --- 普通模式：单次渲染 ---
+    const html = buildHtml(resolve(TEMPLATES_DIR, "default.html"));
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: "networkidle" });
+    await page.pdf({ path: outputPath, format: "A4", margin: pdfMargin, printBackground: true });
+    await page.close();
+  }
 
   await browser.close();
   console.log(`PDF 已生成: ${outputFile}`);
