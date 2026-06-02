@@ -5,7 +5,7 @@ description: "工程量清单报价表生成：从飞书多维表或 Excel 文�
 metadata:
   requires:
     bins: ["node"]
-  projectPath: "/Volumes/NVME_2TB/quote-generator-skill"
+  projectPath: "/Volumes/NVME_2TB/quote-generator-skill"  <!-- 用户安装后需改为实际 clone 路径 -->
 ---
 
 # 全案设计报价系统
@@ -144,7 +144,6 @@ metadata:
 在项目目录下执行：
 
 ```bash
-cd /Volumes/NVME_2TB/quote-generator-skill
 node scripts/render.js --input <data.json> --template <模板名> --vat-rate <税率> --output ./output/<项目名称>_<工程编号>.pdf
 ```
 
@@ -186,7 +185,7 @@ node scripts/render.js --input <data.json> --template <模板名> --vat-rate <�
 ## 3. 项目结构
 
 ```
-/Volumes/NVME_2TB/quote-generator-skill/
+quote-generator-skill/
 ├── package.json                # 项目配置
 ├── scripts/
 │   ├── render.js               # HTML → PDF 渲染引擎
@@ -244,7 +243,6 @@ PDF 模板包含三种页面：
 2. 列出表：`lark-cli base +table-list --base-token <token>`，找到 **报价明细** 和 **价格库** 的 table_id
 3. **一次调用 fill.js**：
    ```bash
-   cd /Volumes/NVME_2TB/quote-generator-skill
    node scripts/fill.js \
      --base-token <token> \
      --detail-table-id <报价明细table_id> \
