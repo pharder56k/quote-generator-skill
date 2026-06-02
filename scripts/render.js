@@ -77,7 +77,7 @@ function buildTemplateData(raw, vatRate = 0.03) {
 
   for (const cat of sortedCats) {
     const catItems = grouped[cat];
-    const catNum = catItems[0]?.序号?.split(".")[0] || "";
+    const catNum = (catItems[0]?.序号?.split(".")[0] || "").padStart(2, "0");
     const catTotal = catItems.reduce((sum, i) => sum + (i.合价 || 0), 0);
 
     detailRows.push({ isCategory: true, 序号: catNum, 项目名称: cat });
