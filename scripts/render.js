@@ -187,7 +187,8 @@ async function main() {
   let pdfMargin = { top: "15mm", bottom: "20mm", left: "18mm", right: "18mm" };
   let isScreen = false;
   let pageMode = "print";
-  let coverTemplate = "cover-screen.html"; // 默认封面模板
+  let coverTemplate = "cover-screen.html";
+  let contentTemplate = "content.html";
   if (existsSync(configPath)) {
     const config = JSON.parse(readFileSync(configPath, "utf-8"));
     tableStyle = config.css["--table-style"] || "border";
@@ -235,8 +236,8 @@ async function main() {
     await coverPage.pdf({ path: coverPath, preferCSSPageSize: true, printBackground: true });
     await coverPage.close();
 
-    // 2) 渲染内容页（含总价表 + 明细，固定 40px 上下边距）
-    const contentHtml = buildHtml(resolve(TEMPLATES_DIR, "default.html"));
+    // 2) 渲染内容页（含总价表 + 明细）
+    const contentHtml = buildHtml(resolve(TEMPLATES_DIR, contentTemplate));
     const contentPage = await browser.newPage();
     await contentPage.setViewportSize({ width: 794, height: 1123 });
     await contentPage.setContent(contentHtml, { waitUntil: "networkidle" });
@@ -256,13 +257,6 @@ async function main() {
     // 清理临时文件
     unlinkSync(coverPath);
     unlinkSync(contentPath);
-  } else {
-    // --- 普通模式：单次渲染 ---
-    const html = buildHtml(resolve(TEMPLATES_DIR, "default.html"));
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle" });
-    await page.pdf({ path: outputPath, format: "A4", margin: pdfMargin, printBackground: true });
-    await page.close();
   }
 
   await browser.close();

@@ -193,7 +193,7 @@ node scripts/render.js --input <data.json> --template <模板名> --vat-rate <�
 │   └── fill.js                 # 价格库智能填充（新增）
 ├── references/
 │   ├── templates/
-│   │   ├── default.html        # Handlebars PDF 模板（内容页）
+│   │   ├── content.html        # Handlebars PDF 模板（内容页）
 │   │   ├── cover-screen.html   # Swiss IKB 封面独立模板
 │   │   ├── cover-bw.html       # B&W 黑白打印封面模板
 │   │   ├── swiss-ikb.json      # Swiss IKB 配置
