@@ -122,11 +122,12 @@ for (const tpl of templates) {
   const contentHtml = Handlebars.compile(contentSrc)({ ...data, tableStyle, isScreen, pageMode });
 
   const contentPage = await browser.newPage();
-  await contentPage.setViewportSize({ width: 794, height: 1123 });
+  // 截取前两页内容（总价表 + 首个分类明细）
+  await contentPage.setViewportSize({ width: 794, height: 2246 });
   await contentPage.setContent(contentHtml, { waitUntil: "networkidle" });
   await contentPage.screenshot({
     path: resolve(PREVIEWS_DIR, `${tpl.name}-content.png`),
-    fullPage: true,
+    fullPage: false,
   });
   await contentPage.close();
 
