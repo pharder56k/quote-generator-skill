@@ -5,7 +5,7 @@
 ## 功能特性
 
 - **多数据源**：飞书多维表（链接直接读取）/ Excel 文件
-- **5 种视觉模板**：默认、商务蓝、暖色、克莱因蓝、Swiss IKB
+- **6 种视觉模板**：默认、商务蓝、暖色、克莱因蓝、Swiss IKB、B&W 黑白打印
 - **智能填充**：输入分类+名称+数量，AI 自动补全项目特征、单价、备注
 - **价格库**：报价自动积累，下次复用，越用越聪明
 - **专业 PDF 输出**：封面 + 总价表 + 分类明细页
@@ -26,6 +26,9 @@ npm test
 
 # 指定模板渲染
 node scripts/render.js --input data.json --template business-blue --vat-rate 0.08
+
+# 测试填充（预览模式，不回写）
+node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-id <id> --dry-run
 ```
 
 ## 命令列表
@@ -45,6 +48,7 @@ node scripts/render.js --input data.json --template business-blue --vat-rate 0.0
 | 暖色 | `warm` | 棕色+米白 | 斑马纹 |
 | 克莱因蓝 | `klein-blue` | 黑白+亮蓝强调 | 无边框 |
 | Swiss IKB | `swiss-ikb` | 蓝底满版封面 + 双语分类标题 | 无边框，屏幕阅读版 |
+| B&W | `bw` | 白底封面 + 浅灰强调，Swiss IKB 排版 | 无边框，黑白打印优化 |
 
 ## 命令行参数
 
@@ -203,17 +207,21 @@ AI 查询价格库
 ```
 quote-generator-skill/
 ├── scripts/
-│   └── render.js              # 核心渲染脚本
+│   ├── render.js              # 核心渲染脚本（HTML → PDF）
+│   └── fill.js                # 价格库智能填充脚本
 ├── references/
 │   ├── templates/
 │   │   ├── default.html       # Handlebars PDF 模板（内容页）
 │   │   ├── cover-screen.html  # Swiss IKB 封面独立模板
+│   │   ├── cover-bw.html      # B&W 黑白打印封面模板
 │   │   ├── default.json       # 默认风格配置
 │   │   ├── business-blue.json # 商务蓝配置
 │   │   ├── warm.json          # 暖色配置
 │   │   ├── klein-blue.json    # 克莱因蓝配置
-│   │   └── swiss-ikb.json     # Swiss IKB 配置
-│   ├── helpers.js             # formatCurrency 等 Helper
+│   │   ├── swiss-ikb.json     # Swiss IKB 配置
+│   │   └── bw.json            # B&W 黑白打印配置
+│   ├── helpers.js             # Handlebars 自定义 helper
+│   ├── price-library.js       # 匹配引擎 + lark-cli 封装
 │   └── bitable-config.json    # 飞书多维表配置
 ├── docs/plans/                # 设计文档
 ├── output/                    # PDF 输出目录

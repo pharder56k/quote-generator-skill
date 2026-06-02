@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "render": "node scripts/render.js",
+    "fill": "node scripts/fill.js",
     "test": "node scripts/render.js --test"
   },
   "dependencies": {

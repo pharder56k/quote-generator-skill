@@ -184,12 +184,14 @@ async function main() {
   let pdfMargin = { top: "15mm", bottom: "20mm", left: "18mm", right: "18mm" };
   let isScreen = false;
   let pageMode = "print";
+  let coverTemplate = "cover-screen.html"; // 默认封面模板
   if (existsSync(configPath)) {
     const config = JSON.parse(readFileSync(configPath, "utf-8"));
     tableStyle = config.css["--table-style"] || "border";
     pageCSS = config.pageCSS || "";
     if (config.pdfMargin) pdfMargin = config.pdfMargin;
     if (config.screen) { isScreen = true; pageMode = "screen"; }
+    if (config.coverTemplate) coverTemplate = config.coverTemplate;
     cssVars = Object.entries(config.css)
       .map(([key, val]) => `${key}: ${val};`)
       .join("\n      ");
@@ -222,15 +224,18 @@ async function main() {
     const contentPath = resolve(outputDir, "_content.pdf");
 
     // 1) 渲染封面（独立模板，全出血，无页边距）
-    const coverHtml = buildHtml(resolve(TEMPLATES_DIR, "cover-screen.html"));
+    const coverHtml = buildHtml(resolve(TEMPLATES_DIR, coverTemplate));
     const coverPage = await browser.newPage();
+    // 设定 viewport 为 A4 尺寸（96dpi），确保 100vh/100vw = A4 页面尺寸
+    await coverPage.setViewportSize({ width: 794, height: 1123 });
     await coverPage.setContent(coverHtml, { waitUntil: "networkidle" });
-    await coverPage.pdf({ path: coverPath, format: "A4", margin: { top: "0", bottom: "0", left: "0", right: "0" }, printBackground: true });
+    await coverPage.pdf({ path: coverPath, preferCSSPageSize: true, printBackground: true });
     await coverPage.close();
 
     // 2) 渲染内容页（含总价表 + 明细，固定 40px 上下边距）
     const contentHtml = buildHtml(resolve(TEMPLATES_DIR, "default.html"));
     const contentPage = await browser.newPage();
+    await contentPage.setViewportSize({ width: 794, height: 1123 });
     await contentPage.setContent(contentHtml, { waitUntil: "networkidle" });
     await contentPage.pdf({ path: contentPath, format: "A4", margin: pdfMargin, printBackground: true });
     await contentPage.close();

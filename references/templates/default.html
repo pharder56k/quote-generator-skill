@@ -367,7 +367,7 @@
       width: 100%;
       margin: 0;
       min-height: 100vh;
-      background: #002FA7;
+      background: var(--cover-bg);
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -462,7 +462,7 @@
       font-size: 26px;
       font-weight: 200;
       letter-spacing: -0.02em;
-      color: #002FA7;
+      color: var(--primary);
     }
     body[data-page-mode="screen"] .page-logo {
       font-family: 'JetBrains Mono', monospace;
@@ -481,7 +481,7 @@
       color: #737373;
       padding-top: 6px;
       padding-bottom: 10px;
-      border-top: 2px solid #002FA7;
+      border-top: 2px solid var(--border-accent);
       border-bottom: 1px solid #e0e0e0;
     }
 
@@ -489,7 +489,7 @@
     body[data-page-mode="screen"] .summary-subtitle {
       font-size: 14px;
       font-weight: 500;
-      border-top: 2px solid #002FA7;
+      border-top: 2px solid var(--border-accent);
       border-bottom: 1px solid #e0e0e0;
       padding: 6px 0;
     }
@@ -518,8 +518,8 @@
     body[data-page-mode="screen"] .summary-total-row.grand {
       font-weight: 700;
       font-size: 15px;
-      color: #002FA7;
-      border-top: 2px solid #002FA7;
+      color: var(--primary);
+      border-top: 2px solid var(--border-accent);
       padding-top: 6px;
     }
     body[data-page-mode="screen"] .summary-footer {
@@ -553,7 +553,7 @@
       padding: 12px 0 8px;
     }
     body[data-page-mode="screen"] .summary-table th {
-      border-bottom: 2px solid #002FA7;
+      border-bottom: 2px solid var(--border-accent);
     }
     /* Swiss 表头分隔线：用实体 div 代替 border-bottom，解决 Chromium PDF thead 重复渲染时 border 不一致的问题 */
     body[data-page-mode="screen"] .header-separator td {
@@ -566,7 +566,7 @@
     body[data-page-mode="screen"] .sep-line {
       display: block;
       height: 1px;
-      background: #002FA7;
+      background: var(--primary);
     }
     body[data-page-mode="screen"] .detail-table .item-name {
       font-family: 'JetBrains Mono', monospace;
@@ -584,8 +584,8 @@
     body[data-page-mode="screen"] .cat-row td {
       font-weight: 600;
       font-size: 13px;
-      color: #002FA7;
-      background: #E8EEF8;
+      color: var(--primary);
+      background: var(--bg-accent-light);
       padding: 8px 0;
       border-bottom: none;
       vertical-align: middle;
@@ -602,7 +602,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 44px;
       font-weight: 500;
-      color: #002FA7;
+      color: var(--primary);
       line-height: 0.85;
     }
     body[data-page-mode="screen"] .cat-text {
@@ -621,17 +621,17 @@
     body[data-page-mode="screen"] .cat-zh {
       font-size: 15px;
       font-weight: 600;
-      color: #002FA7;
+      color: var(--primary);
       letter-spacing: -0.005em;
     }
 
     /* Swiss 小计行 */
     body[data-page-mode="screen"] .subtotal-row td {
       font-weight: 600;
-      border-top: 2px solid #002FA7;
+      border-top: 2px solid var(--border-accent);
       border-bottom: none;
       padding-top: 12px;
-      color: #002FA7;
+      color: var(--primary);
     }
 
     /* Swiss 页码 */
