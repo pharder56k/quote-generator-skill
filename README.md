@@ -45,7 +45,7 @@ node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-i
 
 | Swiss IKB（默认） | Swiss IKB Zebra | B&W | B&W Zebra |
 |:---:|:---:|:---:|:---:|
-| <img src="docs/previews/swiss-ikb-cover.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-cover.png" width="180"> | <img src="docs/previews/bw-cover.png" width="180"> | <img src="docs/previews/bw-zebra-cover.png" width="180"> |
+| <img src="docs/previews/swiss-ikb-cover-01.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-cover-01.png" width="180"> | <img src="docs/previews/bw-cover-01.png" width="180"> | <img src="docs/previews/bw-zebra-cover-01.png" width="180"> |
 | `swiss-ikb` | `swiss-ikb-zebra` | `bw` | `bw-zebra` |
 | 蓝底满版 · 双语分类 | 同上 + 斑马纹 | 白底 · 黑白打印优化 | 同上 + 斑马纹 |
 
@@ -53,7 +53,7 @@ node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-i
 
 | Swiss IKB（默认） | Swiss IKB Zebra | B&W | B&W Zebra |
 |:---:|:---:|:---:|:---:|
-| <img src="docs/previews/swiss-ikb-content.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-content.png" width="180"> | <img src="docs/previews/bw-content.png" width="180"> | <img src="docs/previews/bw-zebra-content.png" width="180"> |
+| <img src="docs/previews/swiss-ikb-content-02.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-content-02.png" width="180"> | <img src="docs/previews/bw-content-02.png" width="180"> | <img src="docs/previews/bw-zebra-content-02.png" width="180"> |
 | 纯色明细行 | 白/浅蓝交替明细行 | 纯色明细行 | 白/浅灰交替明细行 |
 
 <details>
