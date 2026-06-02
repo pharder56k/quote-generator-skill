@@ -353,10 +353,11 @@
     body[data-page-mode="screen"] {
       font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     }
-    body[data-page-mode="screen"] { margin: 0; min-height: 100vh; }
+    body[data-page-mode="screen"] { min-height: 100vh; }
     body[data-page-mode="screen"] .cover {
-      width: 100%;
-      min-height: 100vh;
+      width: calc(100% + 36mm);
+      margin: -15mm -18mm -20mm -18mm;
+      min-height: calc(100vh + 35mm);
       background: #002FA7;
       color: #fff;
       display: flex;

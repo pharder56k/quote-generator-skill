@@ -2,7 +2,7 @@
   "name": "Swiss IKB",
   "description": "瑞士克莱因蓝屏幕阅读版，全页蓝底封面，双语分类标题，等宽数字字体",
   "screen": true,
-  "pdfMargin": { "top": "0", "bottom": "0", "left": "0", "right": "0" },
+  "pdfMargin": { "top": "15mm", "bottom": "20mm", "left": "18mm", "right": "18mm" },
   "css": {
     "--primary": "#002FA7",
     "--text-primary": "#0a0a0a",
@@ -25,5 +25,5 @@
     "--num-font": "'JetBrains Mono', monospace",
     "--cover-bg": "#002FA7"
   },
-  "pageCSS": "@page { size: A4; margin: 0; background: #002FA7; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; text-transform: uppercase; } }"
+  "pageCSS": "@page { size: A4; margin: 15mm 18mm 20mm 18mm; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; text-transform: uppercase; } }"
 }
