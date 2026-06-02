@@ -5,7 +5,7 @@
 ## 功能特性
 
 - **多数据源**：飞书多维表（链接直接读取）/ Excel 文件
-- **6 种视觉模板**：默认、商务蓝、暖色、克莱因蓝、Swiss IKB、B&W 黑白打印
+- **4 种活跃模板**：Swiss IKB / Swiss IKB Zebra / B&W / B&W Zebra
 - **智能填充**：输入分类+名称+数量，AI 自动补全项目特征、单价、备注
 - **价格库**：报价自动积累，下次复用，越用越聪明
 - **专业 PDF 输出**：封面 + 总价表 + 分类明细页
@@ -41,14 +41,26 @@ node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-i
 
 ## 模板风格
 
+### 活跃模板
+
+| 预览 | 模板 | 参数 | 说明 |
+|------|------|------|------|
+| <img src="docs/previews/swiss-ikb.png" width="200"> | **Swiss IKB**（默认） | `swiss-ikb` | 蓝底满版封面 + 双语分类标题 + JetBrains Mono 等宽数字 |
+| <img src="docs/previews/swiss-ikb-zebra.png" width="200"> | Swiss IKB Zebra | `swiss-ikb-zebra` | 同上 + 内容明细行白/浅蓝斑马纹交替 |
+| <img src="docs/previews/bw.png" width="200"> | B&W | `bw` | 白底封面 + 浅灰强调，Swiss IKB 排版，黑白打印优化 |
+| <img src="docs/previews/bw-zebra.png" width="200"> | B&W Zebra | `bw-zebra` | 同上 + 内容明细行白/浅灰斑马纹交替 |
+
+<details>
+<summary>已搁置模板（代码保留，可随时恢复）</summary>
+
 | 模板 | 命令参数 | 配色 | 表格样式 |
 |------|---------|------|---------|
 | 默认 | `default` | 黑白灰 | 带边框线 |
 | 商务蓝 | `business-blue` | 深蓝 | 带边框线 |
 | 暖色 | `warm` | 棕色+米白 | 斑马纹 |
 | 克莱因蓝 | `klein-blue` | 黑白+亮蓝强调 | 无边框 |
-| Swiss IKB | `swiss-ikb` | 蓝底满版封面 + 双语分类标题 | 无边框，屏幕阅读版 |
-| B&W | `bw` | 白底封面 + 浅灰强调，Swiss IKB 排版 | 无边框，黑白打印优化 |
+
+</details>
 
 ## 命令行参数
 

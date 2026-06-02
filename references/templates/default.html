@@ -329,12 +329,12 @@
     }
 
     /* === 表格样式变体 === */
-    /* 斑马纹：奇偶行交替背景 */
+    /* 斑马纹：class 驱动，每分类内交替，不受分类行/小计行干扰 */
     body[data-table-style="zebra"] .detail-table td {
       background-color: transparent;
     }
-    body[data-table-style="zebra"] .detail-table tbody tr:not(.cat-row):not(.subtotal-row):nth-child(odd) td {
-      background-color: #f5efe6;
+    body[data-table-style="zebra"] .detail-table tbody tr.stripe td {
+      background-color: var(--bg-accent-light);
     }
     /* 无边框：移除数据行边框 */
     body[data-table-style="borderless"] .detail-table td {
@@ -789,7 +789,7 @@
           <td class="num">{{formatCurrency this.合价}}</td>
         </tr>
         {{else}}
-        <tr>
+        <tr{{#if this.isStripe}} class="stripe"{{/if}}>
           <td>{{this.序号}}</td>
           <td>
             <div class="item-name">{{this.项目名称}}</div>

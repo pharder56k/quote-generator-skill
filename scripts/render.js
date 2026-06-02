@@ -91,13 +91,16 @@ function buildTemplateData(raw, vatRate = 0.03) {
     const catTotal = catItems.reduce((sum, i) => sum + (i.合价 || 0), 0);
 
     detailRows.push({ isCategory: true, 序号: catNum, 项目名称: cat, 英文名称: catEnNames[cat] || "" });
+    let stripeIdx = 0;
     for (const item of catItems) {
       detailRows.push({
         isCategory: false, isSubtotal: false,
+        isStripe: stripeIdx % 2 === 1,
         序号: item.序号, 项目名称: item.项目名称, 项目特征: item.项目特征,
         备注: item.备注 || "",
         单位: item.单位, 数量: item.数量, 综合单价: item.综合单价, 合价: item.合价,
       });
+      stripeIdx++;
     }
     detailRows.push({ isSubtotal: true, 合价: Math.round(catTotal * 100) / 100 });
   }
@@ -176,7 +179,7 @@ async function main() {
   const data = buildTemplateData(raw, vatRate);
 
   // 加载模板样式配置
-  const templateName = params.template || "default";
+  const templateName = params.template || "swiss-ikb";
   const configPath = resolve(TEMPLATES_DIR, `${templateName}.json`);
   let cssVars = "";
   let tableStyle = "border";

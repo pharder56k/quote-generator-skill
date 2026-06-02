@@ -1,0 +1,29 @@
+{
+  "name": "Swiss IKB Zebra",
+  "description": "Swiss IKB 斑马纹版，蓝底封面，内容明细行白/浅蓝交替，视觉层次更清晰",
+  "screen": true,
+  "pdfMargin": { "top": "0", "bottom": "0", "left": "0", "right": "0" },
+  "css": {
+    "--primary": "#002FA7",
+    "--text-primary": "#0a0a0a",
+    "--text-secondary": "#525252",
+    "--text-muted": "#737373",
+    "--bg-page": "#ffffff",
+    "--bg-accent-light": "#E8EEF8",
+    "--border-light": "#e0e0e0",
+    "--border-accent": "#002FA7",
+    "--accent-on": "#ffffff",
+    "--page-bg": "#ffffff",
+    "--cat-row-bg": "#E8EEF8",
+    "--cat-num-size": "44px",
+    "--cat-en-size": "11px",
+    "--cat-zh-size": "15px",
+    "--cat-row-py": "8px",
+    "--remark-color": "#002FA7",
+    "--table-style": "zebra",
+    "--page-mode": "screen",
+    "--num-font": "'JetBrains Mono', monospace",
+    "--cover-bg": "#002FA7"
+  },
+  "pageCSS": "@page { size: A4; margin: 40px 0 40px 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; text-transform: uppercase; } }"
+}
