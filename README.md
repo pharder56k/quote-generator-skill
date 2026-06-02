@@ -53,7 +53,7 @@ node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-i
 
 | Swiss IKB（默认） | Swiss IKB Zebra | B&W | B&W Zebra |
 |:---:|:---:|:---:|:---:|
-| <img src="docs/previews/swiss-ikb-content-02.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-content-02.png" width="180"> | <img src="docs/previews/bw-content-02.png" width="180"> | <img src="docs/previews/bw-zebra-content-02.png" width="180"> |
+| <img src="docs/previews/swiss-ikb-content-03.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-content-03.png" width="180"> | <img src="docs/previews/bw-content-03.png" width="180"> | <img src="docs/previews/bw-zebra-content-03.png" width="180"> |
 | 纯色明细行 | 白/浅蓝交替明细行 | 纯色明细行 | 白/浅灰交替明细行 |
 
 <details>
