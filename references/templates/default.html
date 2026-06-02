@@ -317,6 +317,18 @@
       padding-top: 6px;
     }
 
+    /* 表头分隔行：默认隐藏，Swiss 模式下显示 */
+    .header-separator td {
+      height: 0;
+      padding: 0;
+      border: none;
+      font-size: 0;
+      line-height: 0;
+    }
+    .sep-line {
+      display: none;
+    }
+
     /* === 表格样式变体 === */
     /* 斑马纹：奇偶行交替背景 */
     body[data-table-style="zebra"] .detail-table td {
@@ -472,7 +484,9 @@
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: #737373;
+      padding-top: 6px;
       padding-bottom: 10px;
+      border-top: 2px solid #002FA7;
       border-bottom: 1px solid #e0e0e0;
     }
 
@@ -480,7 +494,7 @@
     body[data-page-mode="screen"] .summary-subtitle {
       font-size: 14px;
       font-weight: 500;
-      border-top: 1.5px solid #002FA7;
+      border-top: 2px solid #002FA7;
       border-bottom: 1px solid #e0e0e0;
       padding: 6px 0;
     }
@@ -543,8 +557,21 @@
       white-space: nowrap;
       padding: 12px 0 8px;
     }
-    body[data-page-mode="screen"] .detail-table tbody {
-      border-top: 2px solid #002FA7;
+    body[data-page-mode="screen"] .summary-table th {
+      border-bottom: 2px solid #002FA7;
+    }
+    /* Swiss 表头分隔线：用实体 div 代替 border-bottom，解决 Chromium PDF thead 重复渲染时 border 不一致的问题 */
+    body[data-page-mode="screen"] .header-separator td {
+      height: auto;
+      padding: 0;
+      border: none;
+      font-size: 0;
+      line-height: 0;
+    }
+    body[data-page-mode="screen"] .sep-line {
+      display: block;
+      height: 1px;
+      background: #002FA7;
     }
     body[data-page-mode="screen"] .detail-table .item-name {
       font-family: 'JetBrains Mono', monospace;
@@ -781,6 +808,7 @@
           <th class="num" style="width:85px">综合单价</th>
           <th class="num" style="width:90px">合价</th>
         </tr>
+        <tr class="header-separator"><td colspan="6"><div class="sep-line"></div></td></tr>
       </thead>
       <tbody>
         {{#each detailRows}}
