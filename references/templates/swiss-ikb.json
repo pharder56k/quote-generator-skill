@@ -25,5 +25,5 @@
     "--num-font": "'JetBrains Mono', monospace",
     "--cover-bg": "#002FA7"
   },
-  "pageCSS": "@page { size: A4; margin: 40px 0 40px 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; text-transform: uppercase; } }"
+  "pageCSS": "@page { size: A4; margin: 40px 0 40px 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; text-transform: uppercase; } } @page :first { @bottom-center { content: none; } }"
 }
