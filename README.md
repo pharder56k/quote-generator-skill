@@ -41,14 +41,20 @@ node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-i
 
 ## 模板风格
 
-### 活跃模板
+### 封面预览
 
-| 预览 | 模板 | 参数 | 说明 |
-|------|------|------|------|
-| <img src="docs/previews/swiss-ikb.png" width="200"> | **Swiss IKB**（默认） | `swiss-ikb` | 蓝底满版封面 + 双语分类标题 + JetBrains Mono 等宽数字 |
-| <img src="docs/previews/swiss-ikb-zebra.png" width="200"> | Swiss IKB Zebra | `swiss-ikb-zebra` | 同上 + 内容明细行白/浅蓝斑马纹交替 |
-| <img src="docs/previews/bw.png" width="200"> | B&W | `bw` | 白底封面 + 浅灰强调，Swiss IKB 排版，黑白打印优化 |
-| <img src="docs/previews/bw-zebra.png" width="200"> | B&W Zebra | `bw-zebra` | 同上 + 内容明细行白/浅灰斑马纹交替 |
+| Swiss IKB（默认） | Swiss IKB Zebra | B&W | B&W Zebra |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/previews/swiss-ikb-cover.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-cover.png" width="180"> | <img src="docs/previews/bw-cover.png" width="180"> | <img src="docs/previews/bw-zebra-cover.png" width="180"> |
+| `swiss-ikb` | `swiss-ikb-zebra` | `bw` | `bw-zebra` |
+| 蓝底满版 · 双语分类 | 同上 + 斑马纹 | 白底 · 黑白打印优化 | 同上 + 斑马纹 |
+
+### 内容页预览
+
+| Swiss IKB（默认） | Swiss IKB Zebra | B&W | B&W Zebra |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/previews/swiss-ikb-content.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-content.png" width="180"> | <img src="docs/previews/bw-content.png" width="180"> | <img src="docs/previews/bw-zebra-content.png" width="180"> |
+| 纯色明细行 | 白/浅蓝交替明细行 | 纯色明细行 | 白/浅灰交替明细行 |
 
 <details>
 <summary>已搁置模板（代码保留，可随时恢复）</summary>
