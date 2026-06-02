@@ -25,5 +25,5 @@
     "--num-font": "'JetBrains Mono', monospace",
     "--cover-bg": "#002FA7"
   },
-  "pageCSS": "@page { background: var(--cover-bg); }"
+  "pageCSS": "@page { margin: 0; }"
 }
