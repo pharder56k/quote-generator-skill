@@ -87,26 +87,30 @@ AI：入库完成，104 条已写入价格库
 
 ```
 quote-generator-skill/
+├── setup.sh                     # 一键安装脚本
+├── SKILL.md                     # Skill 定义（Agent 工作流）
+├── package.json
 ├── scripts/
-│   ├── render.js              # 核心渲染脚本（HTML → PDF）
-│   └── fill.js                # 价格库智能填充脚本
+│   ├── render.js                # HTML → PDF 渲染引擎
+│   ├── fill.js                  # 价格库智能填充
+│   └── generate-large-test.js   # 大型测试数据生成器
 ├── references/
 │   ├── templates/
-│   │   ├── default.html       # Handlebars PDF 模板（内容页）
-│   │   ├── cover-screen.html  # Swiss IKB 封面独立模板
-│   │   ├── cover-bw.html      # B&W 黑白打印封面模板
-│   │   ├── default.json       # 默认风格配置
-│   │   ├── business-blue.json # 商务蓝配置
-│   │   ├── warm.json          # 暖色配置
-│   │   ├── klein-blue.json    # 克莱因蓝配置
-│   │   ├── swiss-ikb.json     # Swiss IKB 配置
-│   │   └── bw.json            # B&W 黑白打印配置
-│   ├── helpers.js             # Handlebars 自定义 helper
-│   ├── price-library.js       # 匹配引擎 + lark-cli 封装
-│   └── bitable-config.json    # 飞书多维表配置
-├── docs/plans/                # 设计文档
-├── output/                    # PDF 输出目录
-├── package.json
+│   │   ├── content.html         # 内容页模板（总价表 + 明细）
+│   │   ├── cover-screen.html    # Swiss IKB 封面模板
+│   │   ├── cover-bw.html        # B&W 封面模板
+│   │   ├── swiss-ikb.json       # Swiss IKB 配置
+│   │   ├── swiss-ikb-zebra.json # Swiss IKB Zebra 配置
+│   │   ├── bw.json              # B&W 配置
+│   │   └── bw-zebra.json        # B&W Zebra 配置
+│   ├── helpers.js               # Handlebars 辅助函数
+│   ├── price-library.js         # 匹配引擎 + lark-cli 封装
+│   └── bitable-config.json      # 多维表模板配置
+├── test-data/                   # 测试数据
+├── docs/
+│   ├── previews/                # 模板预览图
+│   └── plans/                   # 设计文档
+├── output/                      # PDF 输出目录
 └── README.md
 ```
 
