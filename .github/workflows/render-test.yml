@@ -1,0 +1,44 @@
+name: 渲染测试
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - run: npm ci
+
+      - name: 安装 Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: 渲染全部模板
+        run: npm run demo
+
+      - name: 验证 PDF 文件
+        run: |
+          PDF_COUNT=$(ls output/demo_*.pdf 2>/dev/null | wc -l)
+          echo "生成 PDF 数量: $PDF_COUNT"
+          if [ "$PDF_COUNT" -ne 4 ]; then
+            echo "错误：预期 4 个 PDF，实际 $PDF_COUNT 个"
+            exit 1
+          fi
+          for f in output/demo_*.pdf; do
+            SIZE=$(stat -c%s "$f" 2>/dev/null || stat -f%z "$f")
+            echo "$(basename $f): ${SIZE} bytes"
+            if [ "$SIZE" -lt 50000 ]; then
+              echo "错误：$f 文件过小（${SIZE} bytes），可能渲染失败"
+              exit 1
+            fi
+          done
+          echo "全部 PDF 渲染验证通过"
