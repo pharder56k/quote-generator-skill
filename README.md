@@ -93,6 +93,7 @@ quote-generator-skill/
 ├── scripts/
 │   ├── render.js                # HTML → PDF 渲染引擎
 │   ├── fill.js                  # 价格库智能填充
+│   ├── demo.js                  # 开箱即用演示
 │   └── generate-large-test.js   # 大型测试数据生成器
 ├── references/
 │   ├── templates/

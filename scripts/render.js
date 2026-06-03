@@ -74,7 +74,6 @@ function buildTemplateData(raw, vatRate = 0.03) {
 
   // 明细行（不预分页，由 CSS 自动分页）
   const detailRows = [];
-  let totalPages = 2; // 封面=1, 总价表=2
 
   const catEnNames = {
     "措施项目": "Measures", "拆除工程": "Demolition", "砌筑工程": "Masonry",
@@ -175,7 +174,10 @@ async function main() {
     process.exit(1);
   }
 
-  const vatRate = params["vat-rate"] ? parseFloat(params["vat-rate"]) : 0.03;
+  const vatRate = (() => {
+    const v = parseFloat(params["vat-rate"]);
+    return isNaN(v) ? 0.03 : v;
+  })();
   const data = buildTemplateData(raw, vatRate);
 
   // 加载模板样式配置
@@ -201,7 +203,9 @@ async function main() {
       .join("\n      ");
     console.log(`使用模板: ${config.name}`);
   } else {
-    console.log("使用默认模板");
+    console.error(`模板配置不存在: ${templateName}.json`);
+    console.error("可用模板: swiss-ikb, swiss-ikb-zebra, bw, bw-zebra");
+    process.exit(1);
   }
 
   const outputDir = resolve(process.cwd(), params.output ? dirname(params.output) : "output");

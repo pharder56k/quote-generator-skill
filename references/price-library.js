@@ -269,28 +269,3 @@ export function writeExactMatches(baseToken, detailTableId, exactMatches) {
 
   return { succeeded, failed };
 }
-
-/**
- * 根据用户选择回写模糊匹配的条目
- * choices: { "<record_id>": { name, features, unitPrice, unit, remark }, ... }
- */
-export function writeFuzzyChoices(baseToken, detailTableId, choices) {
-  const succeeded = [];
-  const failed = [];
-
-  for (const [recordId, choice] of Object.entries(choices)) {
-    try {
-      updateRecord(baseToken, detailTableId, recordId, {
-        项目特征: choice.项目特征 || choice.features || "",
-        综合单价: choice.综合单价 || choice.unitPrice || 0,
-        单位: choice.单位 || choice.unit || "",
-        备注: choice.备注 || choice.remark || "",
-      });
-      succeeded.push({ record_id: recordId, name: choice.name });
-    } catch (err) {
-      failed.push({ record_id: recordId, name: choice.name, error: err.message });
-    }
-  }
-
-  return { succeeded, failed };
-}

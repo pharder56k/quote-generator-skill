@@ -299,9 +299,13 @@ lark-cli drive +upload --file <pdf路径> --title "<项目名称>_<工程编号>
 ```
 quote-generator-skill/
 ├── package.json                # 项目配置
+├── setup.sh                     # 一键安装脚本
+├── SKILL.md                     # Skill 定义
 ├── scripts/
 │   ├── render.js               # HTML → PDF 渲染引擎
-│   └── fill.js                 # 价格库智能填充（新增）
+│   ├── fill.js                 # 价格库智能填充
+│   ├── demo.js                 # 开箱即用演示
+│   └── generate-large-test.js  # 大型测试数据生成器
 ├── references/
 │   ├── templates/
 │   │   ├── content.html        # Handlebars PDF 模板（内容页）
