@@ -17,8 +17,32 @@ import { registerHelpers } from "../references/helpers.js";
 
 const __dirname = dirname(new URL(import.meta.url).pathname);
 const TEMPLATES_DIR = resolve(__dirname, "../references/templates");
+const FONTS_DIR = resolve(__dirname, "../references/fonts");
 
 registerHelpers(Handlebars);
+
+// 生成内嵌字体 CSS（base64 data URI，离线可用）
+function buildFontCSS() {
+  const interPath = resolve(FONTS_DIR, "Inter-Variable.woff2");
+  const jbPath = resolve(FONTS_DIR, "JetBrainsMono-2428f786.woff2");
+  const interB64 = readFileSync(interPath).toString("base64");
+  const jbB64 = readFileSync(jbPath).toString("base64");
+  return `
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(data:font/woff2;base64,${interB64}) format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url(data:font/woff2;base64,${jbB64}) format('woff2');
+}`;
+}
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -217,6 +241,7 @@ async function main() {
   function buildHtml(templatePath, extraVars = {}) {
     const src = readFileSync(templatePath, "utf-8");
     let html = src.replace(/:root\s*\{[^}]+\}/, `:root {\n      ${cssVars}\n    }`);
+    html = html.replace("__FONT_CSS__", buildFontCSS());
     const defaultPage = `@page { size: A4; margin: 15mm 18mm 25mm 18mm; @bottom-center { content: counter(page); font-size: 11px; color: var(--text-muted); } } @page :first { @bottom-center { content: none; } }`;
     html = html.replace('__PAGE_RULES__', pageCSS || defaultPage);
     const tpl = Handlebars.compile(html);

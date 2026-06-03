@@ -1,0 +1,17 @@
+/* Inter Variable — 覆盖 100-900 全部字重 */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./Inter-Variable.woff2') format('woff2');
+}
+
+/* JetBrains Mono — 等宽编程字体 */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('./JetBrainsMono-2428f786.woff2') format('woff2');
+}
