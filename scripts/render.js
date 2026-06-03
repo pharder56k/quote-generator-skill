@@ -259,8 +259,8 @@ async function main() {
     writeFileSync(outputPath, await merged.save());
 
     // 清理临时文件
-    unlinkSync(coverPath);
-    unlinkSync(contentPath);
+    try { unlinkSync(coverPath); } catch {}
+    try { unlinkSync(contentPath); } catch {}
   }
 
   await browser.close();

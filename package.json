@@ -7,6 +7,7 @@
     "render": "node scripts/render.js",
     "fill": "node scripts/fill.js",
     "test": "node scripts/render.js --test",
+    "preview": "node scripts/render.js --test",
     "demo": "node scripts/demo.js"
   },
   "dependencies": {

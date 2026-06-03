@@ -143,7 +143,6 @@
     }
     .detail-table th.num { text-align: right; }
     .detail-table th.num-center { text-align: center; }
-    /* 单位、数量列居中对齐 */
     .detail-table td {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
@@ -313,7 +312,7 @@
         {{#each detailRows}}
         {{#if this.isCategory}}
         <tr class="cat-row">
-          <td colspan="6" style="padding-left:0;">
+          <td colspan="6">
             <div class="cat-label">
               <span class="cat-num">{{this.序号}}</span>
               <div class="cat-text">
