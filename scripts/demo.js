@@ -18,7 +18,7 @@ const templates = [
 ];
 
 console.log("==> 室内报价系统 Skill — 演示渲染");
-console.log("    数据来源: 内置测试数据（天河隽悦园办公改造项目）\n");
+console.log("    数据来源: 内置测试数据\n");
 
 for (const tpl of templates) {
   process.stdout.write(`    ${tpl.label} ... `);

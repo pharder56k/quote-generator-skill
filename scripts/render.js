@@ -123,7 +123,7 @@ function buildTemplateData(raw, vatRate = 0.03) {
 // --- 测试数据 ---
 function getTestData() {
   return {
-    项目名称: "天河隽悦园办公改造项目",
+    项目名称: "示例办公改造项目",
     工程编号: "RMD20260525",
     编制日期: "2026年5月22日",
     编制人员: "RM DESIGN",
