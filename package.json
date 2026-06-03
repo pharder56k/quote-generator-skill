@@ -7,7 +7,7 @@
     "render": "node scripts/render.js",
     "fill": "node scripts/fill.js",
     "test": "node scripts/render.js --test",
-    "demo": "for tpl in swiss-ikb swiss-ikb-zebra bw bw-zebra; do echo \"渲染 \\$tpl...\"; node scripts/render.js --template \\$tpl --output ./output/demo_\\$tpl.pdf ${npm_config_input:---test}; done; echo '完成，PDF 在 output/ 下'"
+    "demo": "node scripts/demo.js"
   },
   "dependencies": {
     "handlebars": "^4.7.8",
