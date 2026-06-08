@@ -4,9 +4,12 @@
  * 从飞书多维表读取报价明细和价格库数据，执行三档匹配（精确/模糊/无匹配），
  * 精确匹配直接回写，模糊匹配返回候选让 Agent 请用户确认。
  *
- * 用法：
+ * 用法（双表模式 — 推荐）：
+ *   node scripts/fill.js --project-base-token <项目表token> --detail-table-id <id> --price-base-token <价格库token> --price-table-id <id>
+ *   node scripts/fill.js --project-base-token <项目表token> --detail-table-id <id> --price-base-token <价格库token> --price-table-id <id> --dry-run
+ *
+ * 用法（单表模式 — 兼容旧版）：
  *   node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-id <id>
- *   node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-id <id> --dry-run
  *
  * 输出（stdout）：JSON 格式的匹配结果，Agent 解析后处理模糊匹配交互
  * 退出码：0=成功, 1=参数错误, 2=数据读取失败, 3=部分回写失败
@@ -35,29 +38,49 @@ function parseArgs() {
 async function main() {
   const params = parseArgs();
 
-  // 验证必填参数
-  const required = ["base-token", "detail-table-id", "price-table-id"];
-  const missing = required.filter((k) => !params[k]);
-  if (missing.length > 0) {
-    console.error(`缺少必填参数: ${missing.map((m) => `--${m}`).join(", ")}`);
-    console.error(
-      "用法: node scripts/fill.js --base-token <token> --detail-table-id <id> --price-table-id <id> [--dry-run]"
-    );
+  // 验证必填参数（支持双表模式和单表兼容模式）
+  const dryRun = params["dry-run"] === true;
+  const detailTableId = params["detail-table-id"];
+  const priceTableId = params["price-table-id"];
+
+  // 双表模式：project-base-token + price-base-token
+  const projectBaseToken = params["project-base-token"];
+  const priceBaseToken = params["price-base-token"];
+
+  // 单表兼容模式：base-token（同时作为项目表和价格库的 token）
+  const legacyBaseToken = params["base-token"];
+
+  let projectToken, priceToken;
+  if (projectBaseToken && priceBaseToken) {
+    // 双表模式
+    projectToken = projectBaseToken;
+    priceToken = priceBaseToken;
+  } else if (legacyBaseToken && detailTableId && priceTableId) {
+    // 单表兼容模式
+    projectToken = legacyBaseToken;
+    priceToken = legacyBaseToken;
+    console.error("[兼容模式] 使用单表模式，项目表和价格库在同一多维表内");
+  } else {
+    console.error("缺少必填参数");
+    console.error("双表模式: --project-base-token <项目表token> --detail-table-id <id> --price-base-token <价格库token> --price-table-id <id>");
+    console.error("单表模式: --base-token <token> --detail-table-id <id> --price-table-id <id>");
     process.exit(1);
   }
 
-  const { "base-token": baseToken, "detail-table-id": detailTableId, "price-table-id": priceTableId } = params;
-  const dryRun = params["dry-run"] === true;
+  if (!detailTableId || !priceTableId) {
+    console.error("缺少 --detail-table-id 或 --price-table-id");
+    process.exit(1);
+  }
 
   if (dryRun) {
     console.error("[dry-run] 仅预览匹配结果，不回写数据");
   }
 
-  // Step 1: 读取报价明细
+  // Step 1: 读取报价明细（从项目表）
   console.error("读取报价明细...");
   let detailRecords;
   try {
-    detailRecords = fetchRecords(baseToken, detailTableId);
+    detailRecords = fetchRecords(projectToken, detailTableId);
   } catch (err) {
     console.error(`读取报价明细失败: ${err.message}`);
     process.exit(2);
@@ -70,11 +93,11 @@ async function main() {
 
   console.error(`报价明细: ${detailRecords.length} 条`);
 
-  // Step 2: 读取价格库
+  // Step 2: 读取价格库（从独立价格库表）
   console.error("读取价格库...");
   let priceRecords;
   try {
-    priceRecords = fetchRecords(baseToken, priceTableId);
+    priceRecords = fetchRecords(priceToken, priceTableId);
   } catch (err) {
     console.error(`读取价格库失败: ${err.message}`);
     process.exit(2);
@@ -99,7 +122,7 @@ async function main() {
   let writeResult = { succeeded: [], failed: [] };
   if (!dryRun && exact.length > 0) {
     console.error(`回写精确匹配 ${exact.length} 条...`);
-    writeResult = writeExactMatches(baseToken, detailTableId, exact);
+    writeResult = writeExactMatches(projectToken, detailTableId, exact);
     if (writeResult.failed.length > 0) {
       console.error(`回写失败 ${writeResult.failed.length} 条`);
     }

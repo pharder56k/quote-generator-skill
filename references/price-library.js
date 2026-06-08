@@ -38,6 +38,10 @@ function execLarkCli(args, retries = MAX_RETRIES) {
 /**
  * 读取多维表全部记录（自动分页）
  * 返回: [{ record_id, fields: { ... } }, ...]
+ *
+ * lark-cli +record-list 返回格式:
+ *   { data: { data: [...arrays...], record_id_list: [...], fields: {...}, has_more: bool, query_context: "..." } }
+ *   data.data 是按 fields 字段顺序的数组，record_id_list 是对应的 record_id
  */
 export function fetchRecords(baseToken, tableId) {
   const allRecords = [];
@@ -56,16 +60,30 @@ export function fetchRecords(baseToken, tableId) {
 
     const result = execLarkCli(args);
 
-    // 兼容多种返回格式：{ items: [...] } 或 { records: [...] } 或直接 [...]
-    let records;
-    if (Array.isArray(result)) {
-      records = result;
-    } else {
-      records = result.items || result.records || result.data || [];
+    // 解析 lark-cli 的嵌套返回格式
+    const data = result.data || result;
+    const rawRecords = data.data || data.items || data.records || [];
+    const recordIds = data.record_id_list || [];
+    const fieldDefs = data.fields || [];
+    const hasMore = data.has_more || false;
+    const nextPageToken = data.query_context || null;
+
+    // 将数组格式的记录转换为 { record_id, fields: { ... } } 格式
+    // fieldDefs 是字段名字符串数组: ["序号", "工程分类", ...]
+    for (let i = 0; i < rawRecords.length; i++) {
+      const values = rawRecords[i];
+      const fields = {};
+      for (let j = 0; j < fieldDefs.length && j < values.length; j++) {
+        const fieldName = typeof fieldDefs[j] === "string" ? fieldDefs[j] : (fieldDefs[j].field_name || fieldDefs[j].name || `field_${j}`);
+        fields[fieldName] = values[j];
+      }
+      allRecords.push({
+        record_id: recordIds[i] || `unknown_${i}`,
+        fields,
+      });
     }
 
-    allRecords.push(...records);
-    pageToken = result.page_token || result.has_more ? result.page_token : null;
+    pageToken = hasMore && nextPageToken ? nextPageToken : null;
   } while (pageToken);
 
   return allRecords;
@@ -268,4 +286,42 @@ export function writeExactMatches(baseToken, detailTableId, exactMatches) {
   }
 
   return { succeeded, failed };
+}
+
+/**
+ * 批量入库到独立价格库表
+ * @param {string} priceBaseToken - 价格库多维表 token
+ * @param {string} priceTableId - 价格库表 table_id
+ * @param {Array} records - 入库数据 [{ 项目名称, 工程分类, 项目特征, 单位, 综合单价, 备注, 来源 }]
+ * @returns {{ succeeded: number, failed: number, errors: Array }}
+ */
+export function batchWriteToPriceLibrary(priceBaseToken, priceTableId, records) {
+  const fields = ["项目名称", "工程分类", "项目特征", "单位", "综合单价", "备注", "来源"];
+  const rows = records.map((r) => [
+    r.项目名称,
+    r.工程分类 ? [r.工程分类] : null,
+    r.项目特征 || null,
+    r.单位 ? [r.单位] : null,
+    r.综合单价 || 0,
+    r.备注 || null,
+    r.来源 ? [r.来源] : null,
+  ]);
+
+  try {
+    const result = execLarkCli([
+      "base", "+record-batch-create",
+      "--base-token", priceBaseToken,
+      "--table-id", priceTableId,
+      "--json", JSON.stringify({ fields, rows }),
+      "--format", "json",
+    ]);
+
+    if (result.ok !== false) {
+      const created = result.data?.data || result.data?.records || [];
+      return { succeeded: created.length, failed: 0, errors: [] };
+    }
+    return { succeeded: 0, failed: records.length, errors: [{ error: result.error?.message || "未知错误" }] };
+  } catch (err) {
+    return { succeeded: 0, failed: records.length, errors: [{ error: err.message }] };
+  }
 }

@@ -133,7 +133,7 @@ function buildTemplateData(raw, vatRate = 0.03) {
     工程编号: raw.工程编号,
     编制日期: raw.编制日期,
     编制人员: raw.编制人员,
-    联系邮箱: raw.联系邮箱,
+    联系邮箱: (raw.联系邮箱 || "").replace(/\[([^\]]+)\]\(mailto:[^\)]+\)/g, "$1"),
     logo_url: raw.logo_url || "",
     hasItems: items.length > 0,
     summary,
