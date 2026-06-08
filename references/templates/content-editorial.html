@@ -12,8 +12,8 @@
     __PAGE_RULES__
 
     /* 总价表 */
-    .summary-page { page-break-after: always; padding: 0 60px; min-height: 100vh; display: flex; flex-direction: column; }
-    .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; padding-top: 40px; }
+    .summary-page { page-break-after: always; padding: 0 60px; height: 100vh; display: flex; flex-direction: column; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-start; padding-top: 40px; }
     .page-title { font-size: 24px; font-weight: 300; letter-spacing: 0.02em; }
     .page-logo { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; color: var(--text-muted, #888); letter-spacing: 0.18em; text-transform: uppercase; }
     .summary-subtitle { font-size: 14px; font-weight: 500; padding: 8px 0; border-top: 1.5px solid var(--primary, #1a1a1a); border-bottom: 1px solid var(--border-light, #e0e0e0); margin-bottom: 16px; }
@@ -79,13 +79,13 @@
       <div class="page-logo">R M</div>
     </div>
     <div class="summary-subtitle">工程量清单总价表</div>
-    <table class="summary-table">
+    <table class="summary-table" style="flex:1;">
       <thead><tr><th style="width:40px">序号</th><th>名称</th><th style="width:120px;text-align:right">金额</th></tr></thead>
       <tbody>
         {{#each summary}}<tr><td>{{this.序号}}</td><td>{{this.名称}}</td><td>{{formatCurrency this.金额}}</td></tr>{{/each}}
       </tbody>
     </table>
-    <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+    <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:24px;">
       <div style="width:240px;">
         <div class="summary-total-row"><span>合计</span><span>{{formatCurrency 合计}}</span></div>
         <div class="summary-total-row"><span>增值税</span><span>{{formatCurrency 增值税}}</span></div>
