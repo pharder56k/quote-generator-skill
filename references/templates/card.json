@@ -10,14 +10,15 @@
     "--text-primary": "#0a0a0a",
     "--text-muted": "#888888",
     "--border-light": "#e0e0e0",
+    "--border-accent": "#e8740c",
     "--bg-page": "#f5f5f5",
     "--bg-accent-light": "#f8f8f8",
-    "--remark-color": "#cc0000",
+    "--remark-color": "#e8740c",
     "--accent-on": "#ffffff",
     "--table-style": "border",
     "--page-mode": "screen",
     "--cover-bg": "#f5f5f5",
     "--card-bg": "#ffffff"
   },
-  "pageCSS": "@page { size: A4; margin: 0 0 0 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; } }"
+  "pageCSS": "@page { size: A4; margin: 40px 0 40px 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; } }"
 }

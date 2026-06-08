@@ -216,10 +216,6 @@ metadata:
 2. Swiss IKB Zebra — 同上 + 内容明细行斑马纹（白/浅蓝交替）
 3. B&W — 白底封面 + 浅灰强调，适合黑白打印
 4. B&W Zebra — 同上 + 内容明细行斑马纹（白/浅灰交替）
-5. Editorial — 编辑式：左侧色块 + 全宽深色分类标题，杂志版式
-6. Editorial B&W — 同上黑白打印版
-7. Card — 卡片式：浅灰背景 + 白色卡片容器，现代 UI 风格
-8. Card B&W — 同上黑白打印版
 ```
 
 如果用户回复中包含明确的模板名称或编号，直接使用对应模板：
@@ -227,10 +223,8 @@ metadata:
 - `swiss-ikb-zebra` — Swiss IKB Zebra
 - `bw` — B&W 黑白打印版
 - `bw-zebra` — B&W Zebra 黑白打印斑马纹版
-- `editorial` — Editorial 编辑式
-- `editorial-bw` — Editorial B&W 黑白打印版
-- `card` — Card 卡片式
-- `card-bw` — Card B&W 黑白打印版
+
+> **开发中（暂不对外提供）：** Editorial / Editorial B&W / Card / Card B&W 四个模板代码已存在，待用户后续修改完善后启用。如用户主动要求使用这些模板，可执行 `node scripts/render.js --template editorial` 等命令，但优先推荐上述 4 个已上线模板。
 
 ### Step 6: 渲染 PDF
 
