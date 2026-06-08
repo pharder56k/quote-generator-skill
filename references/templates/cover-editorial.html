@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>封面 — {{项目名称}}</title>
+  <style>
+    __FONT_CSS__
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: #ffffff; }
+    body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 12px; background: #ffffff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { size: A4; margin: 0; }
+    .cover {
+      width: 100%;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      overflow: hidden;
+    }
+    .cover-sidebar {
+      background: var(--primary, #1a1a1a);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .cover-sidebar .cover-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 72px;
+      font-weight: 500;
+      color: var(--accent-on, #fff);
+      opacity: 0.3;
+      writing-mode: vertical-lr;
+      letter-spacing: 0.05em;
+    }
+    .cover-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 60px 48px 48px;
+    }
+    .cover-top { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted, #888); }
+    .cover-main { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .cover-title {
+      font-size: 38px;
+      font-weight: 200;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--text-primary, #0a0a0a);
+      margin-bottom: 16px;
+    }
+    .cover-subtitle {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-muted, #888);
+      letter-spacing: -0.005em;
+    }
+    .cover-bottom {
+      border-top: 1px solid var(--border-light, #e0e0e0);
+      padding-top: 24px;
+    }
+    .cover-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 40px;
+    }
+    .cover-info-row {
+      font-size: 13px;
+      display: flex;
+      align-items: baseline;
+    }
+    .cover-info-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      min-width: 72px;
+    }
+    .cover-info-value {
+      border-bottom: 1px solid var(--border-light, #e0e0e0);
+      padding-bottom: 2px;
+      margin-left: 8px;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <div class="cover-sidebar">
+      <div class="cover-num">报价</div>
+    </div>
+    <div class="cover-content">
+      <div class="cover-top">RM DESIGN</div>
+      <div class="cover-main">
+        <div class="cover-title">工程量清单<br>报价表</div>
+        <div class="cover-subtitle">Price List — RM Design</div>
+      </div>
+      <div class="cover-bottom">
+        <div class="cover-info-grid">
+          <div class="cover-info-row">
+            <span class="cover-info-label">工程名称</span>
+            <span class="cover-info-value">{{项目名称}}</span>
+          </div>
+          <div class="cover-info-row">
+            <span class="cover-info-label">工程编号</span>
+            <span class="cover-info-value">{{工程编号}}</span>
+          </div>
+          <div class="cover-info-row">
+            <span class="cover-info-label">编制日期</span>
+            <span class="cover-info-value">{{编制日期}}</span>
+          </div>
+          {{#if 编制人员}}
+          <div class="cover-info-row">
+            <span class="cover-info-label">编制人员</span>
+            <span class="cover-info-value">{{编制人员}}</span>
+          </div>
+          {{/if}}
+          {{#if 联系邮箱}}
+          <div class="cover-info-row">
+            <span class="cover-info-label">联系邮箱</span>
+            <span class="cover-info-value">{{联系邮箱}}</span>
+          </div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>工程量清单报价表 — {{项目名称}}</title>
+  <style>
+    __FONT_CSS__
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: var(--page-bg, #fff); }
+    body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 12px; color: var(--text-primary, #1a1a1a); line-height: 1.5; }
+
+    __PAGE_RULES__
+
+    /* 总价表 */
+    .summary-page { page-break-after: always; padding: 0 60px; min-height: 100vh; display: flex; flex-direction: column; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; padding-top: 40px; }
+    .page-title { font-size: 24px; font-weight: 300; letter-spacing: 0.02em; }
+    .page-logo { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; color: var(--text-muted, #888); letter-spacing: 0.18em; text-transform: uppercase; }
+    .summary-subtitle { font-size: 14px; font-weight: 500; padding: 8px 0; border-top: 1.5px solid var(--primary, #1a1a1a); border-bottom: 1px solid var(--border-light, #e0e0e0); margin-bottom: 16px; }
+    .summary-table { width: 100%; border-collapse: collapse; }
+    .summary-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted, #888); text-align: left; padding: 8px 0; border-bottom: 1.5px solid var(--primary, #1a1a1a); }
+    .summary-table td { font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--border-light, #e0e0e0); }
+    .summary-table td:last-child { text-align: right; }
+    .summary-total-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+    .summary-total-row.grand { font-weight: 700; font-size: 15px; color: var(--primary, #1a1a1a); border-top: 1.5px solid var(--primary, #1a1a1a); padding-top: 8px; }
+
+    /* 明细页 — 编辑式 */
+    .detail-section { padding: 0 60px; }
+    .detail-table { width: 100%; border-collapse: collapse; }
+    .detail-table thead { display: table-header-group; }
+
+    /* 表头 */
+    .detail-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted, #888); text-align: left; padding: 8px 0 6px; border-bottom: 1.5px solid var(--primary, #1a1a1a); }
+    .detail-table th.num { text-align: right; }
+    .page-header-row th { border: none; padding: 0; }
+    .detail-subheader { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted, #888); padding: 6px 0 8px; border-bottom: 1px solid var(--border-light, #e0e0e0); margin-bottom: 8px; display: flex; justify-content: space-between; }
+
+    /* 分类行 — 深色全宽 */
+    .cat-row td { background: var(--primary, #1a1a1a); color: var(--accent-on, #fff); padding: 10px 16px; font-weight: 600; font-size: 13px; border-bottom: 3px solid var(--primary, #1a1a1a); }
+    .cat-row { page-break-before: always; }
+    .cat-row:first-child { page-break-before: auto; }
+    .cat-row td[colspan="6"] { padding-left: 16px; }
+    .cat-label { display: flex; align-items: baseline; gap: 16px; }
+    .cat-num { font-family: 'JetBrains Mono', monospace; font-size: 36px; font-weight: 500; opacity: 0.4; line-height: 1; }
+    .cat-text { display: flex; flex-direction: column; gap: 2px; }
+    .cat-en { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.6; }
+    .cat-zh { font-size: 16px; font-weight: 600; }
+
+    /* 数据行 */
+    .detail-table td { font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--border-light, #e0e0e0); vertical-align: top; }
+    .detail-table td:first-child { width: 40px; text-align: center; }
+    .detail-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .detail-table td:nth-child(3), .detail-table th:nth-child(3),
+    .detail-table td:nth-child(4), .detail-table th:nth-child(4) { text-align: center; }
+    .item-name { font-weight: 500; }
+    .item-spec { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--text-muted, #888); margin-top: 2px; line-height: 1.4; }
+    .item-remark { font-size: 11px; font-weight: 700; color: var(--remark-color, #c00); margin-top: 2px; }
+
+    /* 小计行 */
+    .subtotal-row td { font-weight: 600; border-top: 1.5px solid var(--primary, #1a1a1a); border-bottom: none; padding-top: 10px; }
+
+    /* 表头分隔线 */
+    .header-separator td { height: auto; padding: 0; border: none; font-size: 0; line-height: 0; }
+    .sep-line { display: block; height: 1px; background: var(--primary, #1a1a1a); }
+
+    /* 斑马纹 */
+    body[data-table-style="zebra"] .detail-table td { background-color: transparent; }
+    body[data-table-style="zebra"] .detail-table tbody tr.stripe td { background-color: var(--bg-accent-light, #f5f5f5); }
+
+    @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+  </style>
+</head>
+<body data-table-style="{{tableStyle}}">
+
+  {{#if hasItems}}
+  <div class="summary-page">
+    <div class="page-header">
+      <div class="page-title">工程量清单报价表</div>
+      <div class="page-logo">R M</div>
+    </div>
+    <div class="summary-subtitle">工程量清单总价表</div>
+    <table class="summary-table">
+      <thead><tr><th style="width:40px">序号</th><th>名称</th><th style="width:120px;text-align:right">金额</th></tr></thead>
+      <tbody>
+        {{#each summary}}<tr><td>{{this.序号}}</td><td>{{this.名称}}</td><td>{{formatCurrency this.金额}}</td></tr>{{/each}}
+      </tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+      <div style="width:240px;">
+        <div class="summary-total-row"><span>合计</span><span>{{formatCurrency 合计}}</span></div>
+        <div class="summary-total-row"><span>增值税</span><span>{{formatCurrency 增值税}}</span></div>
+        <div class="summary-total-row grand"><span>总计</span><span>{{formatCurrency 总计}}</span></div>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+
+  {{#if hasItems}}
+  <div class="detail-section">
+    <table class="detail-table">
+      <thead>
+        <tr class="page-header-row">
+          <th colspan="6" style="padding:0;border:none;">
+            <div class="page-header" style="margin-bottom:0;padding-top:40px;">
+              <div class="page-title">工程量清单报价表</div>
+              <div class="page-logo">R M</div>
+            </div>
+            <div class="detail-subheader">
+              <span>工程名称：{{项目名称}}</span>
+              <span>工程编号：{{工程编号}}</span>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <th style="width:40px">序号</th>
+          <th>项目名称及项目特征</th>
+          <th style="width:50px">单位</th>
+          <th class="num" style="width:65px">数量</th>
+          <th class="num" style="width:85px">综合单价</th>
+          <th class="num" style="width:90px">合价</th>
+        </tr>
+        <tr class="header-separator"><td colspan="6"><div class="sep-line"></div></td></tr>
+      </thead>
+      <tbody>
+        {{#each detailRows}}
+        {{#if this.isCategory}}
+        <tr class="cat-row">
+          <td colspan="6">
+            <div class="cat-label">
+              <span class="cat-num">{{this.序号}}</span>
+              <div class="cat-text">
+                <span class="cat-en">{{this.英文名称}}</span>
+                <span class="cat-zh">{{this.项目名称}}</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {{else if this.isSubtotal}}
+        <tr class="subtotal-row">
+          <td colspan="5" style="text-align:right">小计</td>
+          <td class="num">{{formatCurrency this.合价}}</td>
+        </tr>
+        {{else}}
+        <tr{{#if this.isStripe}} class="stripe"{{/if}}>
+          <td>{{this.序号}}</td>
+          <td>
+            <div class="item-name">{{this.项目名称}}</div>
+            {{#if this.项目特征}}<div class="item-spec">{{nl2br this.项目特征}}</div>{{/if}}
+            {{#if this.备注}}<div class="item-remark">{{nl2br this.备注}}</div>{{/if}}
+          </td>
+          <td>{{this.单位}}</td>
+          <td class="num">{{this.数量}}</td>
+          <td class="num">{{formatCurrency this.综合单价}}</td>
+          <td class="num">{{formatCurrency this.合价}}</td>
+        </tr>
+        {{/if}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  {{/if}}
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "Editorial",
+  "description": "编辑式排版：左侧色块封面 + 全宽深色分类标题，杂志版式风格",
+  "screen": true,
+  "coverTemplate": "cover-editorial.html",
+  "contentTemplate": "content-editorial.html",
+  "pdfMargin": { "top": "0", "bottom": "0", "left": "0", "right": "0" },
+  "css": {
+    "--primary": "#1a1a1a",
+    "--text-primary": "#0a0a0a",
+    "--text-muted": "#888888",
+    "--border-light": "#e0e0e0",
+    "--bg-page": "#ffffff",
+    "--bg-accent-light": "#f5f5f5",
+    "--remark-color": "#cc0000",
+    "--accent-on": "#ffffff",
+    "--table-style": "border",
+    "--page-mode": "screen",
+    "--cover-bg": "#1a1a1a"
+  },
+  "pageCSS": "@page { size: A4; margin: 0 0 0 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; } }"
+}

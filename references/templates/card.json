@@ -1,0 +1,23 @@
+{
+  "name": "Card",
+  "description": "卡片式排版：浅灰背景，白色卡片容器，现代 UI 风格，适合屏幕阅读",
+  "screen": true,
+  "coverTemplate": "cover-card.html",
+  "contentTemplate": "content-card.html",
+  "pdfMargin": { "top": "0", "bottom": "0", "left": "0", "right": "0" },
+  "css": {
+    "--primary": "#1a1a1a",
+    "--text-primary": "#0a0a0a",
+    "--text-muted": "#888888",
+    "--border-light": "#e0e0e0",
+    "--bg-page": "#f5f5f5",
+    "--bg-accent-light": "#f8f8f8",
+    "--remark-color": "#cc0000",
+    "--accent-on": "#ffffff",
+    "--table-style": "border",
+    "--page-mode": "screen",
+    "--cover-bg": "#f5f5f5",
+    "--card-bg": "#ffffff"
+  },
+  "pageCSS": "@page { size: A4; margin: 0 0 0 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; } }"
+}

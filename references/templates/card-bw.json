@@ -1,0 +1,23 @@
+{
+  "name": "Card B&W",
+  "description": "卡片式排版 黑白打印版：白底卡片，纯黑白灰配色，适合激光/喷墨打印输出",
+  "screen": true,
+  "coverTemplate": "cover-card-bw.html",
+  "contentTemplate": "content-card.html",
+  "pdfMargin": { "top": "0", "bottom": "0", "left": "0", "right": "0" },
+  "css": {
+    "--primary": "#0a0a0a",
+    "--text-primary": "#0a0a0a",
+    "--text-muted": "#888888",
+    "--border-light": "#d0d0d0",
+    "--bg-page": "#ffffff",
+    "--bg-accent-light": "#f0f0f0",
+    "--remark-color": "#333333",
+    "--accent-on": "#ffffff",
+    "--table-style": "border",
+    "--page-mode": "screen",
+    "--cover-bg": "#ffffff",
+    "--card-bg": "#ffffff"
+  },
+  "pageCSS": "@page { size: A4; margin: 0 0 0 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; } }"
+}
