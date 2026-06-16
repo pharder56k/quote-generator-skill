@@ -14,9 +14,9 @@
     "--bg-accent-light": "#f0f0f0",
     "--remark-color": "#333333",
     "--accent-on": "#ffffff",
-    "--table-style": "border",
+    "--table-style": "swiss",
     "--page-mode": "screen",
     "--cover-bg": "#ffffff"
   },
-  "pageCSS": "@page { size: A4; margin: 0 0 0 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; } }"
+  "pageCSS": "@page { size: A4; margin: 40px 0 40px 0; @bottom-center { content: counter(page); font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #737373; letter-spacing: 0.14em; } }"
 }
