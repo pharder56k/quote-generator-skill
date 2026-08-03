@@ -199,8 +199,15 @@ async function main() {
   }
 
   const vatRate = (() => {
-    const v = parseFloat(params["vat-rate"]);
-    return isNaN(v) ? 0.03 : v;
+    if (params["vat-rate"] !== undefined) {
+      const v = parseFloat(params["vat-rate"]);
+      return isNaN(v) ? 0 : v;
+    }
+    if (raw.税率 !== undefined && raw.税率 !== null && raw.税率 !== "") {
+      const v = parseFloat(raw.税率);
+      if (!isNaN(v)) return v / 100;
+    }
+    return 0.03;
   })();
   const data = buildTemplateData(raw, vatRate);
 
