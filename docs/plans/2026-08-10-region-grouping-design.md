@@ -66,6 +66,10 @@ CLI 参数 `--group-by area|category`，默认 `category`。
 - 不依赖数据中的序号字段，新旧数据统一重新生成（旧数据按标准顺序填写的输出不变）
 - 工程分类模式的分组顺序同步改为标准 13 类顺序（原为出现顺序，正常数据下输出一致）
 
+## 区域英文翻译（2026-08-10 追加）
+
+区域模式分组标题英文处由固定 `AREA` 改为区域名对应的英文翻译（如 玄关→Foyer、客厅→Living Room、主卧→Master Bedroom、全屋→Whole House），内置 29 个常见区域映射，未收录区域名兑底显示 `AREA`。映射表位于 render.js `regionEnNames`，新区域名可随时补充。
+
 ## 测试
 
 - 回归：`node scripts/render.js --test`（category）→ 6 列、双语标题、小计均与改造前一致
