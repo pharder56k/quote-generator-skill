@@ -155,7 +155,7 @@
     .detail-table .cat-row td:first-child { text-align: left; }
     .detail-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .detail-table td.num-center { text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    /* 单位、数量列居中对齐 */
+    /* 单位、数量列居中对齐（工程分类模式 6 列：序号/名称/单位/数量/单价/合价） */
     .detail-table td:nth-child(3),
     .detail-table th:nth-child(3),
     .detail-table td:nth-child(4),
@@ -165,6 +165,25 @@
       font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
       font-size: 12px;
     }
+
+    /* 区域模式 7 列：序号/工程分类/名称/单位/数量/单价/合价 — 列偏移 +1 */
+    body[data-group-by="area"] .detail-table td:nth-child(4),
+    body[data-group-by="area"] .detail-table th:nth-child(4),
+    body[data-group-by="area"] .detail-table td:nth-child(5),
+    body[data-group-by="area"] .detail-table th:nth-child(5) { text-align: center; }
+    body[data-group-by="area"] .detail-table td:nth-child(4) {
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 12px;
+    }
+    /* 工程分类列（区域模式下第 2 列） */
+    body[data-group-by="area"] .detail-table td:nth-child(2) {
+      width: 92px;
+      white-space: nowrap;
+      text-align: center;
+      font-size: 11px;
+      color: #555;
+    }
+    body[data-group-by="area"] .detail-table th:nth-child(2) { text-align: center; }
     .detail-table .item-name { font-weight: 500; }
     .detail-table .item-spec {
       font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -197,7 +216,7 @@
     }
     .cat-row { page-break-before: always; }
     .cat-row:first-child { page-break-before: auto; }
-    .cat-row td[colspan="6"] { padding-left: 0; }
+    .cat-row td[colspan="6"], .cat-row td[colspan="7"] { padding-left: 0; }
     .cat-label { display: flex; align-items: center; gap: 16px; }
     .cat-num {
       font-family: 'JetBrains Mono', monospace;
@@ -235,7 +254,7 @@
     .num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
   </style>
 </head>
-<body data-table-style="{{tableStyle}}" data-page-mode="screen">
+<body data-table-style="{{tableStyle}}" data-page-mode="screen" data-group-by="{{groupByMode}}">
 
   {{#if hasItems}}
   <!-- 总价表 -->
@@ -286,7 +305,7 @@
     <table class="detail-table">
       <thead>
         <tr class="page-header-row">
-          <th colspan="6" style="padding:0;border:none;">
+          <th colspan="{{#if isAreaMode}}7{{else}}6{{/if}}" style="padding:0;border:none;">
             <div class="page-header">
               <div class="page-title">工程量清单报价表</div>
               <div class="page-logo">
@@ -301,19 +320,20 @@
         </tr>
         <tr>
           <th style="width:50px">序号</th>
+          {{#if isAreaMode}}<th style="width:92px">工程分类</th>{{/if}}
           <th>项目名称及项目特征</th>
           <th style="width:50px">单位</th>
           <th class="num-center" style="width:65px">数量</th>
           <th class="num" style="width:85px">综合单价</th>
           <th class="num" style="width:90px">合价</th>
         </tr>
-        <tr class="header-separator"><td colspan="6"><div class="sep-line"></div></td></tr>
+        <tr class="header-separator"><td colspan="{{#if isAreaMode}}7{{else}}6{{/if}}"><div class="sep-line"></div></td></tr>
       </thead>
       <tbody>
         {{#each detailRows}}
         {{#if this.isCategory}}
         <tr class="cat-row">
-          <td colspan="6">
+          <td colspan="{{#if ../isAreaMode}}7{{else}}6{{/if}}">
             <div class="cat-label">
               <span class="cat-num">{{this.序号}}</span>
               <div class="cat-text">
@@ -325,12 +345,13 @@
         </tr>
         {{else if this.isSubtotal}}
         <tr class="subtotal-row">
-          <td colspan="5" style="text-align:right">小计</td>
+          <td colspan="{{#if ../isAreaMode}}6{{else}}5{{/if}}" style="text-align:right">小计</td>
           <td class="num">{{formatCurrency this.合价}}</td>
         </tr>
         {{else}}
         <tr{{#if this.isStripe}} class="stripe"{{/if}}>
           <td>{{this.序号}}</td>
+          {{#if ../isAreaMode}}<td>{{this.工程分类}}</td>{{/if}}
           <td>
             <div class="item-name">{{this.项目名称}}</div>
             {{#if this.项目特征}}<div class="item-spec">{{nl2br this.项目特征}}</div>{{/if}}
