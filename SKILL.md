@@ -6,7 +6,7 @@ metadata:
   requires:
     bins: ["node"]
   projectPath: "/Volumes/NVME_2TB/quote-generator-skill"
-group: harder自制
+group: 文档
 ---
 
 # 全案设计报价系统
