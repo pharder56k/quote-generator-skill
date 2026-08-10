@@ -58,11 +58,18 @@ function parseArgs() {
   return params;
 }
 
+// 标准工程分类顺序（用于工程分类模式的序号前缀与分组顺序）
+const CATEGORY_ORDER = [
+  "措施项目", "拆除工程", "砌筑工程", "混凝土及钢筋混凝土工程", "金属结构工程",
+  "防水工程", "保温隔热工程", "楼地面装饰工程", "墙柱面装饰与隔断工程", "天棚工程",
+  "油漆涂料工程", "其他装饰工程", "安装工程",
+];
+
 // --- 按分类分组（工程分类 / 区域），生成总价表和分页数据 ---
 function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类") {
   const items = raw.items || [];
 
-  // 按分类分组（groupBy: 工程分类 / 区域）
+  // 按分类分组（groupBy: 工程分类 / 区域），组内保持飞书记录顺序
   const grouped = {};
   for (const item of items) {
     const cat = item[groupBy] || "其他";
@@ -70,18 +77,24 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类") {
     grouped[cat].push(item);
   }
 
-  // 每个分类内按序号排序（1.1, 1.2, 2.1...）
-  const sortSeq = (a, b) => {
-    const pa = (a.序号 || "").split(".").map(Number);
-    const pb = (b.序号 || "").split(".").map(Number);
-    return (pa[0] - pb[0]) || (pa[1] - pb[1]);
-  };
-  for (const cat in grouped) {
-    grouped[cat].sort(sortSeq);
+  // 分组顺序：
+  // - 工程分类模式：按标准 13 类顺序，未列出的自定义分类按出现顺序排在后面
+  // - 区域模式：按首次出现顺序
+  const groupByArea = groupBy === "区域";
+  let sortedCats;
+  if (groupByArea) {
+    sortedCats = Object.keys(grouped);
+  } else {
+    const customCats = Object.keys(grouped).filter((c) => !CATEGORY_ORDER.includes(c));
+    sortedCats = [...CATEGORY_ORDER.filter((c) => grouped[c]), ...customCats];
   }
 
-  // 保持分类顺序（按首次出现顺序；分组键直接取自 grouped，避免缺失值被 filter 掉导致分组丢失）
-  const sortedCats = Object.keys(grouped);
+  // 分组序号：区域模式 = 分组顺序；工程分类模式 = 标准分类序号（1 措施 … 13 安装，自定义顺延）
+  const groupNumOf = (cat) => {
+    if (groupByArea) return sortedCats.indexOf(cat) + 1;
+    const stdIdx = CATEGORY_ORDER.indexOf(cat);
+    return stdIdx >= 0 ? stdIdx + 1 : sortedCats.indexOf(cat) + 1;
+  };
 
   // 总价表数据
   let 合计 = 0;
@@ -108,28 +121,24 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类") {
   };
 
   // 区域模式：分类标题使用顺序编号 + 固定 AREA 英文标签；工程分类模式保持原逻辑
-  const groupByArea = groupBy === "区域";
 
   for (const cat of sortedCats) {
     const catItems = grouped[cat];
-    const catNum = groupByArea
-      ? String(sortedCats.indexOf(cat) + 1).padStart(2, "0")
-      : (catItems[0]?.序号?.split(".")[0] || "").padStart(2, "0");
+    const catNum = String(groupNumOf(cat)).padStart(2, "0");
     const catTotal = catItems.reduce((sum, i) => sum + (i.合价 || 0), 0);
 
     detailRows.push({ isCategory: true, 序号: catNum, 项目名称: cat, 英文名称: groupByArea ? "AREA" : (catEnNames[cat] || "") });
-    let stripeIdx = 0;
-    for (const item of catItems) {
+    catItems.forEach((item, i) => {
+      // 序号自动生成：分组序号.组内序号（1.1, 1.2, … 1.10），不依赖数据中的序号字段
       detailRows.push({
         isCategory: false, isSubtotal: false,
-        isStripe: stripeIdx % 2 === 1,
-        序号: item.序号, 工程分类: item.工程分类 || "",
+        isStripe: i % 2 === 1,
+        序号: `${groupNumOf(cat)}.${i + 1}`, 工程分类: item.工程分类 || "",
         项目名称: item.项目名称, 项目特征: item.项目特征,
         备注: item.备注 || "",
         单位: item.单位, 数量: item.数量, 综合单价: item.综合单价, 合价: item.合价,
       });
-      stripeIdx++;
-    }
+    });
     detailRows.push({ isSubtotal: true, 合价: Math.round(catTotal * 100) / 100 });
   }
 
