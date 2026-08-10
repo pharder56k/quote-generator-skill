@@ -155,9 +155,9 @@
     .detail-table .cat-row td:first-child { text-align: left; }
     .detail-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .detail-table td.num-center { text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    /* 单位列右对齐贴近综合单价，数量列居中对齐（工程分类模式 6 列：序号/名称/单位/数量/单价/合价） */
+    /* 单位、数量列居中对齐（工程分类模式 6 列：序号/名称/单位/数量/单价/合价） */
     .detail-table td:nth-child(3),
-    .detail-table th:nth-child(3) { text-align: right; }
+    .detail-table th:nth-child(3),
     .detail-table td:nth-child(4),
     .detail-table th:nth-child(4) { text-align: center; }
     /* 单位列用 Inter，避免 JetBrains Mono 等宽字体让 m/kg 等字母变形 */
@@ -166,9 +166,9 @@
       font-size: 12px;
     }
 
-    /* 区域模式 7 列：序号/工程分类/名称/单位/数量/单价/合价 — 单位右对齐贴近单价，数量居中 */
+    /* 区域模式 7 列：序号/工程分类/名称/单位/数量/单价/合价 — 单位/数量居中 */
     body[data-group-by="area"] .detail-table td:nth-child(4),
-    body[data-group-by="area"] .detail-table th:nth-child(4) { text-align: right; }
+    body[data-group-by="area"] .detail-table th:nth-child(4),
     body[data-group-by="area"] .detail-table td:nth-child(5),
     body[data-group-by="area"] .detail-table th:nth-child(5) { text-align: center; }
     /* 区域模式下第 3 列是项目名称及特征：撤销基础规则的居中，统一左对齐 */
