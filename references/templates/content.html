@@ -155,22 +155,22 @@
     .detail-table .cat-row td:first-child { text-align: left; }
     .detail-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .detail-table td.num-center { text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    /* 单位、数量列居中对齐（工程分类模式 6 列：序号/名称/单位/数量/单价/合价） */
+    /* 单位、数量列：右对齐贴近综合单价（工程分类模式 6 列：序号/名称/单位/数量/单价/合价） */
     .detail-table td:nth-child(3),
     .detail-table th:nth-child(3),
     .detail-table td:nth-child(4),
-    .detail-table th:nth-child(4) { text-align: center; }
+    .detail-table th:nth-child(4) { text-align: right; }
     /* 单位列用 Inter，避免 JetBrains Mono 等宽字体让 m/kg 等字母变形 */
     .detail-table td:nth-child(3) {
       font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
       font-size: 12px;
     }
 
-    /* 区域模式 7 列：序号/工程分类/名称/单位/数量/单价/合价 — 列偏移 +1 */
+    /* 区域模式 7 列：序号/工程分类/名称/单位/数量/单价/合价 — 列偏移 +1，单位/数量右对齐贴近单价 */
     body[data-group-by="area"] .detail-table td:nth-child(4),
     body[data-group-by="area"] .detail-table th:nth-child(4),
     body[data-group-by="area"] .detail-table td:nth-child(5),
-    body[data-group-by="area"] .detail-table th:nth-child(5) { text-align: center; }
+    body[data-group-by="area"] .detail-table th:nth-child(5) { text-align: right; }
     /* 区域模式下第 3 列是项目名称及特征：撤销基础规则的居中，统一左对齐 */
     body[data-group-by="area"] .detail-table td:nth-child(3) { text-align: left; }
     body[data-group-by="area"] .detail-table td:nth-child(4) {
@@ -179,7 +179,6 @@
     }
     /* 工程分类列（区域模式下第 2 列） */
     body[data-group-by="area"] .detail-table td:nth-child(2) {
-      width: 92px;
       white-space: nowrap;
       text-align: center;
       font-size: 11px;
@@ -328,13 +327,13 @@
           </th>
         </tr>
         <tr>
-          <th style="width:50px">序号</th>
-          {{#if isAreaMode}}<th style="width:92px">工程分类</th>{{/if}}
+          <th style="width:42px">序号</th>
+          {{#if isAreaMode}}<th style="width:82px">工程分类</th>{{/if}}
           <th>项目名称及项目特征</th>
-          <th style="width:34px">单位</th>
-          <th class="num-center" style="width:46px">数量</th>
-          <th class="num" style="width:85px">综合单价</th>
-          <th class="num" style="width:90px">合价</th>
+          <th style="width:30px">单位</th>
+          <th style="width:40px">数量</th>
+          <th class="num" style="width:82px">综合单价</th>
+          <th class="num" style="width:88px">合价</th>
         </tr>
         <tr class="header-separator"><td colspan="{{#if isAreaMode}}7{{else}}6{{/if}}"><div class="sep-line"></div></td></tr>
       </thead>
@@ -367,7 +366,7 @@
             {{#if this.备注}}<div class="item-remark">{{nl2br this.备注}}</div>{{/if}}
           </td>
           <td>{{this.单位}}</td>
-          <td class="num-center">{{this.数量}}</td>
+          <td>{{this.数量}}</td>
           <td class="num">{{formatCurrency this.综合单价}}</td>
           <td class="num">{{formatCurrency this.合价}}</td>
         </tr>
