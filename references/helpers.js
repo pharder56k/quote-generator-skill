@@ -4,10 +4,10 @@
  */
 
 export function registerHelpers(Handlebars) {
-  // 格式化货币
+  // 格式化货币（四舍五入为整数，不带小数）
   Handlebars.registerHelper("formatCurrency", (value) => {
     if (typeof value !== "number") return value;
-    return `¥${value.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}`;
+    return `¥${value.toLocaleString("zh-CN", { maximumFractionDigits: 0 })}`;
   });
 
   // 条件：值大于 0
