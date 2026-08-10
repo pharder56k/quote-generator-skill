@@ -120,7 +120,7 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类") {
     "安装工程": "MEP Installation",
   };
 
-  // 区域英文名映射（区域模式分类标题中英对照；未收录的区域名兜底显示 AREA）
+  // 区域英文名兜底映射（仅当数据未提供本次翻译时使用；每次报价应通过 region_names 传入 Agent 实时翻译）
   const regionEnNames = {
     "玄关": "Foyer", "客厅": "Living Room", "餐厅": "Dining Room", "厨房": "Kitchen",
     "主卧": "Master Bedroom", "次卧": "Secondary Bedroom", "儿童房": "Children's Room",
@@ -133,14 +133,20 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类") {
     "全屋": "Whole House", "公共区域": "Common Area", "其他": "Other",
   };
 
-  // 区域模式：分类标题使用顺序编号 + 固定 AREA 英文标签；工程分类模式保持原逻辑
+  // 区域模式：分类标题使用顺序编号 + 区域英文翻译；工程分类模式保持原逻辑
+
+  // 区域英文翻译优先级：数据自带 region_names（每次报价由 Agent 实时翻译）> 内置兜底映射 > "AREA"
+  const rawRegionNames = raw.region_names || {};
+  const regionEn = (cat) => (groupByArea
+    ? (rawRegionNames[cat] || regionEnNames[cat] || "AREA")
+    : (catEnNames[cat] || ""));
 
   for (const cat of sortedCats) {
     const catItems = grouped[cat];
     const catNum = String(groupNumOf(cat)).padStart(2, "0");
     const catTotal = catItems.reduce((sum, i) => sum + (i.合价 || 0), 0);
 
-    detailRows.push({ isCategory: true, 序号: catNum, 项目名称: cat, 英文名称: groupByArea ? (regionEnNames[cat] || "AREA") : (catEnNames[cat] || "") });
+    detailRows.push({ isCategory: true, 序号: catNum, 项目名称: cat, 英文名称: regionEn(cat) });
     catItems.forEach((item, i) => {
       // 序号自动生成：分组序号.组内序号（1.1, 1.2, … 1.10），不依赖数据中的序号字段
       detailRows.push({

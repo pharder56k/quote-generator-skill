@@ -68,7 +68,11 @@ CLI 参数 `--group-by area|category`，默认 `category`。
 
 ## 区域英文翻译（2026-08-10 追加）
 
-区域模式分组标题英文处由固定 `AREA` 改为区域名对应的英文翻译（如 玄关→Foyer、客厅→Living Room、主卧→Master Bedroom、全屋→Whole House），内置 29 个常见区域映射，未收录区域名兑底显示 `AREA`。映射表位于 render.js `regionEnNames`，新区域名可随时补充。
+区域模式分组标题英文处由固定 `AREA` 改为区域名对应的英文翻译。区域名每个项目不同，**不能写死**：
+
+- **主路径（每次动态翻译）**：SKILL.md Step 5.7 — Agent 每次渲染前收集本次全部区域名，用 LLM 实时翻译，写入渲染数据 `region_names`（如 `{"阳光房": "Sunroom"}`）
+- **优先级**：`region_names`（本次数据）> 内置 `regionEnNames` 兜底映射（29 个常见区域）> `AREA`
+- render.js `regionEnNames` 仅作兜底，不再作为主翻译来源
 
 ## 测试
 
