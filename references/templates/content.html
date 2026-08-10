@@ -177,8 +177,8 @@
       font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
       font-size: 12px;
     }
-    /* 工程分类列（区域模式下第 2 列） */
-    body[data-group-by="area"] .detail-table td:nth-child(2) {
+    /* 工程分类列（区域模式，专用 class 避免误伤小计行的第 2 个单元格） */
+    body[data-group-by="area"] .detail-table td.item-cat {
       white-space: nowrap;
       text-align: center;
       font-size: 11px;
@@ -251,6 +251,12 @@
       border-bottom: none;
       padding-top: 12px;
       color: var(--primary);
+    }
+    /* 小计金额：与明细金额同字号并加粗（Inter 700） */
+    .subtotal-row td.num {
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
     }
 
     /* 工具类 */
@@ -333,7 +339,7 @@
           <th style="text-align:center">项目名称及项目特征</th>
           <th style="width:30px">单位</th>
           <th style="width:40px">数量</th>
-          <th class="num" style="width:82px">综合单价</th>
+          <th class="num-center" style="width:82px">综合单价</th>
           <th class="num" style="width:88px">合价</th>
         </tr>
         <tr class="header-separator"><td colspan="{{#if isAreaMode}}7{{else}}6{{/if}}"><div class="sep-line"></div></td></tr>
@@ -360,7 +366,7 @@
         {{else}}
         <tr{{#if this.isStripe}} class="stripe"{{/if}}>
           <td>{{this.序号}}</td>
-          {{#if ../isAreaMode}}<td>{{this.工程分类}}</td>{{/if}}
+          {{#if ../isAreaMode}}<td class="item-cat">{{this.工程分类}}</td>{{/if}}
           <td>
             <div class="item-name">{{this.项目名称}}</div>
             {{#if this.项目特征}}<div class="item-spec">{{nl2br this.项目特征}}</div>{{/if}}
@@ -368,7 +374,7 @@
           </td>
           <td>{{this.单位}}</td>
           <td>{{this.数量}}</td>
-          <td class="num">{{formatCurrency this.综合单价}}</td>
+          <td class="num-center">{{formatCurrency this.综合单价}}</td>
           <td class="num">{{formatCurrency this.合价}}</td>
         </tr>
         {{/if}}

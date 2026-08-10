@@ -38,7 +38,7 @@ function buildFontCSS() {
 @font-face {
   font-family: 'JetBrains Mono';
   font-style: normal;
-  font-weight: 400 500;
+  font-weight: 400 700;
   font-display: swap;
   src: url(data:font/woff2;base64,${jbB64}) format('woff2');
 }`;
