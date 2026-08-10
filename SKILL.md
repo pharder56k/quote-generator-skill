@@ -113,9 +113,10 @@ group: 文档
 2. 列出表：`lark-cli base +table-list --base-token <token>`
 3. 找到 **项目信息** 和 **报价明细** 两张表的 table_id
 4. 读取项目信息：`lark-cli base +record-list --base-token <token> --table-id <项目信息table_id> --format json`
-5. 读取报价明细：`lark-cli base +record-list --base-token <token> --table-id <报价明细table_id> --format json --limit 200`
-6. 从项目信息中提取：项目名称、工程编号、编制日期、编制人员、联系邮箱、公司Logo、税率、管理费
-7. 从报价明细中提取：区域、工程分类、项目名称、项目特征、单位、数量、综合单价、合价、备注（**序号无需读取，渲染时自动生成**）
+5. 先查视图：`lark-cli base +view-list --base-token <token> --table-id <报价明细table_id>`，取默认 grid 视图（如「全部项目」）的 view_id
+6. 读取报价明细（**必须带 `--view-id`，否则返回顺序与用户在飞书界面拖拽后的顺序不一致**）：`lark-cli base +record-list --base-token <token> --table-id <报价明细table_id> --view-id <视图ID> --format json --limit 200`
+7. 从项目信息中提取：项目名称、工程编号、编制日期、编制人员、联系邮箱、公司Logo、税率、管理费
+8. 从报价明细中提取：区域、工程分类、项目名称、项目特征、单位、数量、综合单价、合价、备注（**序号无需读取，渲染时自动生成**）
 
 #### Excel 数据源
 

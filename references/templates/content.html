@@ -171,6 +171,8 @@
     body[data-group-by="area"] .detail-table th:nth-child(4),
     body[data-group-by="area"] .detail-table td:nth-child(5),
     body[data-group-by="area"] .detail-table th:nth-child(5) { text-align: center; }
+    /* 区域模式下第 3 列是项目名称及特征：撤销基础规则的居中，统一左对齐 */
+    body[data-group-by="area"] .detail-table td:nth-child(3) { text-align: left; }
     body[data-group-by="area"] .detail-table td:nth-child(4) {
       font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
       font-size: 12px;
@@ -184,13 +186,14 @@
       color: #555;
     }
     body[data-group-by="area"] .detail-table th:nth-child(2) { text-align: center; }
-    .detail-table .item-name { font-weight: 500; }
+    .detail-table .item-name { font-weight: 500; text-align: left; }
     .detail-table .item-spec {
       font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
       font-size: 11px;
       color: #737373;
       margin-top: 2px;
       line-height: 1.4;
+      text-align: left;
     }
     .detail-table .item-remark {
       font-size: 11px;
