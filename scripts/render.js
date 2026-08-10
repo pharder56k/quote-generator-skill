@@ -58,21 +58,31 @@ function parseArgs() {
   return params;
 }
 
-// 标准工程分类顺序（用于工程分类模式的序号前缀与分组顺序）
+// 标准工程分类顺序（按模板多维表选项：用于工程分类模式的序号前缀与分组顺序）
 const CATEGORY_ORDER = [
-  "措施项目", "拆除工程", "砌筑工程", "混凝土及钢筋混凝土工程", "金属结构工程",
-  "防水工程", "保温隔热工程", "楼地面装饰工程", "墙柱面装饰与隔断工程", "天棚工程",
-  "油漆涂料工程", "其他装饰工程", "安装工程",
+  "措施项目", "拆除工程", "泥瓦工程", "混凝土及钢筋混凝土工程", "金属结构工程",
+  "防水工程", "保温隔热工程", "楼地面装饰工程", "墙柱面装饰与隔断工程", "木作工程",
+  "腻子工程", "其他装饰工程", "水电安装工程",
 ];
 
+// 单选字段规范化：飞书 select 读取为数组，取第一个值
+const valOf = (v) => (Array.isArray(v) ? (v[0] || "") : (v || ""));
+
+// 费率解析：>1 视为百分比整数（3 → 3%），≤1 视为小数（0.08 → 8%）；空值返回 fallback
+function rateOf(v, fallback = 0) {
+  const n = parseFloat(v);
+  if (isNaN(n)) return fallback;
+  return n > 1 ? n / 100 : n;
+}
+
 // --- 按分类分组（工程分类 / 区域），生成总价表和分页数据 ---
-function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类") {
+function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类", managementRate = 0) {
   const items = raw.items || [];
 
   // 按分类分组（groupBy: 工程分类 / 区域），组内保持飞书记录顺序
   const grouped = {};
   for (const item of items) {
-    const cat = item[groupBy] || "其他";
+    const cat = valOf(item[groupBy]) || "其他";
     if (!grouped[cat]) grouped[cat] = [];
     grouped[cat].push(item);
   }
@@ -105,18 +115,23 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类") {
   });
 
   合计 = Math.round(合计 * 100) / 100;
-  const 增值税 = Math.round(合计 * vatRate * 100) / 100;
-  const 总计 = Math.round((合计 + 增值税) * 100) / 100;
+  // 管理费 = 工程总价（合计）× 管理费率；增值税 = (合计 + 管理费) × 税率；总计 = 合计 + 管理费 + 增值税
+  const 管理费 = Math.round(合计 * managementRate * 100) / 100;
+  const 增值税 = Math.round((合计 + 管理费) * vatRate * 100) / 100;
+  const 总计 = Math.round((合计 + 管理费 + 增值税) * 100) / 100;
 
   // 明细行（不预分页，由 CSS 自动分页）
   const detailRows = [];
 
   const catEnNames = {
-    "措施项目": "Measures", "拆除工程": "Demolition", "砌筑工程": "Masonry",
+    "措施项目": "Measures", "拆除工程": "Demolition", "泥瓦工程": "Masonry",
     "混凝土及钢筋混凝土工程": "Concrete", "金属结构工程": "Steel Structure",
     "防水工程": "Waterproofing", "保温隔热工程": "Insulation",
     "楼地面装饰工程": "Floor Finishing", "墙柱面装饰与隔断工程": "Wall Finishing",
-    "天棚工程": "Ceiling", "油漆涂料工程": "Painting", "其他装饰工程": "Other Finishing",
+    "木作工程": "Carpentry", "腻子工程": "Skimming", "其他装饰工程": "Other Finishing",
+    "水电安装工程": "MEP Installation",
+    // 旧模板分类（兼容历史数据兜底）
+    "砌筑工程": "Masonry", "天棚工程": "Ceiling", "油漆涂料工程": "Painting",
     "安装工程": "MEP Installation",
   };
 
@@ -152,7 +167,7 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类") {
       detailRows.push({
         isCategory: false, isSubtotal: false,
         isStripe: i % 2 === 1,
-        序号: `${groupNumOf(cat)}.${i + 1}`, 工程分类: item.工程分类 || "",
+        序号: `${groupNumOf(cat)}.${i + 1}`, 工程分类: valOf(item.工程分类),
         项目名称: item.项目名称, 项目特征: item.项目特征,
         备注: item.备注 || "",
         单位: item.单位, 数量: item.数量, 综合单价: item.综合单价, 合价: item.合价,
@@ -171,6 +186,7 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类") {
     hasItems: items.length > 0,
     summary,
     合计,
+    管理费,
     增值税,
     总计,
     groupByMode: groupByArea ? "area" : "category",
@@ -235,21 +251,18 @@ async function main() {
 
   const vatRate = (() => {
     if (params["vat-rate"] !== undefined) {
-      const v = parseFloat(params["vat-rate"]);
-      return isNaN(v) ? 0 : v;
+      return rateOf(params["vat-rate"], 0);
     }
-    if (raw.税率 !== undefined && raw.税率 !== null && raw.税率 !== "") {
-      const v = parseFloat(raw.税率);
-      if (!isNaN(v)) return v / 100;
-    }
-    return 0.03;
+    return rateOf(raw.税率, 0.03);
   })();
+  // 管理费率：从数据「管理费」字段读取（空值 = 0，不收取管理费）
+  const managementRate = rateOf(raw.管理费, 0);
   // 分类方式：--group-by area|category（默认 category = 按工程分类，保持原有行为）
   const groupBy = (() => {
     const g = String(params["group-by"] || "category").toLowerCase();
     return g === "area" ? "区域" : "工程分类";
   })();
-  const data = buildTemplateData(raw, vatRate, groupBy);
+  const data = buildTemplateData(raw, vatRate, groupBy, managementRate);
 
   // 加载模板样式配置
   const templateName = params.template || "swiss-ikb";

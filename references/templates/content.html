@@ -286,6 +286,12 @@
           <span>合计</span>
           <span class="summary-total-value">{{formatCurrency 合计}}</span>
         </div>
+        {{#if (gt 管理费 0)}}
+        <div class="summary-total-row">
+          <span>管理费</span>
+          <span class="summary-total-value">{{formatCurrency 管理费}}</span>
+        </div>
+        {{/if}}
         <div class="summary-total-row">
           <span>增值税</span>
           <span class="summary-total-value">{{formatCurrency 增值税}}</span>
