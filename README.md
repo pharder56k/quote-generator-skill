@@ -205,6 +205,13 @@ AI：使用模板：Swiss IKB
 | <img src="docs/previews/swiss-ikb-content-03.png" width="180"> | <img src="docs/previews/swiss-ikb-zebra-content-03.png" width="180"> | <img src="docs/previews/bw-content-03.png" width="180"> | <img src="docs/previews/bw-zebra-content-03.png" width="180"> |
 | 纯色明细行 | 白/浅蓝交替明细行 | 纯色明细行 | 白/浅灰交替明细行 |
 
+**区域分类模式内容页**（`--group-by area`）：
+
+| Swiss IKB（默认模板） |
+|:---:|
+| <img src="docs/previews/swiss-ikb-content-area-03.png" width="360"> |
+| 大分类 = 区域（中英对照标题）· 明细 7 列（序号/工程分类/名称/单位/数量/综合单价/合价）· 序号自动生成 · 金额整数显示 |
+
 ## 项目结构
 
 ```
