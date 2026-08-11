@@ -15,10 +15,23 @@
 - **专业 PDF 输出**：封面 + 总价表 + 分类明细页，自动分页
 - **Logo 支持**：自动从飞书多维表附件读取
 
+## 环境要求
+
+| 组件 | 版本要求 | 用途 |
+|------|---------|------|
+| Node.js | >= 18 | 核心运行时（渲染引擎、价格库填充） |
+| lark-cli | 最新（1.0.82+） | 飞书多维表读写、PDF 发送/上传 |
+| Playwright Chromium | 随项目安装 | HTML → PDF 渲染 |
+| Git | 任意 | 克隆仓库 |
+
+支持 macOS / Linux。Windows 可运行但需自行配置 lark-cli。
+
 ## 安装
 
+### 方式一：一键脚本（推荐）
+
 ```bash
-git clone <repo-url> quote-generator-skill
+git clone https://github.com/pharder56k/quote-generator-skill.git
 cd quote-generator-skill
 bash setup.sh
 ```
@@ -28,7 +41,83 @@ bash setup.sh
 - `npm install` 依赖安装
 - Playwright Chromium 浏览器安装
 - lark-cli 安装检测与登录引导
-- SKILL.md 路径自动配置
+- SKILL.md 路径自动配置（仅 Proma 环境需要）
+
+### 方式二：手动安装
+
+**1. 安装 Node.js (>= 18)**
+
+macOS 推荐用 nvm：
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 20
+nvm use 20
+node --version   # 确认 >= 18
+```
+
+或从官网下载安装包：https://nodejs.org
+
+**2. 克隆并安装依赖**
+
+```bash
+git clone https://github.com/pharder56k/quote-generator-skill.git
+cd quote-generator-skill
+npm install
+```
+
+**3. 安装 Playwright Chromium（渲染 PDF 必需）**
+
+```bash
+npx playwright install chromium
+```
+
+**4. 安装 lark-cli（飞书命令行工具）**
+
+```bash
+brew install lark-cli    # macOS（Homebrew）
+# 其他平台请参考 lark-cli 官方文档
+lark-cli --version       # 确认安装成功
+```
+
+## 配置
+
+### 1. 登录飞书
+
+```bash
+lark-cli auth login
+```
+
+完成后验证登录状态：
+
+```bash
+lark-cli base +table-list --base-token <你的多维表token>
+```
+
+### 2. 复制飞书模板（只需一次）
+
+- **项目模板**（每次新项目复制一个）：https://li1fn1sw90.feishu.cn/base/LfjJbLrTHacijesHmIjcDtSpnJf?from=from_copylink
+  - 含「项目信息」（项目名称、工程编号、税率、管理费等）和「报价明细」两张表
+- **价格库模板**（长期使用，跨项目共享）：https://li1fn1sw90.feishu.cn/base/TBklbKKSoa54iHsQxLtcboMVnRb?from=from_copylink
+
+复制后把新表链接发给 Agent 即可自动关联。
+
+### 3. 验证环境（可选）
+
+```bash
+npm run demo      # 用内置示例数据渲染全部 4 个模板，验证渲染链路
+```
+
+成功后在 `output/` 目录看到 PDF 即环境就绪。
+
+## 常见环境问题
+
+| 问题 | 原因 | 解决 |
+|------|------|------|
+| `command not found: node` | Node.js 未安装 | 安装 Node.js >= 18，重开终端 |
+| `Executable doesn't exist` | Playwright Chromium 未安装 | 在项目目录执行 `npx playwright install chromium` |
+| `command not found: lark-cli` | lark-cli 未安装 | `brew install lark-cli`，重开终端 |
+| lark-cli 报认证错误 | 未登录或 token 过期 | 执行 `lark-cli auth login` |
+| 渲染中文乱码 | 极少数系统字体缺失 | 字体已内嵌为 WOFF2，一般无需处理 |
 
 ## 快速开始
 
