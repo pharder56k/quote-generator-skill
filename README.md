@@ -2,7 +2,7 @@
 
 飞书填完工程量清单，对 AI 说 `/报价`，直接出封面 + 总价 + 明细的 PDF。
 
-MIT 开源，不卖钱。我自己做室内设计报价用了几个月，公开是为了拿到真实使用反馈。
+MIT 开源，不卖钱。一个室内设计师自制的报价 skill。
 
 <p align="center">
   <img src="docs/previews/swiss-ikb-cover-01.png" width="280" alt="Swiss IKB 封面">
