@@ -259,6 +259,20 @@ quote-generator-skill/
 - 区域英文名由 Agent 每次渲染前动态翻译（写入 `region_names`），无需写死
 - 组内顺序 = 飞书记录顺序（多维表里拖拽记录即可调整）
 
+## 反馈
+
+这是我自己做室内设计报价用的工具，MIT 开源，不卖钱。
+
+公开它是为了拿到真实使用后的意见，好继续改。用过请直接开 [Issue](https://github.com/pharder56k/quote-generator-skill/issues) 或 [Discussion](https://github.com/pharder56k/quote-generator-skill/discussions)，尤其想听这几件事：
+
+1. 按区域分，还是按工程分类分，哪个更符合你出报价的习惯？
+2. 管理费 / 增值税现在的算法对不对？
+3. 价格库匹配会不会填错？
+4. 模板哪一页看起来不专业？
+5. 安装卡在哪一步？（Node / Playwright / lark-cli / 飞书登录）
+
+截图、真实项目结构、改不动的报错，都比「挺好看」有用。
+
 ## License
 
-MIT
+[MIT](LICENSE)。可以自由使用、修改、分发，包括商用；保留版权和许可声明即可。
