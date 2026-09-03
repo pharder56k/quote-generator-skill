@@ -4,21 +4,12 @@
     "base_url": "https://li1fn1sw90.feishu.cn/base/LfjJbLrTHacijesHmIjcDtSpnJf",
     "note": "项目模板，含项目信息和报价明细。用户每次新项目复制此表。"
   },
-  "price_library_template": {
-    "base_token": "TBklbKKSoa54iHsQxLtcboMVnRb",
-    "base_url": "https://li1fn1sw90.feishu.cn/base/TBklbKKSoa54iHsQxLtcboMVnRb",
-    "note": "价格库模板，独立多维表。用户只复制一次，长期使用，跨项目共享价格数据。"
-  },
   "tables": {
     "项目信息": {
       "fields": ["项目名称", "工程编号", "编制日期", "编制人员", "联系邮箱", "公司Logo", "备注", "税率", "管理费"]
     },
     "报价明细": {
       "fields": ["区域", "工程分类", "项目名称", "项目特征", "单位", "数量", "综合单价", "合价", "备注"]
-    },
-    "价格库": {
-      "table_id": "tbl7SzWuopdQIiEV",
-      "fields": ["项目名称", "工程分类", "项目特征", "单位", "综合单价", "备注", "最后使用日期", "使用次数", "来源"]
     }
   }
 }

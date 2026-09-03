@@ -2,14 +2,13 @@
 
 ## 目标
 
-将 `quote-generator-skill` 开源为 Proma Skill，让其他用户通过 `npx skills add` 安装后，用斜杠命令（`/报价`、`/填充`）或自然语言触发，AI Agent 自动完成全套报价流程。
+将 `quote-generator-skill` 开源为 Proma Skill，让其他用户通过 `npx skills add` 安装后，用 `/报价` 或自然语言触发，AI Agent 从飞书多维表渲染 PDF。
 
 ## 当前状态
 
 - 4 个模板风格（Swiss IKB / Swiss IKB Zebra / B&W / B&W Zebra）
 - 内容页模板已重构为独立的 `content.html`
 - 覆盖模板 + 封面模板分离渲染架构
-- 价格库智能填充（`fill.js` + `price-library.js`）
 - 飞书模板多维表已就绪：`ZARYb5n6gawooesP8qZclTxGnuy`
 - 大数据量测试通过（245 条 / 13 分类）
 
@@ -67,7 +66,6 @@
 
 ## 命令参考
 - /报价 — 生成 PDF
-- /填充 — 自动填充价格
 
 ## 飞书模板
 - 模板链接 + 使用说明
@@ -87,7 +85,7 @@
 
 ### P1.2 错误提示中文化
 
-- `render.js`、`fill.js`、`price-library.js` 中所有 `console.error` 用中文
+- `render.js` 中所有 `console.error` 用中文
 - 飞书 API 错误的常见原因翻译
 
 ## P2 — 锦上添花

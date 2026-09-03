@@ -51,7 +51,6 @@ CLI 参数 `--group-by area|category`，默认 `category`。
 
 ### 边界
 
-- 价格库（fill.js / price-library.js）不涉及分类，未改动
 - 飞书模板表仅 bitable-config.json 字段清单补「区域」；`区域` 字段当前为 text 类型，建议用户在飞书中改为单选（玄关、客厅、餐厅、厨房、主卧、次卧、卫生间、阳台、书房、衣帽间、走廊、全屋）
 - 封面、总价表、页头页脚样式未变
 
