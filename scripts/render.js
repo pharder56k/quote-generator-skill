@@ -99,12 +99,9 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类", manage
     sortedCats = [...CATEGORY_ORDER.filter((c) => grouped[c]), ...customCats];
   }
 
-  // 分组序号：区域模式 = 分组顺序；工程分类模式 = 标准分类序号（1 措施 … 13 安装，自定义顺延）
-  const groupNumOf = (cat) => {
-    if (groupByArea) return sortedCats.indexOf(cat) + 1;
-    const stdIdx = CATEGORY_ORDER.indexOf(cat);
-    return stdIdx >= 0 ? stdIdx + 1 : sortedCats.indexOf(cat) + 1;
-  };
+  // 分组序号与总价表一致：按本次实际出现的分组从 1 起编。
+  // 工程分类仍按标准分类顺序排列，缺类不占号；区域按首次出现顺序。
+  const groupNumOf = (cat) => sortedCats.indexOf(cat) + 1;
 
   // 总价表数据
   let 合计 = 0;
@@ -132,6 +129,7 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类", manage
     "水电安装工程": "MEP Installation",
     // 旧模板分类（兼容历史数据兜底）
     "砌筑工程": "Masonry", "天棚工程": "Ceiling", "油漆涂料工程": "Painting",
+    "油漆、涂料工程": "Painting",
     "安装工程": "MEP Installation",
   };
 
@@ -151,10 +149,12 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类", manage
   // 区域模式：分类标题使用顺序编号 + 区域英文翻译；工程分类模式保持原逻辑
 
   // 区域英文翻译优先级：数据自带 region_names（每次报价由 Agent 实时翻译）> 内置兜底映射 > "AREA"
+  // 工程分类英文副标优先级：数据自带 category_names（自定义分类必须由 Agent 当次翻译）> 内置常见分类映射 > 空
   const rawRegionNames = raw.region_names || {};
+  const rawCategoryNames = raw.category_names || {};
   const regionEn = (cat) => (groupByArea
     ? (rawRegionNames[cat] || regionEnNames[cat] || "AREA")
-    : (catEnNames[cat] || ""));
+    : (rawCategoryNames[cat] || catEnNames[cat] || ""));
 
   for (const cat of sortedCats) {
     const catItems = grouped[cat];
@@ -174,6 +174,11 @@ function buildTemplateData(raw, vatRate = 0.03, groupBy = "工程分类", manage
       });
     });
     detailRows.push({ isSubtotal: true, 合价: Math.round(catTotal * 100) / 100 });
+  }
+
+  // 总价表名称：中文后接本次英文副标，与明细分类标题用同一套翻译
+  for (const row of summary) {
+    row.英文名称 = regionEn(row.名称);
   }
 
   return {

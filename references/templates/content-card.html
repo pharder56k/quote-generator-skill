@@ -90,6 +90,15 @@
       border-bottom: 1px solid #e0e0e0;
     }
     .summary-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+    .summary-en {
+      margin-left: 8px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #737373;
+      white-space: nowrap;
+    }
     .summary-totals { display: flex; justify-content: flex-end; margin-top: 12px; }
     .summary-totals-inner { width: 200px; }
     .summary-total-row {
@@ -255,7 +264,7 @@
         {{#each summary}}
         <tr>
           <td>{{this.序号}}</td>
-          <td>{{this.名称}}</td>
+          <td>{{this.名称}}{{#if this.英文名称}}<span class="summary-en">{{this.英文名称}}</span>{{/if}}</td>
           <td class="num">{{formatCurrency this.金额}}</td>
         </tr>
         {{/each}}

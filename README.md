@@ -17,6 +17,7 @@ MIT 开源，不卖钱。一个室内设计师自制的报价 skill。
 
 - 从飞书多维表（或 Excel）读工程量清单，生成专业 PDF
 - 可按**区域**（玄关、客厅、主卧…）或按**工程分类**出表
+- 总价表（目录页）名称中英双语：两种分类都是中文后面接英文
 - 管理费、增值税、序号自动算，飞书里不用维护序号列
 - 4 套模板：Swiss IKB / Zebra，以及适合打印的黑白版
 
@@ -91,7 +92,16 @@ AI：Swiss IKB · 税率 8% · 管理费 10%
 |:---:|:---:|:---:|:---:|
 | <img src="docs/previews/swiss-ikb-content-03.png" width="160" alt="Swiss IKB 明细"> | <img src="docs/previews/swiss-ikb-zebra-content-03.png" width="160" alt="Swiss IKB Zebra 明细"> | <img src="docs/previews/bw-content-03.png" width="160" alt="B&W 明细"> | <img src="docs/previews/bw-zebra-content-03.png" width="160" alt="B&W Zebra 明细"> |
 
-按区域出表时，分组标题是中英对照（如 `02 FOYER 玄关`），英文名由 Agent 每次按项目翻译。
+目录页（总价表）无论按区域还是按工程分类，名称都是中文后面接英文。明细页分组标题也是中英对照。
+
+<p align="center">
+  <img src="docs/previews/swiss-ikb-summary-02.png" width="280" alt="按工程分类的目录页，中文后接英文">
+  <img src="docs/previews/swiss-ikb-summary-area-02.png" width="280" alt="按区域分类的目录页，中文后接英文">
+</p>
+
+英文由 Agent 按本次出现的名称翻译：区域写入 `region_names`（如 玄关→Foyer），自定义工程分类写入 `category_names`。常见分类有内置英文兜底，没译到的自定义分类不要留空。
+
+按区域出表时，明细分组标题同样是中英对照（如 `02 FOYER 玄关`）。
 
 <p align="center">
   <img src="docs/previews/swiss-ikb-content-area-03.png" width="420" alt="区域分类明细页">
@@ -148,12 +158,14 @@ node scripts/render.js \
 ```
 
 - `--group-by area` 按区域；`category` 按工程分类（默认）
+- 两种分类的目录页都是中文后面接英文，和明细分组标题用同一套翻译
+- 区域英文写入 `region_names`；自定义工程分类英文写入 `category_names`
 - `--vat-rate` 可覆盖数据里的税率；不传则读 `税率`，默认 3%
 - `管理费` 按工程总价计；增值税 = (总价 + 管理费) × 税率
 - 费率兼容 `0.08` 和 `8`
 - 金额渲染为整数；组内顺序 = 飞书记录顺序（拖拽即可改）
 
-工程分类模式的序号前缀按这 13 类：措施、拆除、泥瓦、混凝土及钢筋混凝土、金属结构、防水、保温隔热、楼地面装饰、墙柱面装饰与隔断、木作、腻子、其他装饰、水电安装。自定义分类排在后面。
+工程分类按这 13 类排序：措施、拆除、泥瓦、混凝土及钢筋混凝土、金属结构、防水、保温隔热、楼地面装饰、墙柱面装饰与隔断、木作、腻子、其他装饰、水电安装。没出现的分类不占号，自定义分类排在后面。
 
 JSON 结构和 Agent 工作流见 [`SKILL.md`](SKILL.md)。
 
