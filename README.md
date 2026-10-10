@@ -4,17 +4,19 @@
   <strong>告别排版混乱的 Excel。飞书填完工程量清单，对 AI 说一句 <code>/报价</code>，直接出一份可以交给业主的 PDF。</strong>
 </p>
 
-
-
-
-
 <p align="center">
   <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
   <img src="https://img.shields.io/badge/Node.js-18%2B-brightgreen.svg" alt="Node">
   <img src="https://img.shields.io/badge/Feishu-多维表格-00D6B9.svg" alt="Feishu">
   <img src="https://img.shields.io/badge/Style-Swiss_IKB-002FA7.svg" alt="Style">
 </p>
-https://github.com/user-attachments/assets/37e00e69-1956-49f7-a9ed-fe5f43e4e109
+
+
+
+https://github.com/user-attachments/assets/bb92275e-7bac-4fb2-9148-ddcdba06b775
+
+
+
 <p align="center">
   <img src="docs/showcase/hero.png" alt="一份报价单的三页：封面、按区域总价表、按区域明细">
 </p>
