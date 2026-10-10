@@ -4,6 +4,10 @@
   <strong>告别排版混乱的 Excel。飞书填完工程量清单，对 AI 说一句 <code>/报价</code>，直接出一份可以交给业主的 PDF。</strong>
 </p>
 
+
+https://github.com/user-attachments/assets/37e00e69-1956-49f7-a9ed-fe5f43e4e109
+
+
 <p align="center">
   <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
   <img src="https://img.shields.io/badge/Node.js-18%2B-brightgreen.svg" alt="Node">
